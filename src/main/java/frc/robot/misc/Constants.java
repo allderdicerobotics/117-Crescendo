@@ -75,9 +75,6 @@ public final class Constants {
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
         public static final IdleMode driveIdleMode = IdleMode.kBrake;
 
-        /* Motor Inverts */
-        public static final boolean driveInvert = false;
-        public static final boolean angleInvert = true;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
@@ -89,13 +86,14 @@ public final class Constants {
             public static final double angleOffset = -67;
             public static final ThriftyEncoder turningEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
-            
             public static final SwerveModule module =
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
                     turningEncoder, 
-                    "FL"
+                    "FL",
+                    false,
+                    true
                 );
         }
 
@@ -112,7 +110,9 @@ public final class Constants {
                     driveMotorID, 
                     angleMotorID, 
                     turningEncoder, 
-                    "FR"
+                    "FR",
+                    false,
+                    true
                 );
         }
 
@@ -129,7 +129,9 @@ public final class Constants {
                     driveMotorID, 
                     angleMotorID, 
                     turningEncoder, 
-                    "BL"
+                    "BL",
+                    false,
+                    true
                 );
         }
 
@@ -146,7 +148,9 @@ public final class Constants {
                     driveMotorID, 
                     angleMotorID, 
                     turningEncoder, 
-                    "BR"
+                    "BR",
+                    false,
+                    true
                 );
         }
     }

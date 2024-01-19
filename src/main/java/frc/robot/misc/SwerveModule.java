@@ -45,7 +45,7 @@ public class SwerveModule {
         Constants.Swerve.driveKV,
         Constants.Swerve.driveKA
     );
-    public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name) {
+    public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name, boolean driveInvert, boolean angleInvert) {
         this.name = name;
 
         /* Configure Driving Motor, Encoder, and PIDController */
@@ -66,7 +66,7 @@ public class SwerveModule {
 
         driveMotor.restoreFactoryDefaults();
         driveMotor.setSmartCurrentLimit(Constants.Swerve.driveContinuousCurrentLimit);
-        driveMotor.setInverted(Constants.Swerve.driveInvert);
+        driveMotor.setInverted(driveInvert);
         driveMotor.setIdleMode(Constants.Swerve.driveIdleMode);
 
         /* Setup Driving PID */
@@ -85,7 +85,7 @@ public class SwerveModule {
 
         turningMotor.restoreFactoryDefaults();
         turningMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
-        turningMotor.setInverted(Constants.Swerve.angleInvert);
+        turningMotor.setInverted(angleInvert);
 
         turningMotor.setIdleMode(Constants.Swerve.angleIdleMode);
         /*  Limit the PID Controller's input range between -pi and pi and set the input
