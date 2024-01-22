@@ -21,7 +21,7 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
     }
     // Does not include offset
     private double getRawPositionHelper() {
-        return (inverted ? -1.0 : 1.0) * (encoder.getAverageVoltage() / RobotController.getVoltage5V()) * 360;
+        return (inverted ? -1.0 : 1.0) * (encoder.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI;
         // return new Rotation2d(
         //     (encoder.getVoltage() * 2 * Math.PI) / read_voltage_max
         // );

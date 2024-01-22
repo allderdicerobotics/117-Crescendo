@@ -29,7 +29,7 @@ public class RobotContainer {
   private final OperatorSystem OI = new OperatorSystem();
   private final VisionSubsystem limelight = new VisionSubsystem();
   private final NavX navX = new NavX();
-  private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
+  // private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
   
   PS4Controller driverController = OI.driverController;
   Joystick operatorController = OI.operatorController;
