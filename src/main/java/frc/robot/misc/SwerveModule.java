@@ -63,7 +63,7 @@ public class SwerveModule {
 
     }
 
-    private void configDriveMotor(){
+    private void configDriveMotor(boolean driveInvert){
 
         driveMotor.restoreFactoryDefaults();
         driveMotor.setSmartCurrentLimit(Constants.Swerve.driveContinuousCurrentLimit);
@@ -87,7 +87,7 @@ public class SwerveModule {
         driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
     }
-    private void configTurnMotor(){
+    private void configTurnMotor(boolean angleInvert){
 
         turningMotor.restoreFactoryDefaults();
         turningMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
