@@ -86,9 +86,6 @@ public final class Constants {
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
         public static final IdleMode driveIdleMode = IdleMode.kBrake;
 
-        /* Motor Inverts */
-        public static final boolean driveInvert = false;
-        public static final boolean angleInvert = true;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
@@ -105,7 +102,11 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
+<<<<<<< HEAD
                     thriftyEncoder, 
+=======
+                    turningEncoder, 
+>>>>>>> main
                     "FL",
                     false,
                     true
