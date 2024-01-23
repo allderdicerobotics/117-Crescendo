@@ -102,11 +102,7 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-<<<<<<< HEAD
                     thriftyEncoder, 
-=======
-                    turningEncoder, 
->>>>>>> main
                     "FL",
                     false,
                     true
