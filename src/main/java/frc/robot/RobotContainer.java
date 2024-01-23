@@ -28,7 +28,6 @@ public class RobotContainer {
   private final DriveSubsystem swerve = new DriveSubsystem();
   private final OperatorSystem OI = new OperatorSystem();
   private final VisionSubsystem limelight = new VisionSubsystem();
-  private final NavX navX = new NavX();
   // private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
   
   PS4Controller driverController = OI.driverController;
@@ -47,10 +46,10 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new TeleopSwerve(
             swerve,
-            () -> (driverController.getRawAxis(JoystickConstants.translationAxis)),
-            () -> (driverController.getRawAxis(JoystickConstants.strafeAxis)),
-            () -> (driverController.getRawAxis(JoystickConstants.rotAxis)),
-            () -> false
+            () -> (-driverController.getLeftY()),
+            () -> (-driverController.getLeftX()),
+            () -> (-driverController.getRightX()),
+            () -> true
         )
     );
     
