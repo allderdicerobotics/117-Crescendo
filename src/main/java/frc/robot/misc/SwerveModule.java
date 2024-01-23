@@ -45,7 +45,7 @@ public class SwerveModule {
         Constants.Swerve.driveKV,
         Constants.Swerve.driveKA
     );
-    public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name) {
+    public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name, boolean driveInvert, boolean angleInvert) {
         this.name = name;
 
         /* Configure Driving Motor, Encoder, and PIDController */
@@ -67,7 +67,7 @@ public class SwerveModule {
 
         driveMotor.restoreFactoryDefaults();
         driveMotor.setSmartCurrentLimit(Constants.Swerve.driveContinuousCurrentLimit);
-        driveMotor.setInverted(Constants.Swerve.driveInvert);
+        driveMotor.setInverted(driveInvert);
         driveMotor.setIdleMode(Constants.Swerve.driveIdleMode);
         
         driveEncoder.setPositionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
@@ -89,25 +89,11 @@ public class SwerveModule {
     }
     private void configTurnMotor(){
 
-        turnMotor.restoreFactoryDefaults();
-        turnMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
-        turnMotor.setInverted(Constants.Swerve.angleInvert);
-        turnMotor.setIdleMode(Constants.Swerve.angleIdleMode);
+        turningMotor.restoreFactoryDefaults();
+        turningMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
+        turningMotor.setInverted(angleInvert);
 
-        turnEncoder.setPositionConversionFactor(Constants.Swerve.turnConversionPositionFactor);
-        turnEncoder.setVelocityConversionFactor(Constants.Swerve.turnConversionVelocityFactor);
-
-        turnPIDController.setPositionPIDWrappingEnabled(true);
-        turnPIDController.setPositionPIDWrappingMinInput(Constants.Swerve.turnPIDMinInput);
-        turnPIDController.setPositionPIDWrappingMaxInput(Constants.Swerve.turnPIDMaxInput);
-
-        turnPIDController.setP(Constants.Swerve.angleKP);
-        turnPIDController.setI(Constants.Swerve.angleKI);
-        turnPIDController.setD(Constants.Swerve.angleKD);
-        turnPIDController.setFF(Constants.Swerve.angleKFF);
-        turnPIDController.setOutputRange(-1,1);
-
-
+        turningMotor.setIdleMode(Constants.Swerve.angleIdleMode);
         /*  Limit the PID Controller's input range between -pi and pi and set the input
         to be continuous. */
         turnMotor.burnFlash();

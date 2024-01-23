@@ -85,9 +85,6 @@ public final class Constants {
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
         public static final IdleMode driveIdleMode = IdleMode.kBrake;
 
-        /* Motor Inverts */
-        public static final boolean driveInvert = false;
-        public static final boolean angleInvert = true;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
@@ -96,16 +93,18 @@ public final class Constants {
             public static final int angleMotorID = 6;
             public static final int thriftyEncoderID = 2;
             
-            public static final double angleOffset = -47;
-            public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
+            public static final double angleOffset = -67;
+            public static final ThriftyEncoder turningEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
             
             public static final SwerveModule module =
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    thriftyEncoder, 
-                    "FL"
+                    turningEncoder, 
+                    "FL",
+                    false,
+                    true
                 );
         }
 
@@ -121,8 +120,10 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    thriftyEncoder, 
-                    "FR"
+                    turningEncoder, 
+                    "FR",
+                    false,
+                    true
                 );
         }
 
@@ -138,8 +139,10 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    thriftyEncoder, 
-                    "BL"
+                    turningEncoder, 
+                    "BL",
+                    false,
+                    true
                 );
         }
 
@@ -155,8 +158,10 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    thriftyEncoder, 
-                    "BR"
+                    turningEncoder, 
+                    "BR",
+                    false,
+                    true
                 );
         }
     }
