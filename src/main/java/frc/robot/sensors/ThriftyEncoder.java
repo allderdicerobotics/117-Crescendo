@@ -3,13 +3,12 @@ package frc.robot.sensors;
 import java.util.function.*;
 
 import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.misc.Constants;
 
 public class ThriftyEncoder implements Supplier<Rotation2d> {
     private final AnalogInput encoder;
-    private boolean inverted = false;
     private Rotation2d offset = new Rotation2d(0.0);
 
     public ThriftyEncoder(AnalogInput encoder) {
@@ -17,28 +16,26 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
     }
 
     public void configure(boolean inverted){ //TODO: Figure out if any of the encoders are inverted
-        this.inverted = inverted;
+        
     }
     // Does not include offset
     private double getRawPositionHelper() {
-        return (inverted ? -1.0 : 1.0) * (encoder.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI;
-        // return new Rotation2d(
-        //     (encoder.getVoltage() * 2 * Math.PI) / read_voltage_max
-        // );
+        // return ((encoder.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
+        return (encoder.getVoltage() * 2 * Math.PI) / Constants.Swerve.thriftyMaxVoltage;
     }
 
     public Rotation2d getRawPosition(){
-        return new Rotation2d(Units.degreesToRadians(getRawPositionHelper()));
+        return new Rotation2d(getRawPositionHelper());
     }
     // Does include offset
     public Rotation2d get() {
         return getRawPosition().plus(offset);
     }
 
-    public ThriftyEncoder reset() {
-        offset = getRawPosition();
-        return this;
-    }
+    // public ThriftyEncoder reset() {
+    //     offset = getRawPosition();
+    //     return this;
+    // }
 
     // Update the offset (radians)
     public ThriftyEncoder shiftRads(double radians) {

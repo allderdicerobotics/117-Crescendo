@@ -23,7 +23,6 @@ public class PoseEstimationSubsystem extends SubsystemBase {
         m_limeLight = limeLight;
         m_NavX = navx;
 
-        m_NavX.zeroYaw();
         m_swervePoseEstimator = new SwerveDrivePoseEstimator(
             Constants.Swerve.swerveKinematics,
             m_NavX.getAngle(),

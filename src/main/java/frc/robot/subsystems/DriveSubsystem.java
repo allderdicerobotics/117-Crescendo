@@ -17,11 +17,12 @@ public class DriveSubsystem extends SubsystemBase {
 
 	// Odometry class for tracking robot pose
 	private NavX navx = new NavX();
+	
 	private boolean openLoop;
 
 	/** Creates a new DriveSubsystem. */
 	public DriveSubsystem() {
-		
+		navx.zeroYaw();
 		Timer.delay(1);
 		resetEncoders();
 	}
@@ -79,10 +80,10 @@ public class DriveSubsystem extends SubsystemBase {
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 				desiredStates, Constants.Swerve.maxSpeed);
-		Mod0.module.setDesiredState(desiredStates[0], false);
-		Mod1.module.setDesiredState(desiredStates[1], false);
-		Mod2.module.setDesiredState(desiredStates[2], false);
-		Mod3.module.setDesiredState(desiredStates[3], false);
+		Mod0.module.setDesiredState(desiredStates[0], true);
+		Mod1.module.setDesiredState(desiredStates[1], true);
+		Mod2.module.setDesiredState(desiredStates[2], true);
+		Mod3.module.setDesiredState(desiredStates[3], true);
 	}
 
 	/** Resets the drive encoders to currently read a position of 0. */

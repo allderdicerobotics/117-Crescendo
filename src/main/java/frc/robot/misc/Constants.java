@@ -40,20 +40,20 @@ public final class Constants {
         public static final int driveContinuousCurrentLimit = 40;
 
         /* Angle Motor PID Values */
-        public static final double angleKP = 0.0001; //1.6 on our robot
-        public static final double angleKI = 0.0; //1.8 on our robot
+        public static final double angleKP = 1.6; //1.6 on our robot
+        public static final double angleKI = 1.8; //1.8 on our robot
         public static final double angleKD = 0.0;
-        public static final double angleKFF = 0.0;
+        public static final double angleKFF = 1.1;
 
         /* Angle Motor Characterization Values */
-        public static final double angleKS = 40 * Math.PI;
-        public static final double angleKV = 40 * Math.PI;
+        public static final double angleKS = 0.5;
+        public static final double angleKV = 0.3;
 
         /* Drive Motor PID Values */
         public static final double driveKP = 0.00005; //0.00005 on our robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKFF = 0.0; //0.001 on our robot
+        public static final double driveKFF = 0.001;
 
         /* Drive Motor Characterization Values */
         public static final double driveKS = 0.667;
@@ -75,11 +75,12 @@ public final class Constants {
 
         public static final double turnPIDMinInput = 0;
         public static final double turnPIDMaxInput = (2 * Math.PI);
+
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4.5; // meters per second
         public static final double maxAccel = 250.0;
-        public static final double maxAngularVelocity = 40 * Math.PI;// 11.5; // Math.PI on our robot
-        public static final double maxAngularAccel = 40 *Math.PI;
+        public static final double maxAngularVelocity =  8 * Math.PI;// 11.5; // Math.PI on our robot
+        public static final double maxAngularAccel = Math.PI;
 
         /* Neutral Modes */
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
@@ -94,14 +95,14 @@ public final class Constants {
             public static final int thriftyEncoderID = 2;
             
             public static final double angleOffset = -67;
-            public static final ThriftyEncoder turningEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
+            public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
             
             public static final SwerveModule module =
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    turningEncoder, 
+                    thriftyEncoder, 
                     "FL",
                     false,
                     true
@@ -120,7 +121,7 @@ public final class Constants {
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    turningEncoder, 
+                    thriftyEncoder, 
                     "FR",
                     false,
                     true
@@ -132,14 +133,14 @@ public final class Constants {
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = -9;
+            public static final double angleOffset = -54;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    turningEncoder, 
+                    thriftyEncoder, 
                     "BL",
                     false,
                     true
@@ -151,14 +152,14 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = 3.5;
+            public static final double angleOffset = -90;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
                 new SwerveModule(
                     driveMotorID, 
                     angleMotorID, 
-                    turningEncoder, 
+                    thriftyEncoder, 
                     "BR",
                     false,
                     true
