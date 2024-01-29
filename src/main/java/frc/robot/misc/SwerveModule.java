@@ -89,6 +89,7 @@ public class SwerveModule {
         /*  Limit the PID Controller's input range between -pi and pi and set the input
         to be continuous. */
         turnPIDController.enableContinuousInput(-Math.PI, Math.PI);
+        turnPIDController.reset(0);
         turnMotor.burnFlash();
 
     }
@@ -119,9 +120,8 @@ public class SwerveModule {
             turnMotor.set(0);
         }else {
             final double turnOutput = turnPIDController.calculate(turnEncoder.get().getRadians(),
-                desiredState.angle.getRadians());
-            final double turnFeedforwardOut = turnFF.calculate(turnPIDController.getSetpoint().velocity);
-            turnMotor.setVoltage(turnOutput + turnFeedforwardOut);
+                desiredState.angle.getRadians()) + turnFF.calculate(turnPIDController.getSetpoint().velocity);
+            turnMotor.set(turnOutput/4);
         }
     }
     private void setSpeed(SwerveModuleState desiredState, boolean openLoop){

@@ -5,12 +5,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.ThriftyEncoder;
 
 public final class Constants {
     public static final class Swerve {
-        public static final double stickDeadband = 0.1;
+        public static final double stickDeadband = 0.2;
 
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -23,6 +25,7 @@ public final class Constants {
         public static final double closedLoopRamp = 0.0;
 
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
+        public static final double turnGearRatio = (11.8 / 1.0);//(150.0 / 7.0);
 
         public static final SwerveDriveKinematics swerveKinematics =
             new SwerveDriveKinematics(
@@ -38,16 +41,16 @@ public final class Constants {
         /* Swerve Current Limiting */
         public static final int angleContinuousCurrentLimit = 20;
         public static final int driveContinuousCurrentLimit = 40;
-
+        
         /* Angle Motor PID Values */
-        public static final double angleKP = 1.6; //1.6 on our robot
-        public static final double angleKI = 1.8; //1.8 on our robot
-        public static final double angleKD = 0.0;
-        public static final double angleKFF = 1.1;
+        public static final double angleKP = 2;//12;//1.6; //1.6 on our robot
+        public static final double angleKI = 1;//1.8 on our robot
+        public static final double angleKD = 0;
+        public static final double angleKFF = 0;
 
         /* Angle Motor Characterization Values */
-        public static final double angleKS = 0.5;
-        public static final double angleKV = 0.3;
+        public static final double angleKS = 0;
+        public static final double angleKV = 0;
 
         /* Drive Motor PID Values */
         public static final double driveKP = 0.00005; //0.00005 on our robot
@@ -67,34 +70,36 @@ public final class Constants {
 
         /* Turn Motor Conversion Factors */
         public static final double turnConversionPositionFactor = 
-            (2 * Math.PI) / (150.0 / 7.0);
+            (2 * Math.PI) / turnGearRatio;
         public static final double turnConversionVelocityFactor = 
             turnConversionPositionFactor / 60.0;
             
         /* Turn PID MinMax Input Values */
 
         public static final double turnPIDMinInput = 0;
-        public static final double turnPIDMaxInput = (2 * Math.PI);
+        public static final double turnPIDMaxInput = 2 * Math.PI;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.5; // meters per second
+        public static final double maxSpeed = 4.5 / 8; // meters per second
         public static final double maxAccel = 250.0;
-        public static final double maxAngularVelocity =  8 * Math.PI;// 11.5; // Math.PI on our robot
-        public static final double maxAngularAccel = Math.PI;
+        public static final double maxAngularVelocity =  8 * Math.PI ;// 11.5; // Math.PI on our robot
+        public static final double maxAngularAccel = Math.PI*16;
 
         /* Neutral Modes */
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
         public static final IdleMode driveIdleMode = IdleMode.kBrake;
 
+        public static final double minOutputRangeTurn = -1;
+        public static final double maxOutputRangeTurn = 1;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 {
             public static final int driveMotorID = 7;
-            public static final int angleMotorID = 6;
+            public static final int angleMotorID = 8; // 6;
             public static final int thriftyEncoderID = 2;
             
-            public static final double angleOffset = -67;
+            public static final double angleOffset = -65;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
             
@@ -114,7 +119,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int thriftyEncoderID = 1;
-            public static final double angleOffset = 30;
+            public static final double angleOffset = 29.4;//30;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -131,9 +136,9 @@ public final class Constants {
         /* Back Left Module - Module 2 */
         public static final class Mod2 {
             public static final int driveMotorID = 9;
-            public static final int angleMotorID = 8;
+            public static final int angleMotorID = 6;//8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = -54;
+            public static final double angleOffset = -62.96;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -152,7 +157,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = -90;
+            public static final double angleOffset = -85.37;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =

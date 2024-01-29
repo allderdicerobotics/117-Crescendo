@@ -8,7 +8,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.misc.Constants;
+import frc.robot.misc.Constants.Swerve;
 import frc.robot.misc.Constants.Swerve.*;
 import frc.robot.sensors.NavX;
 
@@ -22,9 +24,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	/** Creates a new DriveSubsystem. */
 	public DriveSubsystem() {
-		navx.zeroYaw();
-		Timer.delay(1);
 		resetEncoders();
+		Timer.delay(1);
 	}
 
 	@Override
@@ -32,12 +33,12 @@ public class DriveSubsystem extends SubsystemBase {
 		/* Update Odometry */
 		// swerveOdometry.update(navx.getAngle(), getModulePositions());
 		
+		SmartDashboard.putNumber("NavX Angle",navx.getAngle().getDegrees());
 
-		/*  */
-		Mod0.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		Mod1.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		Mod2.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		Mod3.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
+		// Mod0.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
+		// Mod1.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
+		// Mod2.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
+		// Mod3.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
 		// field2d.setRobotPose(swerveOdometry.getEstimatedPosition());
 	}
 
