@@ -121,7 +121,7 @@ public class SwerveModule {
         }else {
             final double turnOutput = turnPIDController.calculate(turnEncoder.get().getRadians(),
                 desiredState.angle.getRadians()) + turnFF.calculate(turnPIDController.getSetpoint().velocity);
-            turnMotor.set(turnOutput/4);
+            turnMotor.set(turnOutput/12);
         }
     }
     private void setSpeed(SwerveModuleState desiredState, boolean openLoop){
