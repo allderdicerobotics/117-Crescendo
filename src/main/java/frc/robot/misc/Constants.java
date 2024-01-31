@@ -68,7 +68,7 @@ public final class Constants {
 
         /* Turn Motor Conversion Factors */
         public static final double turnConversionPositionFactor = 
-            (2 * Math.PI) / (11.8);
+            (2 * Math.PI) / turnGearRatio;
         public static final double turnConversionVelocityFactor = 
             turnConversionPositionFactor / 60.0;
             

@@ -80,6 +80,9 @@ public class SwerveModule {
         turnMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
         turnMotor.setInverted(turnInvert);
         turnMotor.setIdleMode(Constants.Swerve.angleIdleMode);
+        
+        turnRelativeEncoder.setPositionConversionFactor(Constants.Swerve.turnConversionPositionFactor);
+        turnRelativeEncoder.setVelocityConversionFactor(Constants.Swerve.turnConversionVelocityFactor);
 
         /*  Limit the PID Controller's input range between -pi and pi and set the input
         to be continuous. */
@@ -89,8 +92,6 @@ public class SwerveModule {
         turnPIDController.setI(Constants.Swerve.angleKI);
         turnPIDController.setD(Constants.Swerve.angleKD);
 
-        turnRelativeEncoder.setPositionConversionFactor(Constants.Swerve.turnConversionPositionFactor);
-        turnRelativeEncoder.setVelocityConversionFactor(Constants.Swerve.turnConversionVelocityFactor);
 
         turnPIDController.setPositionPIDWrappingEnabled(true);
         turnPIDController.setPositionPIDWrappingMinInput(Constants.Swerve.turnPIDMinInput);
