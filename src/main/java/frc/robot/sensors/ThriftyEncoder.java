@@ -4,7 +4,6 @@ import java.util.function.*;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.misc.Constants;
 
 public class ThriftyEncoder implements Supplier<Rotation2d> {
