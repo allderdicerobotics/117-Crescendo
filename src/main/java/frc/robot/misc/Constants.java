@@ -5,9 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.ThriftyEncoder;
 
 public final class Constants {
@@ -99,7 +97,7 @@ public final class Constants {
             public static final int angleMotorID = 8; // 6;
             public static final int thriftyEncoderID = 2;
             
-            public static final double angleOffset = -65;
+            public static final double angleOffset = -63.7; // 
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
             
@@ -119,7 +117,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int thriftyEncoderID = 1;
-            public static final double angleOffset = 29.4;//30;
+            public static final double angleOffset = 28.2; // 
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -138,7 +136,7 @@ public final class Constants {
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 6;//8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = -62.96;
+            public static final double angleOffset = -61.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -157,7 +155,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = -85.37;
+            public static final double angleOffset = -86.97;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -171,7 +169,16 @@ public final class Constants {
                 );
         }
     }
+    public static final class Intake {
+        public final int motorID = -1; // TODO: Get the ID
 
+    }
+    public static final class Shooter {
+        public final int motorID = -1; // TODO: Get the ID
+    }
+    public static final class Tower {
+        
+    }
     public static final class AutoConstants { //TODO: Adjust these when we make our own auto
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;

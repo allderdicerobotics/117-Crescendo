@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.sensors.NavX;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.OperatorSystem;
-import frc.robot.subsystems.PoseEstimationSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.OperatorSystem.JoystickConstants;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Operator;
+import frc.robot.subsystems.PoseEstimation;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Operator.JoystickConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -25,9 +25,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem swerve = new DriveSubsystem();
-  private final OperatorSystem OI = new OperatorSystem();
-  private final VisionSubsystem limelight = new VisionSubsystem();
+  private final Drive swerve = new Drive();
+  private final Operator OI = new Operator();
+  private final Vision limelight = new Vision();
   // private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
   
   PS4Controller driverController = OI.driverController;
@@ -46,9 +46,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new TeleopSwerve(
             swerve,
-            () -> (-driverController.getLeftY()),
-            () -> (-driverController.getLeftX()),
-            () -> (-driverController.getRightX()),
+            () -> (driverController.getLeftY()),
+            () -> (driverController.getLeftX()),
+            () -> (driverController.getRightX()),
             () -> false
         )
     );

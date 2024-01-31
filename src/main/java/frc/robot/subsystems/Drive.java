@@ -14,7 +14,7 @@ import frc.robot.misc.Constants.Swerve;
 import frc.robot.misc.Constants.Swerve.*;
 import frc.robot.sensors.NavX;
 
-public class DriveSubsystem extends SubsystemBase {
+public class Drive extends SubsystemBase {
 	// Robot swerve modules
 
 	// Odometry class for tracking robot pose
@@ -23,7 +23,7 @@ public class DriveSubsystem extends SubsystemBase {
 	private boolean openLoop;
 
 	/** Creates a new DriveSubsystem. */
-	public DriveSubsystem() {
+	public Drive() {
 		resetEncoders();
 		Timer.delay(1);
 	}
