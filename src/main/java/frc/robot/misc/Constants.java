@@ -23,6 +23,7 @@ public final class Constants {
         public static final double closedLoopRamp = 0.0;
 
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
+        public static final double turnGearRatio = (11.8 / 1.0);
 
         public static final SwerveDriveKinematics swerveKinematics =
             new SwerveDriveKinematics(
@@ -67,7 +68,7 @@ public final class Constants {
 
         /* Turn Motor Conversion Factors */
         public static final double turnConversionPositionFactor = 
-            (2 * Math.PI) / (150.0 / 7.0);
+            (2 * Math.PI) / (11.8);
         public static final double turnConversionVelocityFactor = 
             turnConversionPositionFactor / 60.0;
             
