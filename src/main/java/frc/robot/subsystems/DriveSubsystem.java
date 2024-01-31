@@ -24,7 +24,6 @@ public class DriveSubsystem extends SubsystemBase {
 	public DriveSubsystem() {
 		navx.zeroYaw();
 		Timer.delay(1);
-		resetEncoders();
 	}
 
 	@Override
