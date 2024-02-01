@@ -14,7 +14,13 @@ public class Operator extends SubsystemBase{
         public static final int buttonBoardPort = 2;
         
         public static final int translationAxis = 1;
-        public static final int strafeAxis= 0;
+        public static final int strafeAxis = 0;
         public static final int rotAxis = 2;
+
+        public static final int intakeToggleButton = 1;
+        public static final int shooterCmdButton = 2;
+        public static final int towerCmdButton = 3;
+        public static final int climberToggleButton = 4;
+        public static final int resetGyroButton = 5;
     }
 }

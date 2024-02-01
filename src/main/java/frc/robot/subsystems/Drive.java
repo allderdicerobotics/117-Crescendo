@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.misc.Constants;
-import frc.robot.misc.Constants.Swerve;
 import frc.robot.misc.Constants.Swerve.*;
 import frc.robot.sensors.NavX;
 
@@ -20,8 +19,6 @@ public class Drive extends SubsystemBase {
 	// Odometry class for tracking robot pose
 	private NavX navx = new NavX();
 	
-	private boolean openLoop;
-
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
 		resetEncoders();
@@ -35,11 +32,6 @@ public class Drive extends SubsystemBase {
 		
 		SmartDashboard.putNumber("NavX Angle",navx.getAngle().getDegrees());
 
-		// Mod0.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		// Mod1.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		// Mod2.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		// Mod3.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
-		// field2d.setRobotPose(swerveOdometry.getEstimatedPosition());
 	}
 
 	// // Update the odometry in the periodic block
@@ -53,7 +45,6 @@ public class Drive extends SubsystemBase {
 	 *                      field.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean openLoop) {
-		this.openLoop = openLoop;
 		var swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
 				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
 					translation.getX(),
