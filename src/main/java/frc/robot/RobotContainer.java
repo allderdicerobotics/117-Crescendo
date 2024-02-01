@@ -7,12 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.sensors.NavX;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Operator;
-import frc.robot.subsystems.PoseEstimation;
 import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.Operator.JoystickConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 

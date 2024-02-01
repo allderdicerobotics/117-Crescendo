@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-\import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -25,5 +25,5 @@ public class Climber extends SubsystemBase{
         
     }
     
-    
+
 }

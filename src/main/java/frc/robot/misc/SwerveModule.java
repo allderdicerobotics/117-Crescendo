@@ -28,13 +28,7 @@ public class SwerveModule {
         Constants.Swerve.angleKI,
         Constants.Swerve.angleKD
     );
-    
-    
-    private final SimpleMotorFeedforward turnFF = new SimpleMotorFeedforward(
-        Constants.Swerve.angleKS,
-        Constants.Swerve.angleKV
-    );
-    
+        
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(
         Constants.Swerve.driveKS,
         Constants.Swerve.driveKV,
