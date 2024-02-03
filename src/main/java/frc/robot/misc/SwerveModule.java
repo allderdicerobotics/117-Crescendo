@@ -57,6 +57,8 @@ public class SwerveModule {
         driveMotor.setInverted(driveInvert);
         driveMotor.setIdleMode(Constants.Swerve.driveIdleMode);
                 
+        driveEncoder.setPositionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
+        driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);
         /* Setup Driving PID */
         drivePIDController.setP(Constants.Swerve.driveKP, 0);
         drivePIDController.setI(Constants.Swerve.driveKI, 0);
@@ -115,8 +117,10 @@ public class SwerveModule {
         }
     }
     private void setSpeed(SwerveModuleState desiredState, boolean openLoop){
+        // SmartDashboard.putNumber("Output" + name, output);
         if (openLoop){
-            double output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+           double output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+    
             driveMotor.set(output);
         } else{
             drivePIDController.setReference(
@@ -133,7 +137,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         /* Convert Encoder Readings (RPM) to SwerveModulePosition's Meters field */
-        double distanceMeters = driveEncoder.getPosition() * Constants.Swerve.driveConversionPositionFactor; 
+        double distanceMeters = driveEncoder.getPosition(); 
         return new SwerveModulePosition(distanceMeters,turnAbsoluteEncoder.get());
     }
 

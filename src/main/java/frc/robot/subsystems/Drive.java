@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 
+import com.gos.lib.swerve.SwerveDrivePublisher;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -18,10 +20,11 @@ public class Drive extends SubsystemBase {
 
 	// Odometry class for tracking robot pose
 	private NavX navx = new NavX();
-	
+	private SwerveDrivePublisher publisher;
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
 		resetEncoders();
+		publisher = new SwerveDrivePublisher();
 		Timer.delay(1);
 	}
 
@@ -29,7 +32,7 @@ public class Drive extends SubsystemBase {
 	public void periodic() {
 		/* Update Odometry */
 		// swerveOdometry.update(navx.getAngle(), getModulePositions());
-		
+		publisher.setMeasuredStates(getModuleStates());
 		SmartDashboard.putNumber("NavX Angle",navx.getAngle().getDegrees());
 
 	}
@@ -57,7 +60,9 @@ public class Drive extends SubsystemBase {
 					rotation
 					)
 				);
+		
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.Swerve.maxSpeed);
+		publisher.setDesiredStates(swerveModuleStates);
 		Mod0.module.setDesiredState(swerveModuleStates[0], openLoop);
 		Mod1.module.setDesiredState(swerveModuleStates[1], openLoop);
 		Mod2.module.setDesiredState(swerveModuleStates[2], openLoop);
@@ -92,6 +97,14 @@ public class Drive extends SubsystemBase {
 			Mod1.module.getPosition(),
 			Mod2.module.getPosition(),
 			Mod3.module.getPosition()
+		};
+	}	
+	public SwerveModuleState[] getModuleStates() {
+		return new SwerveModuleState[] {
+			Mod0.module.getState(),
+			Mod1.module.getState(),
+			Mod2.module.getState(),
+			Mod3.module.getState()
 		};
 	}	
 }

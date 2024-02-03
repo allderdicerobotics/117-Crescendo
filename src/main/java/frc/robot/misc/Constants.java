@@ -51,10 +51,10 @@ public final class Constants {
         public static final double angleKV = 0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.00005; //0.00005 on our robot
+        public static final double driveKP = 0.001; //0.00005 on our robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKFF = 0.001;
+        public static final double driveKFF = 0.0001;
 
         /* Drive Motor Characterization Values */
         public static final double driveKS = 0.667;
@@ -78,7 +78,7 @@ public final class Constants {
         public static final double turnPIDMaxInput = 2 * Math.PI;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.5 / 8; // meters per second
+        public static final double maxSpeed = 4.5 / 2; // meters per second
         public static final double maxAccel = 250.0;
         public static final double maxAngularVelocity =  8 * Math.PI ;// 11.5; // Math.PI on our robot
         public static final double maxAngularAccel = Math.PI*16;

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Operator;
@@ -27,7 +28,7 @@ public class RobotContainer {
   private final Vision limelight = new Vision();
   // private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
   
-  PS4Controller driverController = OI.driverController;
+  XboxController driverController = OI.driverController;
   Joystick operatorController = OI.operatorController;
 
 
@@ -43,8 +44,8 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new TeleopSwerve(
             swerve,
-            () -> (driverController.getLeftX()),
             () -> (driverController.getLeftY()),
+            () -> (driverController.getLeftX()),
             () -> (driverController.getRightX()),
             () -> false
         )
