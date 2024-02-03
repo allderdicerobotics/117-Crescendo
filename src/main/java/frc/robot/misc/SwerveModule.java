@@ -3,7 +3,9 @@ package frc.robot.misc;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.ThriftyEncoder;
 
+import com.gos.lib.swerve.SwerveDrivePublisher;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.SparkPIDController;
@@ -28,6 +30,7 @@ public class SwerveModule {
     private final SparkPIDController drivePIDController;
     private final SparkPIDController turnPIDController;
 
+    
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(
         Constants.Swerve.driveKS,
         Constants.Swerve.driveKV,
@@ -108,17 +111,18 @@ public class SwerveModule {
     public void setDesiredState(SwerveModuleState desiredState, boolean openLoop) {
 
         /* Optimize the reference state to avoid spinning further than 90 degrees */
-        desiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(turnRelativeEncoder.getPosition()));
+        // desiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(turnRelativeEncoder.getPosition()));
         // desiredState = nonContinuousOptimize(desiredState, new Rotation2d(turnRelativeEncoder.getPosition()));
         setAngle(desiredState);
         setSpeed(desiredState, openLoop);
         
-
+        
         SmartDashboard.putNumber("Drive " + name, driveEncoder.getPosition());
         SmartDashboard.putNumber("Turn " + name,turnAbsoluteEncoder.get().getDegrees());
         SmartDashboard.putNumber("TurnRel " + name, new Rotation2d(turnRelativeEncoder.getPosition()).getDegrees());
         SmartDashboard.putNumber("State " + name, desiredState.angle.getDegrees());
         SmartDashboard.putNumber("Speed " + name, desiredState.speedMetersPerSecond);
+        SmartDashboard.putNumber("angle diff " + name, (turnRelativeEncoder.getPosition() - turnAbsoluteEncoder.get().getRadians()) / (2 * Math.PI) * 360);
         // SmartDashboard.putNumber(""), 0)
         
     }
@@ -152,7 +156,11 @@ public class SwerveModule {
     public void reset() {
         driveEncoder.setPosition(0);
         turnMotor.set(0);
-        turnRelativeEncoder.setPosition(turnAbsoluteEncoder.get().getRadians());
+        REVLibError err = turnRelativeEncoder.setPosition(turnAbsoluteEncoder.get().getRadians());
+        
+        if (err != REVLibError.kOk) {
+            System.out.println("Didnt work");
+        }
     }
 
     public SwerveModulePosition getPosition() {
@@ -162,7 +170,7 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(driveEncoder.getVelocity(), turnAbsoluteEncoder.get());
+        return new SwerveModuleState(driveEncoder.getVelocity(), new Rotation2d(turnRelativeEncoder.getPosition()));
     }
     
     private SwerveModuleState nonContinuousOptimize(SwerveModuleState desiredState, Rotation2d currentAngle){

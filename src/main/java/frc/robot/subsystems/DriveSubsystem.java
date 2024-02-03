@@ -1,12 +1,17 @@
 package frc.robot.subsystems;
 
 
+import com.gos.lib.swerve.SwerveDrivePublisher;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.misc.Constants;
 import frc.robot.misc.Constants.Swerve.*;
@@ -20,9 +25,12 @@ public class DriveSubsystem extends SubsystemBase {
 	
 	private boolean openLoop;
 
+	private final SwerveDrivePublisher publisher;
 	/** Creates a new DriveSubsystem. */
 	public DriveSubsystem() {
+		publisher = new SwerveDrivePublisher();
 		navx.zeroYaw();
+		resetEncoders();
 		Timer.delay(1);
 	}
 
@@ -30,8 +38,12 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		/* Update Odometry */
 		// swerveOdometry.update(navx.getAngle(), getModulePositions());
+		if (!DriverStation.isEnabled()){
+			resetEncoders();
+			// System.out.println("Func Called");
+		}
+		publisher.setMeasuredStates(getModuleStates());
 		
-
 		/*  */
 		Mod0.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
 		Mod1.module.setModuleIdleMode(Constants.Swerve.driveIdleMode,Constants.Swerve.angleIdleMode);
@@ -65,6 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
 					)
 				);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.Swerve.maxSpeed);
+		publisher.setDesiredStates(swerveModuleStates);
 		Mod0.module.setDesiredState(swerveModuleStates[0], openLoop);
 		Mod1.module.setDesiredState(swerveModuleStates[1], openLoop);
 		Mod2.module.setDesiredState(swerveModuleStates[2], openLoop);
@@ -99,6 +112,14 @@ public class DriveSubsystem extends SubsystemBase {
 			Mod1.module.getPosition(),
 			Mod2.module.getPosition(),
 			Mod3.module.getPosition()
+		};
+	}	
+	public SwerveModuleState[] getModuleStates() {
+		return new SwerveModuleState[] {
+			Mod0.module.getState(),
+			Mod1.module.getState(),
+			Mod2.module.getState(),
+			Mod3.module.getState()
 		};
 	}	
 }
