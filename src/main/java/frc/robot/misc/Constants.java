@@ -50,7 +50,7 @@ public final class Constants {
         public static final int driveContinuousCurrentLimit = 40;
         
         /* Angle Motor PID Values */
-        public static final double angleKP = 7.5; //1.6 on our robot
+        public static final double angleKP = 5.0; //1.6 on our robot
         public static final double angleKI = 0;//1.8 on our robot
         public static final double angleKD = 0;
         public static final double angleKFF = 0;
@@ -106,7 +106,7 @@ public final class Constants {
             public static final int angleMotorID = 8; // 6;
             public static final int thriftyEncoderID = 2;
             
-            public static final double angleOffset = -64.2; // 
+            public static final double angleOffset = -65.7; // 
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
             
             
@@ -116,7 +116,7 @@ public final class Constants {
                     angleMotorID, 
                     thriftyEncoder, 
                     "FL",
-                    false,
+                    true,
                     true
                 );
         }
@@ -126,7 +126,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int thriftyEncoderID = 1;
-            public static final double angleOffset = 28.2; // 
+            public static final double angleOffset = 27.4; // 
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -135,7 +135,7 @@ public final class Constants {
                     angleMotorID, 
                     thriftyEncoder, 
                     "FR",
-                    false,
+                    true,
                     true
                 );
         }
@@ -145,7 +145,7 @@ public final class Constants {
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 6;//8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = -56.7; //
+            public static final double angleOffset = -58.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -154,7 +154,7 @@ public final class Constants {
                     angleMotorID, 
                     thriftyEncoder, 
                     "BL",
-                    false,
+                    true,
                     true
                 );
         }
@@ -164,7 +164,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = -92.3;
+            public static final double angleOffset = -90.4;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID)).shiftDegs(angleOffset);
 
             public static final SwerveModule module =
@@ -173,7 +173,7 @@ public final class Constants {
                     angleMotorID, 
                     thriftyEncoder, 
                     "BR",
-                    false,
+                    true,
                     true
                 );
         }

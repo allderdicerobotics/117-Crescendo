@@ -28,13 +28,13 @@ public class TeleopSwerve extends Command{
 
     @Override
     public void execute(){
-        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double rotationVal = MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double translationVal = -MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double rotationVal = -MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
             /* Drive */
         swerve.drive(
-            new Translation2d(translationVal, strafeVal),
-            rotationVal,
+            new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
+            rotationVal * Constants.Swerve.maxAngularVelocity,
             FOCSup.getAsBoolean(),
             false
         );

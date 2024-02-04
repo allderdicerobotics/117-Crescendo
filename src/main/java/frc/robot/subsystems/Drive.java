@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.misc.Constants;
 import frc.robot.misc.Constants.Swerve.*;
@@ -31,10 +32,13 @@ public class Drive extends SubsystemBase {
 	private SwerveDrivePoseEstimator swerveOdometry;
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
+	private final Field2d field;
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
 		resetEncoders();
+		field = new Field2d();
 		publisher = new SwerveDrivePublisher();
+		
 		Timer.delay(1);
 		swerveOdometry = new SwerveDrivePoseEstimator(
 			Constants.Swerve.swerveKinematics, 
@@ -73,7 +77,9 @@ public class Drive extends SubsystemBase {
 	@Override
 	public void periodic() {
 		/* Update Odometry */
-		// swerveOdometry.update(navx.getAngle(), getModulePositions());
+		swerveOdometry.update(navx.getAngle(), getModulePositions());
+		field.setRobotPose(getPose());
+		SmartDashboard.putData("Field", field);
 		publisher.setMeasuredStates(getModuleStates());
 		SmartDashboard.putNumber("NavX Angle",navx.getAngle().getDegrees());
 
@@ -92,14 +98,14 @@ public class Drive extends SubsystemBase {
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean openLoop) {
 		var swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
 			fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-				translation.getX() * Constants.Swerve.maxSpeed,
-				translation.getY() * Constants.Swerve.maxSpeed,
-				rotation * Constants.Swerve.maxAngularVelocity,
+				translation.getX(),
+				translation.getY(),
+				rotation,
 				navx.getAngle()
 			) : new ChassisSpeeds(
-				translation.getX() * Constants.Swerve.maxSpeed,
-				translation.getY() * Constants.Swerve.maxSpeed,
-				rotation * Constants.Swerve.maxAngularVelocity
+				translation.getX(),
+				translation.getY(),
+				rotation
 			)
 		);
 		
@@ -119,10 +125,10 @@ public class Drive extends SubsystemBase {
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 				desiredStates, Constants.Swerve.maxSpeed);
-		Mod0.module.setDesiredState(desiredStates[0], true);
-		Mod1.module.setDesiredState(desiredStates[1], true);
-		Mod2.module.setDesiredState(desiredStates[2], true);
-		Mod3.module.setDesiredState(desiredStates[3], true);
+		Mod0.module.setDesiredState(desiredStates[0], false);
+		Mod1.module.setDesiredState(desiredStates[1], false);
+		Mod2.module.setDesiredState(desiredStates[2], false);
+		Mod3.module.setDesiredState(desiredStates[3], false);
 	}
 
 	/** Resets the drive encoders to currently read a position of 0. */
@@ -155,6 +161,9 @@ public class Drive extends SubsystemBase {
 	public void resetPose(Pose2d pose){
 		swerveOdometry.resetPosition(navx.getAngle(), getModulePositions(), pose);
 	}
+	public void resetOrientation(){
+		navx.zeroYaw();
+	}
 
 	private ChassisSpeeds getRobotRelativeSpeeds(){
 		SwerveModuleState[] modStates = getModuleStates();
@@ -166,7 +175,7 @@ public class Drive extends SubsystemBase {
 		);
 	}
 	
-	private void driveRobotRelative(ChassisSpeeds speeds){
+	public void driveRobotRelative(ChassisSpeeds speeds){
 		Translation2d translate = new Translation2d(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond);
 		drive(translate,speeds.omegaRadiansPerSecond,false,false);
 	}
