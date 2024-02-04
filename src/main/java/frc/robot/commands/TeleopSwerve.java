@@ -33,8 +33,8 @@ public class TeleopSwerve extends Command{
         double rotationVal = MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
             /* Drive */
         swerve.drive(
-            new Translation2d(translationVal * Constants.Swerve.maxSpeed, strafeVal * Constants.Swerve.maxSpeed),
-            rotationVal * Constants.Swerve.maxAngularVelocity,
+            new Translation2d(translationVal, strafeVal),
+            rotationVal,
             FOCSup.getAsBoolean(),
             false
         );

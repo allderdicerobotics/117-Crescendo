@@ -2,13 +2,22 @@ package frc.robot.subsystems;
 
 
 import com.gos.lib.swerve.SwerveDrivePublisher;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.misc.Constants;
@@ -19,6 +28,7 @@ public class Drive extends SubsystemBase {
 	// Robot swerve modules
 
 	// Odometry class for tracking robot pose
+	private SwerveDrivePoseEstimator swerveOdometry;
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
 	/** Creates a new DriveSubsystem. */
@@ -26,6 +36,38 @@ public class Drive extends SubsystemBase {
 		resetEncoders();
 		publisher = new SwerveDrivePublisher();
 		Timer.delay(1);
+		swerveOdometry = new SwerveDrivePoseEstimator(
+			Constants.Swerve.swerveKinematics, 
+			navx.getAngle(), 
+			getModulePositions(), 
+			new Pose2d()
+		);
+		AutoBuilder.configureHolonomic(
+			this::getPose, 
+			this::resetPose, 
+			this::getRobotRelativeSpeeds, 
+			this::driveRobotRelative, 
+			new HolonomicPathFollowerConfig(
+				new PIDConstants(5.0),
+				new PIDConstants(5.0),
+				Constants.Swerve.maxSpeed,
+				Units.inchesToMeters(Constants.Swerve.wheelBase),
+				new ReplanningConfig()
+			), 
+			() -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+				}, 
+				this
+		);
 	}
 
 	@Override
@@ -49,17 +91,17 @@ public class Drive extends SubsystemBase {
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean openLoop) {
 		var swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-					translation.getX(),
-					translation.getY(),
-					rotation,
-					navx.getAngle()
-				) : new ChassisSpeeds(
-					translation.getX(),
-					translation.getY(),
-					rotation
-					)
-				);
+			fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+				translation.getX() * Constants.Swerve.maxSpeed,
+				translation.getY() * Constants.Swerve.maxSpeed,
+				rotation * Constants.Swerve.maxAngularVelocity,
+				navx.getAngle()
+			) : new ChassisSpeeds(
+				translation.getX() * Constants.Swerve.maxSpeed,
+				translation.getY() * Constants.Swerve.maxSpeed,
+				rotation * Constants.Swerve.maxAngularVelocity
+			)
+		);
 		
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.Swerve.maxSpeed);
 		publisher.setDesiredStates(swerveModuleStates);
@@ -107,4 +149,26 @@ public class Drive extends SubsystemBase {
 			Mod3.module.getState()
 		};
 	}	
+	public Pose2d getPose(){
+		return swerveOdometry.getEstimatedPosition();
+	}
+	public void resetPose(Pose2d pose){
+		swerveOdometry.resetPosition(navx.getAngle(), getModulePositions(), pose);
+	}
+
+	private ChassisSpeeds getRobotRelativeSpeeds(){
+		SwerveModuleState[] modStates = getModuleStates();
+		return Constants.Swerve.swerveKinematics.toChassisSpeeds(
+			modStates[0],
+			modStates[1],
+			modStates[2],
+			modStates[3]
+		);
+	}
+	
+	private void driveRobotRelative(ChassisSpeeds speeds){
+		Translation2d translate = new Translation2d(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond);
+		drive(translate,speeds.omegaRadiansPerSecond,false,false);
+	}
+	
 }

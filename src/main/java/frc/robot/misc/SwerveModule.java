@@ -64,11 +64,11 @@ public class SwerveModule {
         drivePIDController.setI(Constants.Swerve.driveKI, 0);
         drivePIDController.setD(Constants.Swerve.driveKD, 0);
         drivePIDController.setOutputRange(-1, 1);
-        drivePIDController.setSmartMotionMaxVelocity(10000, 0);
+        // drivePIDController.setSmartMotionMaxVelocity(10000, 0);
         drivePIDController.setFF(Constants.Swerve.driveKFF, 0);
 
-        drivePIDController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, 0);
-        drivePIDController.setSmartMotionMaxAccel(Constants.Swerve.maxAccel, 0);
+        // drivePIDController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, 0);
+        // drivePIDController.setSmartMotionMaxAccel(Constants.Swerve.maxAccel, 0);
         driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
     }
@@ -99,7 +99,7 @@ public class SwerveModule {
         setSpeed(desiredState, openLoop);
         
 
-        SmartDashboard.putNumber("Drive " + name, driveEncoder.getPosition());
+        SmartDashboard.putNumber("Drive " + name, driveEncoder.getVelocity());
         SmartDashboard.putNumber("Turn " + name,turnAbsoluteEncoder.get().getDegrees());
         SmartDashboard.putNumber("State " + name, desiredState.angle.getDegrees());
         SmartDashboard.putNumber("Speed " + name, desiredState.speedMetersPerSecond);
@@ -113,14 +113,13 @@ public class SwerveModule {
         }else {
             final double turnOutput = turnPIDController.calculate(turnAbsoluteEncoder.get().getRadians(),
                 desiredState.angle.getRadians());
-            turnMotor.set(turnOutput/Constants.Swerve.motorVoltage);
+            turnMotor.setVoltage(turnOutput);
         }
     }
     private void setSpeed(SwerveModuleState desiredState, boolean openLoop){
         // SmartDashboard.putNumber("Output" + name, output);
         if (openLoop){
-           double output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
-    
+            double output = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
             driveMotor.set(output);
         } else{
             drivePIDController.setReference(

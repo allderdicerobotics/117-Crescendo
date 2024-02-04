@@ -7,10 +7,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.sensors.ThriftyEncoder;
+import swervelib.SwerveDrive;
 
 public final class Constants {
     public static final class Swerve {
-        public static final double stickDeadband = 0.2;
+        public static final double stickDeadband = 0.3;
 
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -25,12 +26,20 @@ public final class Constants {
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
         public static final double turnGearRatio = (11.8 / 1.0);//(150.0 / 7.0);
 
-        public static final SwerveDriveKinematics swerveKinematics =
+        public static final SwerveDriveKinematics swerveKinematics = 
             new SwerveDriveKinematics(
                 new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-                new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+                new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+            );
+            
+        // public static final SwerveDriveKinematics swerveKinematics =
+        //     new SwerveDriveKinematics(
+        //         new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+        //         new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+        //         new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+        //         new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         /* Swerve Voltage Compensation */
         public static final double motorVoltage = 12.0;
@@ -41,7 +50,7 @@ public final class Constants {
         public static final int driveContinuousCurrentLimit = 40;
         
         /* Angle Motor PID Values */
-        public static final double angleKP = 5; //1.6 on our robot
+        public static final double angleKP = 7.5; //1.6 on our robot
         public static final double angleKI = 0;//1.8 on our robot
         public static final double angleKD = 0;
         public static final double angleKFF = 0;
@@ -80,8 +89,8 @@ public final class Constants {
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4.5 / 2; // meters per second
         public static final double maxAccel = 250.0;
-        public static final double maxAngularVelocity =  8 * Math.PI ;// 11.5; // Math.PI on our robot
-        public static final double maxAngularAccel = Math.PI*16;
+        public static final double maxAngularVelocity =  4 * Math.PI ;// 11.5; // Math.PI on our robot
+        public static final double maxAngularAccel = Math.PI*4;
 
         /* Neutral Modes */
         public static final IdleMode angleIdleMode = IdleMode.kBrake;

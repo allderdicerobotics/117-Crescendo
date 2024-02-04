@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Operator;
@@ -26,6 +30,7 @@ public class RobotContainer {
   private final Drive swerve = new Drive();
   private final Operator OI = new Operator();
   private final Vision limelight = new Vision();
+  private final SendableChooser<Command> autoChooser;
   // private final PoseEstimationSubsystem poseEstimationSubsystem = new PoseEstimationSubsystem(swerve, limelight, navX);
   
   XboxController driverController = OI.driverController;
@@ -36,6 +41,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
+    autoChooser = AutoBuilder.buildAutoChooser();
     configureButtonBindings();
 
     // Configure default commands
@@ -50,7 +56,7 @@ public class RobotContainer {
             () -> false
         )
     );
-    
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   private void configureButtonBindings() {
@@ -63,7 +69,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */ 
   public Command getAutonomousCommand() {
-    return new WaitCommand(1);
+    return autoChooser.getSelected();
   }
 
 }
