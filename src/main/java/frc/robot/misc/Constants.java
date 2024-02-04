@@ -7,7 +7,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.sensors.ThriftyEncoder;
-import swervelib.SwerveDrive;
 
 public final class Constants {
     public static final class Swerve {
@@ -34,12 +33,6 @@ public final class Constants {
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
             );
             
-        // public static final SwerveDriveKinematics swerveKinematics =
-        //     new SwerveDriveKinematics(
-        //         new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-        //         new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-        //         new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-        //         new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         /* Swerve Voltage Compensation */
         public static final double motorVoltage = 12.0;
