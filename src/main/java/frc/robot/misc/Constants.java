@@ -22,8 +22,8 @@ public final class Constants {
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
 
-        public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
-        public static final double turnGearRatio = (11.8 / 1.0);//(150.0 / 7.0);
+        public static final double driveGearRatio = (6.54 / 1.0); // 6.54:1
+        public static final double turnGearRatio = (11.8 / 1.0); //unused (needed for Position PID control)
 
         public static final SwerveDriveKinematics swerveKinematics = 
             new SwerveDriveKinematics(
