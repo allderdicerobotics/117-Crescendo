@@ -7,16 +7,16 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Drive;
 
 public class TeleopSwerve extends Command{
-    private DriveSubsystem swerve;
+    private Drive swerve;
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotSup;
     private BooleanSupplier FOCSup;
 
-    public TeleopSwerve (DriveSubsystem swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotSup, BooleanSupplier FOCSup){
+    public TeleopSwerve (Drive swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotSup, BooleanSupplier FOCSup){
         this.swerve = swerve;
         addRequirements(swerve);
 
@@ -28,12 +28,12 @@ public class TeleopSwerve extends Command{
 
     @Override
     public void execute(){
-        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double rotationVal = MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double translationVal = -MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
+        double rotationVal = -MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
             /* Drive */
         swerve.drive(
-            new Translation2d(translationVal * Constants.Swerve.maxSpeed, strafeVal * Constants.Swerve.maxSpeed),
+            new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
             rotationVal * Constants.Swerve.maxAngularVelocity,
             FOCSup.getAsBoolean(),
             false

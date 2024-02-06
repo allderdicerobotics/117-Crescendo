@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
 import frc.robot.sensors.NavX;
 
-public class PoseEstimationSubsystem extends SubsystemBase {
+public class PoseEstimation extends SubsystemBase {
     private Field2d field2d = new Field2d();
     private SwerveDrivePoseEstimator m_swervePoseEstimator;
-    DriveSubsystem m_swerve;
-    VisionSubsystem m_limeLight;
+    Drive m_swerve;
+    Vision m_limeLight;
     NavX m_NavX;
 
-    public PoseEstimationSubsystem(DriveSubsystem swerve, VisionSubsystem limeLight, NavX navx) {
+    public PoseEstimation(Drive swerve, Vision limeLight, NavX navx) {
         // TODO: Add limelight code
         m_swerve = swerve;
         m_limeLight = limeLight;

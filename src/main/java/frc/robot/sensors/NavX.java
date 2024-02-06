@@ -27,4 +27,6 @@ public final class NavX {
     public void reset() {
         ahrs.reset();
     }
+
+    
 }
