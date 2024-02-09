@@ -5,7 +5,6 @@ import java.util.function.*;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.misc.Constants;
 
 public class ThriftyEncoder implements Supplier<Rotation2d> {
     private final AnalogInput encoder;
@@ -21,7 +20,6 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
     // Does not include offset
     private double getRawPositionHelper() {
         return ((encoder.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2));
-        // return (encoder.getVoltage() * 2 * Math.PI) / Constants.Swerve.thriftyMaxVoltage;
     }
 
     public Rotation2d getRawPosition(){

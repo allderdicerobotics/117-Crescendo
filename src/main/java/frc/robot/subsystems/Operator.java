@@ -24,4 +24,8 @@ public class Operator extends SubsystemBase{
         public static final int climberToggleButton = 4;
         public static final int resetGyroButton = 5;
     }
+
+    public boolean getShootButton(){
+        return driverController.getAButton();
+    }
 }

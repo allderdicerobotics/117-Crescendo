@@ -48,10 +48,6 @@ public final class Constants {
         public static final double angleKD = 0;
         public static final double angleKFF = 0;
 
-        /* Angle Motor Characterization Values */
-        public static final double angleKS = 0;
-        public static final double angleKV = 0;
-
         /* Drive Motor PID Values */
         public static final double driveKP = 0.001; //0.00005 on our robot
         public static final double driveKI = 0.0;
@@ -70,20 +66,20 @@ public final class Constants {
 
         /* Turn Motor Conversion Factors */
         public static final double turnConversionPositionFactor = 
-            (2 * Math.PI) / turnGearRatio;
+            (2.0 * Math.PI) / turnGearRatio;
         public static final double turnConversionVelocityFactor = 
             turnConversionPositionFactor / 60.0;
             
         /* Turn PID MinMax Input Values */
 
         public static final double turnPIDMinInput = 0;
-        public static final double turnPIDMaxInput = 2 * Math.PI;
+        public static final double turnPIDMaxInput = 2.0 * Math.PI;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.5 / 2; // meters per second
+        public static final double maxSpeed = 4.5 / 2.0; // meters per second
         public static final double maxAccel = 250.0;
-        public static final double maxAngularVelocity =  4 * Math.PI ;// 11.5; // Math.PI on our robot
-        public static final double maxAngularAccel = Math.PI*4;
+        public static final double maxAngularVelocity =  4.0 * Math.PI ;// 11.5; // Math.PI on our robot
+        public static final double maxAngularAccel = Math.PI*4.0;
 
         /* Neutral Modes */
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
@@ -173,21 +169,45 @@ public final class Constants {
     }
     public static final class Intake {
         public static final int motorID = -1; // TODO: Get the ID
-        
+        public static final int sensorID = 2;
 
     }
     public static final class Shooter {
-        public static final int motorID = -1; // TODO: Get the ID
+        public static final int leftID = -1;
+        public static final int rightID = -1;
+        public static final int hoodID = -1; // TODO: Get the ID
+
+        public static final double hoodReduction = ((64.0 / 22.0) * 25.0) / 1.0;
+        public static final int shooterCurrentLimit = 20;
+        
+        public static final double hoodKP = 0.0;
+        public static final double shooterKP = 0.0;
+        public static final double shooterKI = 0.0;
+        public static final double shooterKD = 0.0;
+
+        public static final double shooterKS = 0.0;
+        public static final double shooterKFF = 0.0;
+
+        public static final double maxNegPower = -0.5;
+        public static final double maxPosPower = 1.0;
+        public static final double maxRPM = 5676.0;
+        public static final double intRangePID = 0.0015;
     }
     public static final class Tower {
         public static final int motorID = -1; // TODO: Get the ID
     }
-
     public static final class Climber {
         public static final int leftMotorID = -1; // TODO: Get the ID
         public static final int rightMotorID = -1; // TODO: Get the ID
     }
-
+    public static final class Vision {
+        public static final String limelightName = "limelight-a";
+        public static final double autoAimAdjustP = 0.005;
+        public static final double autoAimThresh = 0.5; // in degrees
+        public static final double limelightAngle = -1;
+        public static final double limelightElevation = -1;
+        public static final double aprilTagElevation = 122.0; // cm
+    }
     public static final class AutoConstants { //TODO: Adjust these when we make our own auto
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;

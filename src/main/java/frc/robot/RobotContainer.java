@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Operator;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,7 +30,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Drive swerve = new Drive();
     private final Operator OI = new Operator();
-    private final Vision limelight = new Vision();
+    private final Intake intakeSys = new Intake();
     private final SendableChooser<Command> autoChooser;
 
     // private final PoseEstimationSubsystem poseEstimationSubsystem = new
@@ -49,7 +49,6 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureButtonBindings();
-
         // Configure default commands
         swerve.setDefaultCommand(
                 // The left stick controls translation of the robot.
@@ -64,22 +63,12 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        xButton.whileTrue(
-                new RunCommand(
-                        () -> swerve.driveRobotRelative(
-                                new ChassisSpeeds(
-                                        1,
-                                        0,
-                                        0)),
-                        swerve));
-        aButton.whileTrue(
-                new RunCommand(
-                        () -> swerve.driveRobotRelative(
-                                new ChassisSpeeds(
-                                        0,
-                                        1,
-                                        0)),
-                        swerve));        
+       /* While operatorAimButton is Held
+                AdjustShooter
+                if it is aimed && driverShootButton is Held
+                        shoot
+        
+       */
         yButton.whileTrue(new RunCommand( () -> swerve.resetOrientation()));        
     }
 
