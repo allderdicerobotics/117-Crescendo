@@ -10,18 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
 import frc.robot.sensors.NavX;
 
-public class PoseEstimation extends SubsystemBase {
+public class PoseEstimator extends SubsystemBase {
     private Field2d field2d = new Field2d();
     private SwerveDrivePoseEstimator m_swervePoseEstimator;
-    Drive m_swerve;
-    Vision m_limeLight;
-    NavX m_NavX;
-
-    public PoseEstimation(Drive swerve, Vision limeLight, NavX navx) {
+    private Drive m_swerve;
+    private Vision m_limelight;
+    private NavX m_NavX;
+    private boolean m_usingVision;
+    public PoseEstimator(Drive swerve, Vision limelight, NavX navx, boolean usingVision) {
         // TODO: Add limelight code
         m_swerve = swerve;
-        m_limeLight = limeLight;
+        m_limelight = limelight;
         m_NavX = navx;
+        m_usingVision = usingVision;
 
         m_swervePoseEstimator = new SwerveDrivePoseEstimator(
             Constants.Swerve.swerveKinematics,
@@ -42,17 +43,26 @@ public class PoseEstimation extends SubsystemBase {
 
     public Pose2d getPose() {
         return m_swervePoseEstimator.getEstimatedPosition();
+        
     }
 
-    public void resetOdometry(Pose2d pose) {
+    public void updatePose(){
+        if (m_usingVision){
+
+        }
+        m_swervePoseEstimator.update(m_NavX.getAngle(), m_swerve.getModulePositions());
+    }
+
+    
+    public void resetPose(Pose2d pose) {
         m_swervePoseEstimator.resetPosition(m_NavX.getAngle(),m_swerve.getModulePositions(),pose);
     }
 
     @Override
     public void periodic(){
         DriverStation.refreshData();
-        m_swervePoseEstimator.update(m_NavX.getAngle(),m_swerve.getModulePositions());
         field2d.setRobotPose(getPose());
         SmartDashboard.putData(field2d);
+        SmartDashboard.putNumber("NavX angle",m_NavX.getAngle().getDegrees());
     }
 }

@@ -14,8 +14,8 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
         this.encoder = encoder;
     }
 
-    public void configure(boolean inverted){ //TODO: Figure out if any of the encoders are inverted
-        
+    public void configure(boolean inverted){
+        // none are inverted, absolute encoders don't need configuration
     }
     // Does not include offset
     private double getRawPositionHelper() {

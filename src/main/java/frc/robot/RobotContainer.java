@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -14,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Operator;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,7 +28,7 @@ public class RobotContainer {
     // The robot's subsystems
     private final Drive swerve = new Drive();
     private final Operator OI = new Operator();
-    private final Intake intakeSys = new Intake();
+    // private final Intake intakeSys = new Intake();
     private final SendableChooser<Command> autoChooser;
 
     // private final PoseEstimationSubsystem poseEstimationSubsystem = new

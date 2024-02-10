@@ -9,12 +9,13 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.sensors.ThriftyEncoder;
 
 public final class Constants {
+    public static final double globalVoltageCompensation = 12;
     public static final class Swerve {
         public static final double stickDeadband = 0.3;
 
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
-        public static final double trackWidth = Units.inchesToMeters(18); //TODO: Get the accurate measurement
+        public static final double trackWidth = Units.inchesToMeters(18);
         public static final double wheelBase = Units.inchesToMeters(18);
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
@@ -170,7 +171,15 @@ public final class Constants {
     public static final class Intake {
         public static final int motorID = -1; // TODO: Get the ID
         public static final int sensorID = 2;
+        public static final int currentLimit = 20;
 
+    }
+
+    public static final class Indexer{
+        public static final int motorID = -1;
+        public static final int currentLimit = 20;
+        public static final int sensorID = 0;
+        public static final double threshDist = 3 * 10; //cm to mm
     }
     public static final class Shooter {
         public static final int leftID = -1;
@@ -192,6 +201,7 @@ public final class Constants {
         public static final double maxPosPower = 1.0;
         public static final double maxRPM = 5676.0;
         public static final double intRangePID = 0.0015;
+        public static final double threshAngle = 1; // deg
     }
     public static final class Tower {
         public static final int motorID = -1; // TODO: Get the ID
@@ -201,7 +211,7 @@ public final class Constants {
         public static final int rightMotorID = -1; // TODO: Get the ID
     }
     public static final class Vision {
-        public static final String limelightName = "limelight-a";
+        public static final String cameraName = "limelight";
         public static final double autoAimAdjustP = 0.005;
         public static final double autoAimThresh = 0.5; // in degrees
         public static final double limelightAngle = -1;

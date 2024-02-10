@@ -7,9 +7,6 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -19,9 +16,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.LimelightHelpers;
 import frc.robot.misc.Constants;
 import frc.robot.misc.Constants.Swerve.*;
 import frc.robot.sensors.NavX;
@@ -30,26 +24,22 @@ public class Drive extends SubsystemBase {
 	// Robot swerve modules
 
 	// Odometry class for tracking robot pose
-	private SwerveDrivePoseEstimator swerveOdometry;
+	private PoseEstimator swerveOdometry;
+	private Vision limelight;
+
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
-	private final Field2d field;
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
 		resetEncoders();
-		field = new Field2d();
 		publisher = new SwerveDrivePublisher();
 		
 		Timer.delay(1);
-		swerveOdometry = new SwerveDrivePoseEstimator(
-			Constants.Swerve.swerveKinematics, 
-			navx.getAngle(), 
-			getModulePositions(), 
-			new Pose2d()
-		);
+		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
+		
 		AutoBuilder.configureHolonomic(
-			this::getPose, 
-			this::resetPose, 
+			swerveOdometry::getPose, 
+			swerveOdometry::resetPose, 
 			this::getRobotRelativeSpeeds, 
 			this::driveRobotRelative, 
 			new HolonomicPathFollowerConfig(
@@ -78,11 +68,9 @@ public class Drive extends SubsystemBase {
 	@Override
 	public void periodic() {
 		/* Update Odometry */
-		swerveOdometry.update(navx.getAngle(), getModulePositions());
-		field.setRobotPose(getPose());
-		SmartDashboard.putData("Field", field);
+		swerveOdometry.updatePose();
 		publisher.setMeasuredStates(getModuleStates());
-		SmartDashboard.putNumber("NavX Angle",navx.getAngle().getDegrees());
+		
 	}
 
 	// // Update the odometry in the periodic block
@@ -155,14 +143,8 @@ public class Drive extends SubsystemBase {
 			Mod3.module.getState()
 		};
 	}	
-	public Pose2d getPose(){
-		return swerveOdometry.getEstimatedPosition();
-	}
-	public void resetPose(Pose2d pose){
-		swerveOdometry.resetPosition(navx.getAngle(), getModulePositions(), pose);
-	}
 	public void resetOrientation(){
-		navx.zeroYaw();
+		swerveOdometry.zeroAngle();
 	}
 
 	private ChassisSpeeds getRobotRelativeSpeeds(){
