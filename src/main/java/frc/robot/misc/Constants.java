@@ -1,7 +1,11 @@
 package frc.robot.misc;
 
 import com.revrobotics.CANSparkBase.*;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -77,7 +81,7 @@ public final class Constants {
         public static final double turnPIDMaxInput = 2.0 * Math.PI;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.5 / 2.0; // meters per second
+        public static final double maxSpeed = 4.5/ 2.0; // meters per second
         public static final double maxAccel = 250.0;
         public static final double maxAngularVelocity =  4.0 * Math.PI ;// 11.5; // Math.PI on our robot
         public static final double maxAngularAccel = Math.PI*4.0;
@@ -214,9 +218,16 @@ public final class Constants {
         public static final String cameraName = "limelight";
         public static final double autoAimAdjustP = 0.005;
         public static final double autoAimThresh = 0.5; // in degrees
-        public static final double limelightAngle = -1;
-        public static final double limelightElevation = -1;
         public static final double aprilTagElevation = 122.0; // cm
+        public static final Transform3d robotToCam =
+            new Transform3d(
+                new Translation3d(
+                    Units.inchesToMeters(2),
+                    Units.inchesToMeters(3),
+                    Units.inchesToMeters(10)
+                ),
+                new Rotation3d()
+            );
     }
     public static final class AutoConstants { //TODO: Adjust these when we make our own auto
         public static final double kMaxSpeedMetersPerSecond = 3;

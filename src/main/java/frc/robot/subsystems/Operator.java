@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Operator extends SubsystemBase{
     /*TODO: Integrate Buttons and Operator Board within this file */
-    public XboxController driverController = new XboxController(JoystickConstants.driverControllerPort);
+    public PS4Controller driverController = new PS4Controller(JoystickConstants.driverControllerPort);
     public Joystick operatorController = new Joystick(JoystickConstants.buttonBoardPort);
     
     public static final class JoystickConstants{
@@ -26,6 +26,7 @@ public class Operator extends SubsystemBase{
     }
 
     public boolean getShootButton(){
-        return driverController.getAButton();
+        return driverController.getRawButton(JoystickConstants.shooterCmdButton);
     }
+    
 }

@@ -7,13 +7,20 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.IntakePiece;
+import frc.robot.commands.ShootManual;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Operator;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -28,13 +35,15 @@ public class RobotContainer {
     // The robot's subsystems
     private final Drive swerve = new Drive();
     private final Operator OI = new Operator();
-    // private final Intake intakeSys = new Intake();
+    private final Shooter shooter = new Shooter();
+    private final Intake intake = new Intake();
+    private final Indexer indexer = new Indexer();
     private final SendableChooser<Command> autoChooser;
 
     // private final PoseEstimationSubsystem poseEstimationSubsystem = new
     // PoseEstimationSubsystem(swerve, limelight, navX);
 
-    XboxController driverController = OI.driverController;
+    PS4Controller driverController = OI.driverController;
     Joystick operatorController = OI.operatorController;
     Trigger xButton = new JoystickButton(driverController, 3);
     Trigger aButton = new JoystickButton(driverController, 1);
@@ -67,7 +76,17 @@ public class RobotContainer {
                         shoot
         
        */
-        yButton.whileTrue(new RunCommand( () -> swerve.resetOrientation()));        
+        aButton
+            .whileTrue(new IntakePiece(intake,indexer));
+
+        yButton
+            .whileTrue(new RunCommand( () -> swerve.resetOrientation()));      
+
+        xButton
+            .whileTrue(new ShootManual(shooter))
+            .onFalse(new InstantCommand(
+                () -> shooter.stop()
+            ));
     }
 
     /**

@@ -35,6 +35,7 @@ public class Drive extends SubsystemBase {
 		publisher = new SwerveDrivePublisher();
 		
 		Timer.delay(1);
+		limelight = new Vision();
 		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
 		
 		AutoBuilder.configureHolonomic(

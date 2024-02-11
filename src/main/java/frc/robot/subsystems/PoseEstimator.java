@@ -47,10 +47,19 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     public void updatePose(){
-        if (m_usingVision){
-
-        }
         m_swervePoseEstimator.update(m_NavX.getAngle(), m_swerve.getModulePositions());
+        if (m_usingVision){
+            var visionEst = m_limelight.updateVision();
+            
+            visionEst.ifPresent(
+                est -> {
+                    var estPose = est.estimatedPose.toPose2d();
+                    
+                    m_swervePoseEstimator.addVisionMeasurement(estPose, est.timestampSeconds); //TODO: Figure out if the std devs function is useful
+                }
+            );
+        }
+        
     }
 
     

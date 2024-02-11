@@ -19,7 +19,7 @@ public class Indexer extends SubsystemBase {
         beamBreakSensor = new TimeOfFlight(Constants.Indexer.sensorID);
         beamBreakSensor.setRangingMode(RangingMode.Short, 24);
         indexMotor.setIdleMode(IdleMode.kBrake);
-        indexMotor.setInverted(false);
+        indexMotor.setInverted(true);
     }
 
     public void runIntake(){

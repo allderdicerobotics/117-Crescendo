@@ -31,13 +31,10 @@ public class Intake extends SubsystemBase {
         intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
         intakeMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
         intakeMotor.setIdleMode(IdleMode.kCoast);
+        intakeMotor.setInverted(true);
         
         intakeMotor.setOpenLoopRampRate(0.5);
         intakeMotor.burnFlash();
-
-    }
-    @Override
-    public void periodic(){
 
     }
 
