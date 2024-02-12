@@ -1,52 +1,38 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
-import frc.robot.subsystems.Operator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.Tower;
 import frc.robot.subsystems.Vision;
 
 public class AdjustShooter extends Command {
     private Vision limelight;
-    private Shooter shooter;
-    private boolean finished;
+    private PoseEstimator poseEstimator;
+    private Tower tower;
 
-    public AdjustShooter(Vision limelight, Shooter shooter, Operator OI){
+    public AdjustShooter(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
         this.limelight = limelight;
-        this.shooter = shooter;
-        
+        this.tower = tower;
+        this.poseEstimator = poseEstimator;
     }
 
     @Override
-    public void execute(){
-        finished = false;
-        
-        
-        // while (!shooter.atAngle()){
-        //     shooter.setAngleShooter(interpolatedAngle);
-        // }
-        /* while (abs(shooterArmAngle-interpTable(distance)) > threshold) && !driverShootButton
-            adjustShooterArm(interTable(distance))
+    public void execute() {
+        /* Get Distance from Robot to Speaker 
+         * -> interpolate an angle from existing data using this distance
+         * -> if the angle isn't to extreme, make it the setpoint
+         */
 
-            once finished shoot piece 
-        shoot the piece  
-        */
-        finished = true;
+        double dist = limelight.getDistSpeaker(poseEstimator.getPose());
+        var angle = tower.interpolateAngle(dist);
+        if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle * 10) {
+            tower.setPivotAngle(angle);
+        }
     }
+
     @Override
-    public boolean isFinished(){
-        return finished;
+    public void end(boolean interrupted) {
+
     }
-    // private double backupInterpolation(){
-    //     double distance = 
-    //         (Constants.Vision.aprilTagElevation - Constants.Vision.limelightElevation)
-    //         /
-    //         Math.tan(
-    //             Units.degreesToRadians(
-    //                 Constants.Vision.limelightAngle + limelight.getY()
-    //                 )
-    //         );
-    //     return shooter.interpolateAngle(distance); 
-    // }
 }

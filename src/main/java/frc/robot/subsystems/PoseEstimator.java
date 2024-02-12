@@ -12,66 +12,66 @@ import frc.robot.sensors.NavX;
 
 public class PoseEstimator extends SubsystemBase {
     private Field2d field2d = new Field2d();
-    private SwerveDrivePoseEstimator m_swervePoseEstimator;
-    private Drive m_swerve;
-    private Vision m_limelight;
-    private NavX m_NavX;
-    private boolean m_usingVision;
-    public PoseEstimator(Drive swerve, Vision limelight, NavX navx, boolean usingVision) {
-        // TODO: Add limelight code
-        m_swerve = swerve;
-        m_limelight = limelight;
-        m_NavX = navx;
-        m_usingVision = usingVision;
+    private SwerveDrivePoseEstimator poseEstimator;
+    private Drive swerve;
+    private Vision limelight;
+    private NavX navx;
+    private boolean usingVision;
 
-        m_swervePoseEstimator = new SwerveDrivePoseEstimator(
-            Constants.Swerve.swerveKinematics,
-            m_NavX.getAngle(),
-            m_swerve.getModulePositions(),
-            new Pose2d());
+    public PoseEstimator(Drive swerve, Vision limelight, NavX navx, boolean usingVision) {
+
+        this.swerve = swerve;
+        this.limelight = limelight;
+        this.navx = navx;
+        this.usingVision = usingVision;
+
+        poseEstimator = new SwerveDrivePoseEstimator(
+                Constants.Swerve.swerveKinematics,
+                navx.getAngle(),
+                swerve.getModulePositions(),
+                new Pose2d());
         SmartDashboard.putData("Field", field2d);
     }
 
     public void zeroAngle() {
-        m_NavX.zeroYaw();
-        m_swervePoseEstimator.resetPosition(
-            m_NavX.getAngle(),
-            m_swerve.getModulePositions(),
-            new Pose2d(getPose().getTranslation(), new Rotation2d())
-        );
+        navx.zeroYaw();
+        poseEstimator.resetPosition(
+                navx.getAngle(),
+                swerve.getModulePositions(),
+                new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     public Pose2d getPose() {
-        return m_swervePoseEstimator.getEstimatedPosition();
-        
+        return poseEstimator.getEstimatedPosition();
+
     }
 
-    public void updatePose(){
-        m_swervePoseEstimator.update(m_NavX.getAngle(), m_swerve.getModulePositions());
-        if (m_usingVision){
-            var visionEst = m_limelight.updateVision();
-            
+    public void updatePose() {
+        poseEstimator.update(navx.getAngle(), swerve.getModulePositions());
+        if (usingVision) {
+            var visionEst = limelight.updateVision();
+
             visionEst.ifPresent(
-                est -> {
-                    var estPose = est.estimatedPose.toPose2d();
-                    
-                    m_swervePoseEstimator.addVisionMeasurement(estPose, est.timestampSeconds); //TODO: Figure out if the std devs function is useful
-                }
-            );
+                    est -> {
+                        var estPose = est.estimatedPose.toPose2d();
+
+                        poseEstimator.addVisionMeasurement(estPose, est.timestampSeconds); // TODO: Figure out
+                                                                                           // if the std devs
+                                                                                           // function is useful
+                    });
         }
-        
+
     }
 
-    
     public void resetPose(Pose2d pose) {
-        m_swervePoseEstimator.resetPosition(m_NavX.getAngle(),m_swerve.getModulePositions(),pose);
+        poseEstimator.resetPosition(navx.getAngle(), swerve.getModulePositions(), pose);
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         DriverStation.refreshData();
         field2d.setRobotPose(getPose());
         SmartDashboard.putData(field2d);
-        SmartDashboard.putNumber("NavX angle",m_NavX.getAngle().getDegrees());
+        SmartDashboard.putNumber("NavX angle", navx.getAngle().getDegrees());
     }
 }

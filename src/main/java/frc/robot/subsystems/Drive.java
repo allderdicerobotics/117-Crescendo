@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import com.gos.lib.swerve.SwerveDrivePublisher;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -29,41 +28,40 @@ public class Drive extends SubsystemBase {
 
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
+
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
 		resetEncoders();
 		publisher = new SwerveDrivePublisher();
-		
+
 		Timer.delay(1);
 		limelight = new Vision();
 		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
-		
-		AutoBuilder.configureHolonomic(
-			swerveOdometry::getPose, 
-			swerveOdometry::resetPose, 
-			this::getRobotRelativeSpeeds, 
-			this::driveRobotRelative, 
-			new HolonomicPathFollowerConfig(
-				new PIDConstants(5.0),
-				new PIDConstants(5.0),
-				Constants.Swerve.maxSpeed,
-				Units.inchesToMeters(Constants.Swerve.wheelBase),
-				new ReplanningConfig()
-			), 
-			() -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red
-                    // alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-				}, 
-				this
-		);
+		AutoBuilder.configureHolonomic(
+				swerveOdometry::getPose,
+				swerveOdometry::resetPose,
+				this::getRobotRelativeSpeeds,
+				this::driveRobotRelative,
+				new HolonomicPathFollowerConfig(
+						new PIDConstants(5.0),
+						new PIDConstants(5.0),
+						Constants.Swerve.maxSpeed,
+						Units.inchesToMeters(Constants.Swerve.wheelBase),
+						new ReplanningConfig()),
+				() -> {
+					// Boolean supplier that controls when the path will be mirrored for the red
+					// alliance
+					// This will flip the path being followed to the red side of the field.
+					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+					var alliance = DriverStation.getAlliance();
+					if (alliance.isPresent()) {
+						return alliance.get() == DriverStation.Alliance.Red;
+					}
+					return false;
+				},
+				this);
 	}
 
 	@Override
@@ -71,7 +69,7 @@ public class Drive extends SubsystemBase {
 		/* Update Odometry */
 		swerveOdometry.updatePose();
 		publisher.setMeasuredStates(getModuleStates());
-		
+
 	}
 
 	// // Update the odometry in the periodic block
@@ -86,19 +84,17 @@ public class Drive extends SubsystemBase {
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean openLoop) {
 		var swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-			fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-				translation.getX(),
-				translation.getY(),
-				rotation,
-				navx.getAngle()
-			) : new ChassisSpeeds(
-				translation.getX(),
-				translation.getY(),
-				rotation
-			)
-		);
-		
-		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,Constants.Swerve.maxSpeed);
+				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+						translation.getX(),
+						translation.getY(),
+						rotation,
+						navx.getAngle())
+						: new ChassisSpeeds(
+								translation.getX(),
+								translation.getY(),
+								rotation));
+
+		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 		publisher.setDesiredStates(swerveModuleStates);
 		Mod0.module.setDesiredState(swerveModuleStates[0], openLoop);
 		Mod1.module.setDesiredState(swerveModuleStates[1], openLoop);
@@ -106,6 +102,7 @@ public class Drive extends SubsystemBase {
 		Mod3.module.setDesiredState(swerveModuleStates[3], openLoop);
 
 	}
+
 	/**
 	 * Sets the swerve ModuleStates.
 	 *
@@ -130,37 +127,38 @@ public class Drive extends SubsystemBase {
 
 	public SwerveModulePosition[] getModulePositions() {
 		return new SwerveModulePosition[] {
-			Mod0.module.getPosition(),
-			Mod1.module.getPosition(),
-			Mod2.module.getPosition(),
-			Mod3.module.getPosition()
+				Mod0.module.getPosition(),
+				Mod1.module.getPosition(),
+				Mod2.module.getPosition(),
+				Mod3.module.getPosition()
 		};
-	}	
+	}
+
 	public SwerveModuleState[] getModuleStates() {
 		return new SwerveModuleState[] {
-			Mod0.module.getState(),
-			Mod1.module.getState(),
-			Mod2.module.getState(),
-			Mod3.module.getState()
+				Mod0.module.getState(),
+				Mod1.module.getState(),
+				Mod2.module.getState(),
+				Mod3.module.getState()
 		};
-	}	
-	public void resetOrientation(){
+	}
+
+	public void resetOrientation() {
 		swerveOdometry.zeroAngle();
 	}
 
-	private ChassisSpeeds getRobotRelativeSpeeds(){
+	private ChassisSpeeds getRobotRelativeSpeeds() {
 		SwerveModuleState[] modStates = getModuleStates();
 		return Constants.Swerve.swerveKinematics.toChassisSpeeds(
-			modStates[0],
-			modStates[1],
-			modStates[2],
-			modStates[3]
-		);
+				modStates[0],
+				modStates[1],
+				modStates[2],
+				modStates[3]);
 	}
-	
-	public void driveRobotRelative(ChassisSpeeds speeds){
-		Translation2d translate = new Translation2d(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond);
-		drive(translate,speeds.omegaRadiansPerSecond,false,false);
+
+	public void driveRobotRelative(ChassisSpeeds speeds) {
+		Translation2d translate = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+		drive(translate, speeds.omegaRadiansPerSecond, false, false);
 	}
-	
+
 }

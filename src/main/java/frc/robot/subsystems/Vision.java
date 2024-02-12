@@ -2,9 +2,11 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
@@ -13,12 +15,12 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
 
@@ -27,13 +29,17 @@ public class Vision extends SubsystemBase {
     private PhotonCamera limelight;
     private PhotonPoseEstimator visionEstimator;
     private AprilTagFieldLayout layout;
+    private Optional<Alliance> alliance;
 
     public Vision() {
         limelight = new PhotonCamera(Constants.Vision.cameraName);
         layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        var alliance = DriverStation.getAlliance();
+        // Mirror Field based on which team we are on
+        Optional<Alliance> alliance = DriverStation.getAlliance();
         layout.setOrigin(alliance.get() == Alliance.Blue ? OriginPosition.kBlueAllianceWallRightSide
                 : OriginPosition.kRedAllianceWallRightSide);
+
+        // use PhotonLib's PoseEstimator on AprilTags
         visionEstimator = new PhotonPoseEstimator(
             layout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -56,6 +62,13 @@ public class Vision extends SubsystemBase {
         return visionEstimator.update();
     }
 
+    public double getDistSpeaker(Pose2d robotPose){
+        
+        Optional<Pose3d> targetPose = alliance.get() == Alliance.Blue ? layout.getTagPose(Constants.Vision.blueSpeakerTagID)  
+        : layout.getTagPose(Constants.Vision.redSpeakerTagID);
+
+        return PhotonUtils.getDistanceToPose(robotPose, targetPose.get().toPose2d());
+    }
     public Matrix<N3,N1> getStdDevs(Pose2d estPose){
         var singleTagStdDevs = VecBuilder.fill(4,4,8);
         var multiTagStdDevs = VecBuilder.fill(0.5,0.5,1);

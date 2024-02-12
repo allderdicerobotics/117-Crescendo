@@ -14,17 +14,19 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
         this.encoder = encoder;
     }
 
-    public void configure(boolean inverted){
+    public void configure(boolean inverted) {
         // none are inverted, absolute encoders don't need configuration
     }
-    // Does not include offset
+
     private double getRawPositionHelper() {
+        /* Read Angle from Absolute Encoder with respect to True Voltage of 5V Rail */
         return ((encoder.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2));
     }
 
-    public Rotation2d getRawPosition(){
+    public Rotation2d getRawPosition() {
         return new Rotation2d(getRawPositionHelper());
     }
+
     // Does include offset
     public Rotation2d get() {
         return getRawPosition().plus(offset);

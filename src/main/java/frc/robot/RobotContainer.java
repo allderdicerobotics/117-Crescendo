@@ -8,22 +8,18 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.IntakePiece;
-import frc.robot.commands.ShootManual;
+import frc.robot.commands.ShootPiece;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.misc.Constants;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Operator;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -34,29 +30,25 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
     // The robot's subsystems
     private final Drive swerve = new Drive();
-    private final Operator OI = new Operator();
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
     private final SendableChooser<Command> autoChooser;
 
-    // private final PoseEstimationSubsystem poseEstimationSubsystem = new
-    // PoseEstimationSubsystem(swerve, limelight, navX);
+    PS4Controller driverController = Constants.Operator.driverController;
+    Joystick operatorController = Constants.Operator.operatorController;
 
-    PS4Controller driverController = OI.driverController;
-    Joystick operatorController = OI.operatorController;
-    Trigger xButton = new JoystickButton(driverController, 3);
-    Trigger aButton = new JoystickButton(driverController, 1);
-    Trigger yButton = new JoystickButton(driverController, 4);
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // Configure the button bindings
-        autoChooser = AutoBuilder.buildAutoChooser();
+        // Make the AutoChooser (default to Driving Backwards with no commands)
+        autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
 
+        // Configure Button Bindings 
         configureButtonBindings();
-        // Configure default commands
+        
+        // Default Command for SwerveDrive is TeleOpSwerve
         swerve.setDefaultCommand(
                 // The left stick controls translation of the robot.
                 // Turning is controlled by the X axis of the right stick.
@@ -70,23 +62,19 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-       /* While operatorAimButton is Held
-                AdjustShooter
-                if it is aimed && driverShootButton is Held
-                        shoot
+
+        /*TODO: Add commands for Automatically Adjusting Shooter
+         * Add commands for climber
+         */
         
-       */
-        aButton
-            .whileTrue(new IntakePiece(intake,indexer));
+        Constants.Operator.intakeTrigger
+                .whileTrue(new IntakePiece(intake, indexer));
 
-        yButton
-            .whileTrue(new RunCommand( () -> swerve.resetOrientation()));      
+        Constants.Operator.resetGyroTrigger
+                .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
 
-        xButton
-            .whileTrue(new ShootManual(shooter))
-            .onFalse(new InstantCommand(
-                () -> shooter.stop()
-            ));
+        Constants.Operator.shooterTrigger
+                .whileTrue(new ShootPiece(shooter, indexer));
     }
 
     /**
