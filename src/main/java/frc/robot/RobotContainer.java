@@ -10,10 +10,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.IntakePiece;
-import frc.robot.commands.ShootPiece;
-import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.drive.TeleopSwerve;
+import frc.robot.commands.intake.IntakePiece;
+import frc.robot.commands.shooter.ShootPiece;
 import frc.robot.misc.Constants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -33,6 +34,8 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
+    private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID);
+    private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID);
     private final SendableChooser<Command> autoChooser;
 
     PS4Controller driverController = Constants.Operator.driverController;
@@ -45,19 +48,22 @@ public class RobotContainer {
         // Make the AutoChooser (default to Driving Backwards with no commands)
         autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
 
+
         // Configure Button Bindings 
         configureButtonBindings();
         
         // Default Command for SwerveDrive is TeleOpSwerve
         swerve.setDefaultCommand(
-                // The left stick controls translation of the robot.
-                // Turning is controlled by the X axis of the right stick.
-                new TeleopSwerve(
-                        swerve,
-                        () -> (driverController.getLeftY()),
-                        () -> (driverController.getLeftX()),
-                        () -> (driverController.getRightX()),
-                        () -> true));
+            // The left stick controls translation of the robot.
+            // Turning is controlled by the X axis of the right stick.
+            new TeleopSwerve(
+                swerve,
+                () -> (driverController.getLeftY()),
+                () -> (driverController.getLeftX()),
+                () -> (driverController.getRightX()),
+                () -> true
+            )
+        );
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 

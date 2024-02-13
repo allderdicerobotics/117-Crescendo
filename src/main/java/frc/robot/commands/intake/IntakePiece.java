@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +12,7 @@ public class IntakePiece extends Command {
     public IntakePiece(Intake intake, Indexer indexer) {
         this.intake = intake;
         this.indexer = indexer;
+        addRequirements(intake,indexer);
     }
 
     @Override

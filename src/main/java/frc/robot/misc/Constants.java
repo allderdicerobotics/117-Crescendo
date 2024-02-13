@@ -242,11 +242,14 @@ public final class Constants {
         public static final int leftMotorID = -1; // TODO: Get the ID
         public static final int rightMotorID = -1; // TODO: Get the ID
         public static final int currentLimit = 20;
+        public static final int homeCurrent = 10;
+        public static final double homingSpeed = -0.4;
         public static final double positionConversionFactor = (12.0 / 1.0);
         public static final double velocityConversionFactor = positionConversionFactor / 60.0;
         public static final double climberKP = 0.0;
         public static final double climberKI = 0.0;
         public static final double climberKD = 0.0;
+
     }
 
     public static final class Vision {
