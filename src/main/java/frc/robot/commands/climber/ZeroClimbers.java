@@ -1,7 +1,6 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.misc.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ZeroClimbers extends ParallelCommandGroup {

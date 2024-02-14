@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.climber.ZeroClimber;
 import frc.robot.commands.climber.ZeroClimbers;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.intake.IntakePiece;
@@ -77,7 +76,6 @@ public class RobotContainer {
          * Add commands for climber
          */
         
-        Constants.Operator.
         Constants.Operator.intakeTrigger
                 .whileTrue(new IntakePiece(intake, indexer));
 
