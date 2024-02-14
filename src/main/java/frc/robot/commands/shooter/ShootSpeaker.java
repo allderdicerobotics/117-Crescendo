@@ -5,11 +5,11 @@ import frc.robot.misc.Constants;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
-public class ShootPiece extends Command {
+public class ShootSpeaker extends Command {
     private Shooter shooter;
     private Indexer indexer;
 
-    public ShootPiece(Shooter shooter, Indexer indexer) {
+    public ShootSpeaker(Shooter shooter, Indexer indexer) {
         this.shooter = shooter;
         this.indexer = indexer;
         addRequirements(shooter, indexer);
@@ -20,8 +20,10 @@ public class ShootPiece extends Command {
         /* Run the Shooter Motor and achieve full speed
          * -> spit the piece out of the indexer at full speed into shooter wheels
          */
-        shooter.run(Constants.Shooter.maxRPM);
-        if (shooter.nearSpeed(Constants.Shooter.maxRPM)) {
+        // System.out.println(indexer.indexerFilled());
+        // System.out.println(C)
+        shooter.run(Constants.Shooter.speakerRPM);
+        if (shooter.atSpeed(Constants.Shooter.speakerRPM)) {
             indexer.run();
         }
     }

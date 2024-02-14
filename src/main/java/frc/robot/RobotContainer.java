@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.climber.ZeroClimbers;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.intake.IntakePiece;
-import frc.robot.commands.shooter.ShootPiece;
+import frc.robot.commands.shooter.ShootSpeaker;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -22,6 +22,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,14 +33,14 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
     // The robot's subsystems
-    private final Drive swerve = new Drive();
+    // private final Drive swerve = new Drive();
     private final Shooter shooter = new Shooter();
-    private final Intake intake = new Intake();
+    // private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
-    private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
-    private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
+    // private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
+    // private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
 
-    private final SendableChooser<Command> autoChooser;
+    // private final SendableChooser<Command> autoChooser;
 
     PS4Controller driverController = Constants.Operator.driverController;
     Joystick operatorController = Constants.Operator.operatorController;
@@ -48,26 +50,26 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Make the AutoChooser (default to Driving Backwards with no commands)
-        autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
+        // autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
         
-        Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
-        zeroClimbers.schedule();
+        // Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
+        // zeroClimbers.schedule();
         // Configure Button Bindings 
         configureButtonBindings();
         
         // Default Command for SwerveDrive is TeleOpSwerve
-        swerve.setDefaultCommand(
-            // The left stick controls translation of the robot.
-            // Turning is controlled by the X axis of the right stick.
-            new TeleopSwerve(
-                swerve,
-                () -> (driverController.getLeftY()),
-                () -> (driverController.getLeftX()),
-                () -> (driverController.getRightX()),
-                () -> true
-            )
-        );
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        // swerve.setDefaultCommand(
+        //     // The left stick controls translation of the robot.
+        //     // Turning is controlled by the X axis of the right stick.
+        //     new TeleopSwerve(
+        //         swerve,
+        //         () -> (driverController.getLeftY()),
+        //         () -> (driverController.getLeftX()),
+        //         () -> (driverController.getRightX()),
+        //         () -> true
+        //     )
+        // );
+        // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private void configureButtonBindings() {
@@ -76,14 +78,15 @@ public class RobotContainer {
          * Add commands for climber
          */
         
-        Constants.Operator.intakeTrigger
-                .whileTrue(new IntakePiece(intake, indexer));
+        // Constants.Operator.intakeTrigger
+                // .whileTrue(new IntakePiece(intake, indexer));
 
-        Constants.Operator.resetGyroTrigger
-                .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
-
-        Constants.Operator.shooterTrigger
-                .whileTrue(new ShootPiece(shooter, indexer));
+        // Constants.Operator.resetGyroTrigger
+                // .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
+        Trigger shooterTrigger = new JoystickButton(driverController, 4);
+        // Constants.Operator.shooterTrigger
+        shooterTrigger
+            .whileTrue(new ShootSpeaker(shooter, indexer));
     }
 
     /**
@@ -92,7 +95,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return null; //autoChooser.getSelected();
     }
 
 }

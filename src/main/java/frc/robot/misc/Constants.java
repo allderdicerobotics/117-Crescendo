@@ -23,8 +23,8 @@ public final class Constants {
 
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
-        public static final double trackWidth = Units.inchesToMeters(18);
-        public static final double wheelBase = Units.inchesToMeters(18);
+        public static final double trackWidth = Units.inchesToMeters(21);
+        public static final double wheelBase = Units.inchesToMeters(21);
         public static final double wheelDiameter = Units.inchesToMeters(4.0);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
@@ -39,10 +39,6 @@ public final class Constants {
                 new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
-
-        /* Swerve Voltage Compensation */
-        public static final double motorVoltage = 12.0;
-        public static final double thriftyMaxVoltage = 4.8;
 
         /* Swerve Current Limiting */
         public static final int angleContinuousCurrentLimit = 20;
@@ -87,9 +83,6 @@ public final class Constants {
         /* Neutral Modes */
         public static final IdleMode angleIdleMode = IdleMode.kBrake;
         public static final IdleMode driveIdleMode = IdleMode.kBrake;
-
-        public static final double minOutputRangeTurn = -1;
-        public static final double maxOutputRangeTurn = 1;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
@@ -204,26 +197,27 @@ public final class Constants {
     public static final class Indexer {
         public static final int motorID = 11;
         public static final int currentLimit = 20;
-        public static final int sensorID = 2;
-        public static final double threshDist = 3 * 10; // cm to mm
+        public static final int sensorID = 0;
+        public static final double threshDist = 115; // cm to mm
     }
 
     public static final class Shooter {
-        public static final int leftID = 12;
-        public static final int rightID = 13;
+        public static final int topID = 12;
+        public static final int bottomID = 13;
 
         public static final int shooterCurrentLimit = 20;
 
-        public static final double shooterKP = 0.0;
+        public static final double shooterKP = 1.0;
         public static final double shooterKI = 0.0;
         public static final double shooterKD = 0.0;
 
-        public static final double shooterKFF = 0.0;
+        public static final double shooterKFF = 1.0;
 
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
-        public static final double maxRPM = 5676.0;
-        public static final double threshRPM = 200;
+        public static final double speakerRPM = 5000;
+        public static final double apmRPM = 800;
+        public static final double threshRPM = 10;
     }
 
     public static final class Tower {
