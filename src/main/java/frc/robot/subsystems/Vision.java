@@ -59,7 +59,7 @@ public class Vision extends SubsystemBase {
         // if (pipelineResult.hasTargets()){
         //     System.out.println(pipelineResult.getBestTarget().getFiducialId());
         // }
-        return visionEstimator.update();
+        return visionEstimator.update(pipelineResult);
     }
 
     public double getDistSpeaker(Pose2d robotPose){

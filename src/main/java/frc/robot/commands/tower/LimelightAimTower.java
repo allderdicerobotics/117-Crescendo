@@ -27,7 +27,7 @@ public class LimelightAimTower extends Command {
 
         double dist = limelight.getDistSpeaker(poseEstimator.getPose());
         var angle = tower.interpolateAngle(dist);
-        if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle * 10) {
+        if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
             tower.setPivotAngle(angle);
         }
     }
