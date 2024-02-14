@@ -11,22 +11,21 @@ public class ZeroClimber extends Command{
     
     @Override
     public void initialize(){
-        climber.zeroed = false;
+        
     }
 
     @Override
     public void execute(){
-        climber.motionToZero();
+        climber.runZero();
     }
 
     @Override
     public void end(boolean interrupted){
-        climber.stopClimber();
-        climber.zeroClimber();
+        climber.stop();
+        climber.zero();
     }
     @Override
     public boolean isFinished(){
-        climber.zeroed = climber.isClimberZeroed();
-        return climber.zeroed;
+        return climber.isClimberZeroed();
     }
 }

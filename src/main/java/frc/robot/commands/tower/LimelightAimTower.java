@@ -6,12 +6,12 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Tower;
 import frc.robot.subsystems.Vision;
 
-public class AdjustShooter extends Command {
+public class LimelightAimTower extends Command {
     private Vision limelight;
     private PoseEstimator poseEstimator;
     private Tower tower;
 
-    public AdjustShooter(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
+    public LimelightAimTower(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
         this.limelight = limelight;
         this.tower = tower;
         this.poseEstimator = poseEstimator;

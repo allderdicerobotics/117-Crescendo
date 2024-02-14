@@ -167,8 +167,7 @@ public final class Constants {
     }
 
     public static final class Intake {
-        public static final int motorID = -1; // TODO: Get the ID
-        public static final int sensorID = 2;
+        public static final int motorID = 10; // TODO: Get the ID
         public static final int currentLimit = 20;
 
     }
@@ -199,19 +198,19 @@ public final class Constants {
         private static final int resetGyroButton = 4;
         public static Trigger resetGyroTrigger = new JoystickButton(driverController, resetGyroButton);
 
+        // private static final int 
     }
 
     public static final class Indexer {
-        public static final int motorID = -1;
+        public static final int motorID = 11;
         public static final int currentLimit = 20;
-        public static final int sensorID = 0;
+        public static final int sensorID = 2;
         public static final double threshDist = 3 * 10; // cm to mm
     }
 
     public static final class Shooter {
-        public static final int leftID = -1;
-        public static final int rightID = -1;
-        public static final int hoodID = -1; // TODO: Get the ID
+        public static final int leftID = 12;
+        public static final int rightID = 13;
 
         public static final int shooterCurrentLimit = 20;
 
@@ -228,21 +227,24 @@ public final class Constants {
     }
 
     public static final class Tower {
-        public static final int motorID = -1; // TODO: Get the ID
+        public static final int motorID = 14; // TODO: Get the ID
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
         public static final double pivotKP = 0.0;
-        public static final double threshAngle = 1; // deg
+        public static final double threshAngle = 0.1; // deg
         public static final int towerCurrentLimit = 20;
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1;
+        public static final int minAngle = 0;
+        public static final int maxAngle = 50; //TODO: GET A CORRECT VALUE
 
     }
 
     public static final class Climber {
-        public static final int leftMotorID = -1; // TODO: Get the ID
-        public static final int rightMotorID = -1; // TODO: Get the ID
+        public static final int leftMotorID = 15; // TODO: Get the ID
+        public static final int rightMotorID = 16; // TODO: Get the ID
         public static final int currentLimit = 20;
         public static final int homeCurrent = 10;
+        public static final double legalMax = (175.0 / 12.0);
         public static final double homingSpeed = -0.4;
         public static final double positionConversionFactor = (12.0 / 1.0);
         public static final double velocityConversionFactor = positionConversionFactor / 60.0;

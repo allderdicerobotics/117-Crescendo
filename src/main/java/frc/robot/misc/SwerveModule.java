@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.*;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.util.Units;
 
 public class SwerveModule {
     private final String name;
@@ -108,7 +109,7 @@ public class SwerveModule {
 
     private void setAngle(SwerveModuleState desiredState) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
-        if (Math.abs(desiredState.angle.getRadians() - turnAbsoluteEncoder.get().getRadians()) < 0.01) {
+        if (Math.abs(desiredState.angle.getRadians() - turnAbsoluteEncoder.get().getRadians()) < Units.degreesToRadians(0.1)) {
             turnMotor.set(0);
         } else {
             final double turnOutput = turnPIDController.calculate(turnAbsoluteEncoder.get().getRadians(),

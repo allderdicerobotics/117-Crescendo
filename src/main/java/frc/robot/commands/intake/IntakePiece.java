@@ -12,7 +12,7 @@ public class IntakePiece extends Command {
     public IntakePiece(Intake intake, Indexer indexer) {
         this.intake = intake;
         this.indexer = indexer;
-        addRequirements(intake,indexer);
+        addRequirements(intake, indexer);
     }
 
     @Override

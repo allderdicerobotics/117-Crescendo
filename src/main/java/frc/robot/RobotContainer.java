@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.climber.ZeroClimber;
+import frc.robot.commands.climber.ZeroClimbers;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.intake.IntakePiece;
 import frc.robot.commands.shooter.ShootPiece;
@@ -34,8 +36,9 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
-    private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID);
-    private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID);
+    private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
+    private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
+
     private final SendableChooser<Command> autoChooser;
 
     PS4Controller driverController = Constants.Operator.driverController;
@@ -47,8 +50,9 @@ public class RobotContainer {
     public RobotContainer() {
         // Make the AutoChooser (default to Driving Backwards with no commands)
         autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
-
-
+        
+        Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
+        zeroClimbers.schedule();
         // Configure Button Bindings 
         configureButtonBindings();
         
@@ -73,6 +77,7 @@ public class RobotContainer {
          * Add commands for climber
          */
         
+        Constants.Operator.
         Constants.Operator.intakeTrigger
                 .whileTrue(new IntakePiece(intake, indexer));
 
