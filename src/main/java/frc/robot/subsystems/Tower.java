@@ -29,6 +29,19 @@ public class Tower extends SubsystemBase {
         populateTowerAngleTable();
     }
 
+    public void moveTowerUp(){
+        if (withinLegalBounds()){
+            pivotMotor.set(0.5);
+        }
+        
+    }
+
+    public void moveTowerDown(){
+        if (withinLegalBounds()){
+            pivotMotor.set(-0.5);
+        }
+    }
+
     public void setPivotAngle(double pivotAngle) {
         pivotPIDController.setReference(
                 pivotAngle,
@@ -52,6 +65,13 @@ public class Tower extends SubsystemBase {
         return Math.abs(getPivotAngle() - angle) <= Constants.Tower.threshAngle;
     }
 
+    public void stop(){
+        pivotMotor.stopMotor();
+    }
+    private boolean withinLegalBounds(){
+        var pivotAngle = getPivotAngle();
+        return (Constants.Tower.minAngle < pivotAngle && pivotAngle < Constants.Tower.maxAngle);
+    }
     private void configTower() {
         pivotMotor.restoreFactoryDefaults();
         pivotMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);

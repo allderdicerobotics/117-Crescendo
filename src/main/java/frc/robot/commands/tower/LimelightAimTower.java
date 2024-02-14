@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
@@ -6,15 +6,16 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Tower;
 import frc.robot.subsystems.Vision;
 
-public class AdjustShooter extends Command {
+public class LimelightAimTower extends Command {
     private Vision limelight;
     private PoseEstimator poseEstimator;
     private Tower tower;
 
-    public AdjustShooter(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
+    public LimelightAimTower(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
         this.limelight = limelight;
         this.tower = tower;
         this.poseEstimator = poseEstimator;
+        addRequirements(tower,limelight,poseEstimator);
     }
 
     @Override

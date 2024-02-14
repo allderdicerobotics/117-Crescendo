@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
@@ -12,6 +12,7 @@ public class ShootPiece extends Command {
     public ShootPiece(Shooter shooter, Indexer indexer) {
         this.shooter = shooter;
         this.indexer = indexer;
+        addRequirements(shooter, indexer);
     }
 
     @Override
