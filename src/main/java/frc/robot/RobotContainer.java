@@ -14,12 +14,15 @@ import frc.robot.commands.climber.ZeroClimbers;
 import frc.robot.commands.drive.TeleopSwerve;
 import frc.robot.commands.intake.IntakePiece;
 import frc.robot.commands.shooter.ShootSpeaker;
+import frc.robot.commands.tower.MoveTowerDown;
+import frc.robot.commands.tower.MoveTowerUp;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Tower;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,6 +40,7 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     // private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
+    private final Tower tower = new Tower();
     // private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
     // private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
 
@@ -82,10 +86,15 @@ public class RobotContainer {
                 // .whileTrue(new IntakePiece(intake, indexer));
 
         // Constants.Operator.resetGyroTrigger
-                // .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
-        Trigger shooterTrigger = new JoystickButton(driverController, 4);
-        // Constants.Operator.shooterTrigger
-        shooterTrigger
+        //         .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
+        // Trigger shooterTrigger = new JoystickButton(driverController, 4);
+
+        Constants.Operator.towerUpTrigger
+            .whileTrue(new MoveTowerUp(tower));
+        
+        Constants.Operator.towerDownTrigger
+            .whileTrue(new MoveTowerDown(tower));
+        Constants.Operator.shooterTrigger
             .whileTrue(new ShootSpeaker(shooter, indexer));
     }
 

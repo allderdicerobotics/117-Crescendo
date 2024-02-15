@@ -182,8 +182,11 @@ public final class Constants {
         private static final int shooterCmdButton = 2;
         public static Trigger shooterTrigger = new JoystickButton(driverController, shooterCmdButton);
 
-        private static final int towerCmdButton = 3;
-        public static Trigger towerTrigger = new JoystickButton(driverController, towerCmdButton);
+        private static final int towerUpButton = 8;
+        public static Trigger towerUpTrigger = new JoystickButton(driverController, towerUpButton);
+
+        private static final int towerDownButton = 7;
+        public static Trigger towerDownTrigger = new JoystickButton(driverController, towerDownButton);
 
         private static final int climberToggleButton = 4;
         public static Trigger climberTrigger = new JoystickButton(driverController, climberToggleButton);
@@ -221,7 +224,7 @@ public final class Constants {
     }
 
     public static final class Tower {
-        public static final int motorID = 14; // TODO: Get the ID
+        public static final int motorID = 5; // TODO: Get the ID
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
         public static final double pivotKP = 0.0;
         public static final double threshAngle = 0.1; // deg

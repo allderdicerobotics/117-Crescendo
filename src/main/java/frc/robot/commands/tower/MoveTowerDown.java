@@ -7,6 +7,7 @@ public class MoveTowerDown extends Command{
     private Tower tower;
     public MoveTowerDown(Tower tower){
         this.tower = tower;
+        addRequirements(tower);
     }
     
     @Override

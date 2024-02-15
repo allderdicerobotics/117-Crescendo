@@ -30,14 +30,15 @@ public class Tower extends SubsystemBase {
     }
 
     public void moveTowerUp(){
-        if (withinLegalBounds()){
+        
+        if (0 <= getPivotAngle()){
             pivotMotor.set(0.5);
         }
         
     }
 
     public void moveTowerDown(){
-        if (withinLegalBounds()){
+        if (getPivotAngle() <= Constants.Tower.maxAngle){
             pivotMotor.set(-0.5);
         }
     }
@@ -67,10 +68,6 @@ public class Tower extends SubsystemBase {
 
     public void stop(){
         pivotMotor.stopMotor();
-    }
-    private boolean withinLegalBounds(){
-        var pivotAngle = getPivotAngle();
-        return (Constants.Tower.minAngle < pivotAngle && pivotAngle < Constants.Tower.maxAngle);
     }
     private void configTower() {
         pivotMotor.restoreFactoryDefaults();
