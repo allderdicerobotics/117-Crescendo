@@ -11,20 +11,25 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
 
 public class Indexer extends SubsystemBase {
-    private CANSparkMax indexMotor;
+    private CANSparkMax indexMotor, invIndexMotor;
     private TimeOfFlight beamBreakSensor;
 
     public Indexer() {
         indexMotor = new CANSparkMax(Constants.Indexer.motorID, MotorType.kBrushless);
+        invIndexMotor = new CANSparkMax(Constants.Indexer.invMotorID, MotorType.kBrushless);
+
         beamBreakSensor = new TimeOfFlight(Constants.Indexer.sensorID);
+        indexMotor.restoreFactoryDefaults();
+        invIndexMotor.restoreFactoryDefaults();
         beamBreakSensor.setRangingMode(RangingMode.Short, 24); // sample time min is 24 ms
         indexMotor.setIdleMode(IdleMode.kBrake); // instantly stopping intake is important to ensure Note won't slide
                                                  // any further
         indexMotor.setInverted(true);
+        invIndexMotor.follow(indexMotor,true);
     }
 
-    public void run() {
-        indexMotor.set(1.0);
+    public void run(double speed) {
+        indexMotor.set(speed);
     }
 
     public void stop() {
@@ -36,5 +41,8 @@ public class Indexer extends SubsystemBase {
             return beamBreakSensor.getRange() <= Constants.Indexer.threshDist;
         }
         return false;
+    }
+    public double sensorVal(){
+        return beamBreakSensor.getRange();
     }
 }

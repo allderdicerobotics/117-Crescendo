@@ -25,18 +25,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
 
 public class Vision extends SubsystemBase {
-    
+    private String cameraName;
     private PhotonCamera limelight;
     private PhotonPoseEstimator visionEstimator;
     private AprilTagFieldLayout layout;
-    private Optional<Alliance> alliance;
+    private Alliance alliance;
+    
 
-    public Vision() {
-        limelight = new PhotonCamera(Constants.Vision.cameraName);
-        layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-        // Mirror Field based on which team we are on
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        layout.setOrigin(alliance.get() == Alliance.Blue ? OriginPosition.kBlueAllianceWallRightSide
+    public Vision(String cameraName, AprilTagFieldLayout layout, Alliance alliance) {
+        this.cameraName = cameraName;
+        this.layout = layout;
+        this.alliance = alliance;
+
+        limelight = new PhotonCamera(cameraName);
+        layout.setOrigin(alliance == Alliance.Blue ? OriginPosition.kBlueAllianceWallRightSide
                 : OriginPosition.kRedAllianceWallRightSide);
 
         // use PhotonLib's PoseEstimator on AprilTags
@@ -53,6 +55,14 @@ public class Vision extends SubsystemBase {
     public PhotonPipelineResult getLatestResult(){
         return limelight.getLatestResult();
     }
+
+    public Alliance getAlliance(){
+        return this.alliance;
+    }
+
+    public Pose2d getTagPose(int fiducialID){
+        return this.layout.getTagPose(fiducialID).get().toPose2d();
+    }
     public Optional<EstimatedRobotPose> updateVision() {
         PhotonPipelineResult pipelineResult = getLatestResult();
         // if (pipelineResult.getTimestampSeconds())
@@ -62,13 +72,6 @@ public class Vision extends SubsystemBase {
         return visionEstimator.update(pipelineResult);
     }
 
-    public double getDistSpeaker(Pose2d robotPose){
-        
-        Optional<Pose3d> targetPose = alliance.get() == Alliance.Blue ? layout.getTagPose(Constants.Vision.blueSpeakerTagID)  
-        : layout.getTagPose(Constants.Vision.redSpeakerTagID);
-
-        return PhotonUtils.getDistanceToPose(robotPose, targetPose.get().toPose2d());
-    }
     public Matrix<N3,N1> getStdDevs(Pose2d estPose){
         var singleTagStdDevs = VecBuilder.fill(4,4,8);
         var multiTagStdDevs = VecBuilder.fill(0.5,0.5,1);

@@ -5,17 +5,22 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.climber.ZeroClimbers;
 import frc.robot.commands.drive.TeleopSwerve;
+import frc.robot.commands.indexer.SpeakerShot;
 import frc.robot.commands.intake.IntakePiece;
-import frc.robot.commands.shooter.ShootSpeaker;
+import frc.robot.commands.intake.ReverseIntake;
+import frc.robot.commands.shooter.ReadyShooter;
+import frc.robot.commands.shooter.ShootAmp;
 import frc.robot.commands.tower.MoveTowerDown;
 import frc.robot.commands.tower.MoveTowerUp;
+import frc.robot.commands.tower.SetTowerAngle;
+import frc.robot.commands.tower.ZeroTower;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -36,15 +41,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
     // The robot's subsystems
-    // private final Drive swerve = new Drive();
-    private final Shooter shooter = new Shooter();
+    private final Drive swerve = new Drive();
+    // private final Shooter shooter = new Shooter();
     // private final Intake intake = new Intake();
-    private final Indexer indexer = new Indexer();
-    private final Tower tower = new Tower();
+    // private final Indexer indexer = new Indexer();
+    // private final Tower tower = new Tower();
     // private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
     // private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
 
     // private final SendableChooser<Command> autoChooser;
+    
 
     PS4Controller driverController = Constants.Operator.driverController;
     Joystick operatorController = Constants.Operator.operatorController;
@@ -55,24 +61,30 @@ public class RobotContainer {
     public RobotContainer() {
         // Make the AutoChooser (default to Driving Backwards with no commands)
         // autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
-        
+        // NamedCommands.registerCommand("aimTowerInitial", new SetTowerAngle(tower, Constants.Auto.towerAngleInitial));
+        // NamedCommands.registerCommand("rampWheels", new ReadyShooter(shooter));
+        // NamedCommands.registerCommand("speakerShoot", new SpeakerShot(indexer));
+        // NamedCommands.registerCommand("intakePiece", new IntakePiece(intake, indexer));
+
+
         // Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
         // zeroClimbers.schedule();
         // Configure Button Bindings 
         configureButtonBindings();
         
         // Default Command for SwerveDrive is TeleOpSwerve
-        // swerve.setDefaultCommand(
-        //     // The left stick controls translation of the robot.
-        //     // Turning is controlled by the X axis of the right stick.
-        //     new TeleopSwerve(
-        //         swerve,
-        //         () -> (driverController.getLeftY()),
-        //         () -> (driverController.getLeftX()),
-        //         () -> (driverController.getRightX()),
-        //         () -> true
-        //     )
-        // );
+        swerve.setDefaultCommand(
+            // The left stick controls translation of the robot.
+            // Turning is controlled by the X axis of the right stick.
+            new TeleopSwerve(
+                swerve,
+                () -> (driverController.getLeftY()),
+                () -> (driverController.getLeftX()),
+                () -> (driverController.getRightX()),
+                () -> true
+            )
+        );
+        // Constants.Logging.commandTab.add(autoChooser);
         // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
@@ -83,19 +95,31 @@ public class RobotContainer {
          */
         
         // Constants.Operator.intakeTrigger
-                // .whileTrue(new IntakePiece(intake, indexer));
+            // .whileTrue(new IntakePiece(intake, indexer));
 
         // Constants.Operator.resetGyroTrigger
         //         .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
-        // Trigger shooterTrigger = new JoystickButton(driverController, 4);
 
-        Constants.Operator.towerUpTrigger
-            .whileTrue(new MoveTowerUp(tower));
+        // Constants.Operator.towerUpTrigger
+        //     .whileTrue(new MoveTowerUp(tower));
         
-        Constants.Operator.towerDownTrigger
-            .whileTrue(new MoveTowerDown(tower));
-        Constants.Operator.shooterTrigger
-            .whileTrue(new ShootSpeaker(shooter, indexer));
+        // Constants.Operator.towerDownTrigger
+        //     .whileTrue(new MoveTowerDown(tower));
+        
+        // Constants.Operator.towerZeroTrigger
+        //     .whileTrue(new RunCommand(() -> tower.zero()));//new ZeroTower(tower, null));
+
+        // Constants.Operator.reverseIntakeTrigger
+        //     .whileTrue(new ReverseIntake(intake));
+
+        // Constants.Operator.shooterRampTrigger
+            // .toggleOnTrue(new ReadyShooter(shooter));
+
+        // Constants.Operator.shootSpeakerTrigger
+            // .toggleOnTrue(new SpeakerShot(indexer));
+
+        // Constants.Operator.shootAmpTrigger
+            // .whileTrue(new ShootAmp(shooter,indexer));
     }
 
     /**

@@ -1,9 +1,16 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.PhotonUtils;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,6 +24,7 @@ public class PoseEstimator extends SubsystemBase {
     private Vision limelight;
     private NavX navx;
     private boolean usingVision;
+    private GenericEntry navXEntry;
 
     public PoseEstimator(Drive swerve, Vision limelight, NavX navx, boolean usingVision) {
 
@@ -30,7 +38,12 @@ public class PoseEstimator extends SubsystemBase {
                 navx.getAngle(),
                 swerve.getModulePositions(),
                 new Pose2d());
-        SmartDashboard.putData("Field", field2d);
+
+        Constants.Logging.poseEstimationTab
+            .add(field2d);
+
+        navXEntry = Constants.Logging.poseEstimationTab
+            .add("NavX Angle", 0).getEntry();
     }
 
     public void zeroAngle() {
@@ -67,11 +80,19 @@ public class PoseEstimator extends SubsystemBase {
         poseEstimator.resetPosition(navx.getAngle(), swerve.getModulePositions(), pose);
     }
 
+    public double getDistSpeaker(Pose2d robotPose){
+        Pose2d targetPose = limelight.getAlliance() == Alliance.Blue ? limelight.getTagPose(Constants.Vision.blueSpeakerTagID)  
+        : limelight.getTagPose(Constants.Vision.redSpeakerTagID);
+
+        return PhotonUtils.getDistanceToPose(robotPose, targetPose);
+    }
+
     @Override
     public void periodic() {
         DriverStation.refreshData();
         field2d.setRobotPose(getPose());
-        SmartDashboard.putData(field2d);
-        SmartDashboard.putNumber("NavX angle", navx.getAngle().getDegrees());
+
+        navXEntry.setDouble(navx.getDegrees());
+        // SmartDashboard.putNumber("NavX angle", navx.getAngle().getDegrees());
     }
 }

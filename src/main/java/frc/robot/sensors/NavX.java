@@ -20,6 +20,10 @@ public final class NavX {
         return ahrs.getRotation2d();
     }
 
+    public double getDegrees(){
+        return getAngle().getDegrees();
+    }
+
     public void zeroYaw() {
         ahrs.zeroYaw();
     }

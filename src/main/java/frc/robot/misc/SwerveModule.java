@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.*;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 
 public class SwerveModule {
     private final String name;
@@ -32,7 +33,10 @@ public class SwerveModule {
             Constants.Swerve.driveKS,
             Constants.Swerve.driveKV,
             Constants.Swerve.driveKA);
+    
+    private GenericEntry driveSpeed, turnAngle, desiredSpeed, desiredAngle;
 
+    
     public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name,
             boolean driveInvert, boolean turnInvert) {
         this.name = name;
@@ -47,6 +51,15 @@ public class SwerveModule {
         turnMotor = new CANSparkMax(turningMotorID, MotorType.kBrushless);
         turnAbsoluteEncoder = thriftyEncoder;
         configTurnMotor(turnInvert);
+
+        driveSpeed = Constants.Logging.driveTab
+            .add("Drive " + name, 0).getEntry();
+        turnAngle = Constants.Logging.driveTab
+            .add("Turn " + name, 0).getEntry();
+        desiredSpeed = Constants.Logging.driveTab
+            .add("Speed " + name, 0).getEntry();
+        desiredAngle = Constants.Logging.driveTab
+            .add("State " + name, 0).getEntry();
 
     }
 
@@ -100,10 +113,15 @@ public class SwerveModule {
         setAngle(desiredState);
         setSpeed(desiredState, openLoop);
 
-        SmartDashboard.putNumber("Drive " + name, driveEncoder.getVelocity());
-        SmartDashboard.putNumber("Turn " + name, turnAbsoluteEncoder.get().getDegrees());
-        SmartDashboard.putNumber("State " + name, desiredState.angle.getDegrees());
-        SmartDashboard.putNumber("Speed " + name, desiredState.speedMetersPerSecond);
+        driveSpeed.setDouble(driveEncoder.getVelocity());
+        turnAngle.setDouble(turnAbsoluteEncoder.get().getDegrees());
+        desiredSpeed.setDouble(desiredState.speedMetersPerSecond);
+        desiredAngle.setDouble(desiredState.angle.getDegrees());
+
+        // SmartDashboard.putNumber("Drive " + name, driveEncoder.getVelocity());
+        // SmartDashboard.putNumber("Turn " + name, turnAbsoluteEncoder.get().getDegrees());
+        // SmartDashboard.putNumber("State " + name, desiredState.angle.getDegrees());
+        // SmartDashboard.putNumber("Speed " + name, desiredState.speedMetersPerSecond);
 
     }
 

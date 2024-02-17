@@ -9,6 +9,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.misc.Constants;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Tower extends SubsystemBase {
@@ -17,6 +22,7 @@ public class Tower extends SubsystemBase {
     private CANSparkMax pivotMotor;
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
+    private GenericEntry pivotAngleEntry;
 
     public Tower() {
         pivotMotor = new CANSparkMax(Constants.Tower.motorID, MotorType.kBrushless);
@@ -27,20 +33,18 @@ public class Tower extends SubsystemBase {
 
         towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of Tower
         populateTowerAngleTable();
-    }
 
-    public void moveTowerUp(){
-        
-        if (0 <= getPivotAngle()){
-            pivotMotor.set(0.5);
-        }
+        pivotAngleEntry = Constants.Logging.intakeShooterTowerTab
+            .add("Tower Angle", getPivotAngle()).getEntry();
         
     }
 
-    public void moveTowerDown(){
-        if (getPivotAngle() <= Constants.Tower.maxAngle){
-            pivotMotor.set(-0.5);
-        }
+    public void moveTower(double speed){
+        
+        // if (getPivotAngle() < Constants.Tower.maxAngle){
+        pivotMotor.set(speed);
+        // }
+        
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -62,12 +66,24 @@ public class Tower extends SubsystemBase {
         towerAngleTable.put(0.0, 0.0);
     }
 
+    public void zero(){
+        pivotEncoder.setPosition(0);
+    }
+
     public boolean nearAngle(double angle) {
         return Math.abs(getPivotAngle() - angle) <= Constants.Tower.threshAngle;
     }
 
     public void stop(){
         pivotMotor.stopMotor();
+    }
+
+    @Override
+    public void periodic(){  
+        pivotAngleEntry.setDouble(getPivotAngle());
+        // test.update();
+
+        // SmartDashboard.putNumber("tower angle", getPivotAngle());
     }
     private void configTower() {
         pivotMotor.restoreFactoryDefaults();

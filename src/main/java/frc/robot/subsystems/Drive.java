@@ -1,11 +1,16 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.gos.lib.swerve.SwerveDrivePublisher;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -15,6 +20,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.misc.Constants;
 import frc.robot.misc.Constants.Swerve.*;
 import frc.robot.sensors.NavX;
@@ -25,7 +31,7 @@ public class Drive extends SubsystemBase {
 	// Odometry class for tracking robot pose
 	private PoseEstimator swerveOdometry;
 	private Vision limelight;
-
+	private AprilTagFieldLayout layout;
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
 
@@ -35,7 +41,11 @@ public class Drive extends SubsystemBase {
 		publisher = new SwerveDrivePublisher();
 
 		Timer.delay(1);
-		limelight = new Vision();
+		layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+        // Mirror Field based on which team we are on
+		var alliance = DriverStation.getAlliance();
+		limelight = new Vision(Constants.Vision.cameraName, layout, alliance.get());
 		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
 
 		AutoBuilder.configureHolonomic(
@@ -55,7 +65,6 @@ public class Drive extends SubsystemBase {
 					// This will flip the path being followed to the red side of the field.
 					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-					var alliance = DriverStation.getAlliance();
 					if (alliance.isPresent()) {
 						return alliance.get() == DriverStation.Alliance.Red;
 					}

@@ -11,11 +11,10 @@ public class LimelightAimTower extends Command {
     private PoseEstimator poseEstimator;
     private Tower tower;
 
-    public LimelightAimTower(Vision limelight, Tower tower, PoseEstimator poseEstimator) {
-        this.limelight = limelight;
+    public LimelightAimTower(Tower tower, PoseEstimator poseEstimator) {
         this.tower = tower;
         this.poseEstimator = poseEstimator;
-        addRequirements(tower,limelight,poseEstimator);
+        addRequirements(tower);
     }
 
     @Override
@@ -25,7 +24,7 @@ public class LimelightAimTower extends Command {
          * -> if the angle isn't to extreme, make it the setpoint
          */
 
-        double dist = limelight.getDistSpeaker(poseEstimator.getPose());
+        double dist = poseEstimator.getDistSpeaker(poseEstimator.getPose());
         var angle = tower.interpolateAngle(dist);
         if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
             tower.setPivotAngle(angle);
@@ -34,6 +33,6 @@ public class LimelightAimTower extends Command {
 
     @Override
     public void end(boolean interrupted) {
-
+        tower.stop();
     }
 }

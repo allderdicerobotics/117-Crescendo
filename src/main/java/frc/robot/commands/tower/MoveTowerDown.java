@@ -12,7 +12,7 @@ public class MoveTowerDown extends Command{
     
     @Override
     public void execute(){
-        tower.moveTowerDown();
+        tower.moveTower(-0.1);
     }
 
     @Override

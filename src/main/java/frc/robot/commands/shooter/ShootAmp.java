@@ -22,9 +22,9 @@ public class ShootAmp extends Command {
          */
         // System.out.println(indexer.indexerFilled());
         // System.out.println(C)
-        shooter.run(Constants.Shooter.speakerRPM);
-        if (shooter.atSpeed(Constants.Shooter.speakerRPM)) {
-            indexer.run();
+        shooter.run(Constants.Shooter.apmRPM);
+        if (shooter.atSpeed(Constants.Shooter.apmRPM)) {
+            indexer.run(0.5);
         }
     }
 

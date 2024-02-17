@@ -11,6 +11,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.sensors.ThriftyEncoder;
@@ -143,7 +145,7 @@ public final class Constants {
         /* Back Right Module - Module 3 */
         public static final class Mod3 {
             public static final int driveMotorID = 3;
-            public static final int angleMotorID = 2;
+            public static final int angleMotorID = 2; 
             public static final int thriftyEncoderID = 0;
             public static final double angleOffset = -90.4;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
@@ -176,32 +178,77 @@ public final class Constants {
         public static final int strafeAxis = 0;
         public static final int rotAxis = 2;
 
-        private static final int intakeCmdButton = 1;
-        public static Trigger intakeTrigger = new JoystickButton(driverController, intakeCmdButton);
+        // Driver Button Bindings
 
-        private static final int shooterCmdButton = 2;
-        public static Trigger shooterTrigger = new JoystickButton(driverController, shooterCmdButton);
-
-        private static final int towerUpButton = 8;
-        public static Trigger towerUpTrigger = new JoystickButton(driverController, towerUpButton);
-
-        private static final int towerDownButton = 7;
-        public static Trigger towerDownTrigger = new JoystickButton(driverController, towerDownButton);
-
-        private static final int climberToggleButton = 4;
-        public static Trigger climberTrigger = new JoystickButton(driverController, climberToggleButton);
+        private static final int intakeButton = 7;
+        public static Trigger intakeTrigger = new JoystickButton(driverController, intakeButton);
 
         private static final int resetGyroButton = 4;
         public static Trigger resetGyroTrigger = new JoystickButton(driverController, resetGyroButton);
+
+        private static final int shooterRampButton = 6;
+        public static Trigger shooterRampTrigger = new JoystickButton(driverController, shooterRampButton);
+
+        private static final int shootAmpButton = 5;
+        public static Trigger shootAmpTrigger = new JoystickButton(driverController, shootAmpButton);
+
+        private static final int shootSpeakerButton = 8;
+        public static Trigger shootSpeakerTrigger = new JoystickButton(driverController, shootSpeakerButton);
+
+        private static final int toggleAimButton = 14;
+        public static Trigger toggleAimTrigger = new JoystickButton(driverController, toggleAimButton);
+        
+
+        
+
+        // Operator Button Bindings
+
+        private static final int towerZeroButton = 1;
+        public static Trigger towerZeroTrigger = new JoystickButton(operatorController, towerZeroButton);
+
+        private static final int towerUpButton = 2;
+        public static Trigger towerUpTrigger = new JoystickButton(operatorController, towerUpButton);
+
+        private static final int towerDownButton = 3;
+        public static Trigger towerDownTrigger = new JoystickButton(operatorController, towerDownButton);
+
+        private static final int reverseIntakeButton = 4;
+        public static Trigger reverseIntakeTrigger = new JoystickButton(operatorController, reverseIntakeButton);
+        
+        private static final int towerAmpPositionButton = 5; 
+        public static Trigger towerAmpPositionTrigger = new JoystickButton(operatorController, towerAmpPositionButton);
+
+        private static final int towerShootPositionButton = 6;
+        public static Trigger towerShootPositionTrigger = new JoystickButton(operatorController, towerShootPositionButton);
+
+        private static final int leftClimberUpButton = 7;
+        public static Trigger leftClimberUpTrigger = new JoystickButton(operatorController, leftClimberUpButton);
+
+        private static final int rightClimberUpButton = 8;
+        public static Trigger rightClimberUpTrigger = new JoystickButton(operatorController, rightClimberUpButton);
+
+        private static final int leftClimberDownButton = 11;
+        public static Trigger leftClimberDownTrigger = new JoystickButton(operatorController, leftClimberDownButton);
+
+        private static final int rightClimberDownButton = 12;
+        public static Trigger rightClimberDownTrigger = new JoystickButton(operatorController, rightClimberDownButton);
+
+        
+
+        // private static final int climberToggleButton = 12;
+        // public static Trigger climberTrigger = new JoystickButton(driverController, climberToggleButton);
+
 
         // private static final int 
     }
 
     public static final class Indexer {
         public static final int motorID = 11;
+        public static final int invMotorID = 17;
         public static final int currentLimit = 20;
         public static final int sensorID = 0;
         public static final double threshDist = 115; // cm to mm
+        public static final double gearReduction = (52.0 / 14.0);
     }
 
     public static final class Shooter {
@@ -224,7 +271,7 @@ public final class Constants {
     }
 
     public static final class Tower {
-        public static final int motorID = 5; // TODO: Get the ID
+        public static final int motorID = 14; // TODO: Get the ID
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
         public static final double pivotKP = 0.0;
         public static final double threshAngle = 0.1; // deg
@@ -264,5 +311,18 @@ public final class Constants {
                         Units.inchesToMeters(3),
                         Units.inchesToMeters(10)),
                 new Rotation3d());
+    }
+
+    public static final class Logging {
+        public static ShuffleboardTab driveTab = Shuffleboard.getTab("Drive"); // Turn Angles, Gyro, Etc.
+        public static ShuffleboardTab intakeShooterTowerTab = Shuffleboard.getTab("Intake / Shooter");
+        public static ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
+        public static ShuffleboardTab poseEstimationTab = Shuffleboard.getTab("Odometry");
+        public static ShuffleboardTab commandTab = Shuffleboard.getTab("Commands");
+
+    }
+    public static final class Auto {
+        public static final double towerAngleInitial = 20.0;
+        
     }
 }

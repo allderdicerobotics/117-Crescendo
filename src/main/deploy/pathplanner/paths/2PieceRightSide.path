@@ -1,0 +1,144 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5,
+        "y": 6.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.5,
+        "y": 6.0
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5,
+        "y": 7.0
+      },
+      "prevControl": {
+        "x": 1.5,
+        "y": 7.0
+      },
+      "nextControl": {
+        "x": 3.5,
+        "y": 7.0
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.0,
+        "y": 6.5
+      },
+      "prevControl": {
+        "x": 2.48,
+        "y": 6.5
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Starting Shot",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "aimTowerInitial"
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "rampWheels"
+                    }
+                  },
+                  {
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 1.0
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "parallel",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "speakerShoot"
+                    }
+                  },
+                  {
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.5
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "IntakePiece",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intakePiece"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.5
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 560.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": true
+}
