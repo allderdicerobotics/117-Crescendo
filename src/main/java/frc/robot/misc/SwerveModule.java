@@ -77,9 +77,7 @@ public class SwerveModule {
         drivePIDController.setI(Constants.Swerve.driveKI, 0);
         drivePIDController.setD(Constants.Swerve.driveKD, 0);
         drivePIDController.setOutputRange(-1, 1);
-        // drivePIDController.setSmartMotionMaxVelocity(10000, 0);
-        drivePIDController.setFF(Constants.Swerve.driveKFF, 0);
-
+        
         driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
     }

@@ -12,16 +12,18 @@ import frc.robot.misc.Constants;
 
 public class Shooter extends SubsystemBase {
     private CANSparkMax topMotor, bottomMotor;
-    private RelativeEncoder topEncoder;
-    private SparkPIDController shooterPID;
+    private RelativeEncoder topEncoder, bottomEncoder;
+    private SparkPIDController topShooterPID, bottomShooterPID;
 
     public Shooter() {
         topMotor = new CANSparkMax(Constants.Shooter.topID, MotorType.kBrushless);
         bottomMotor = new CANSparkMax(Constants.Shooter.bottomID, MotorType.kBrushless);
 
         topEncoder = topMotor.getEncoder(); // Only one encoder needed for velocity calc
+        bottomEncoder = bottomMotor.getEncoder();
 
-        shooterPID = topMotor.getPIDController(); // Only one pid controller needed because of leader-follower
+        topShooterPID = topMotor.getPIDController(); // Only one pid controller needed because of leader-follower
+        bottomShooterPID = bottomMotor.getPIDController();
 
         configShooter();
 
@@ -30,10 +32,27 @@ public class Shooter extends SubsystemBase {
     public void run(double rpm) {
 
         // topMotor.set(1);
-        System.out.println(topEncoder.getVelocity());
-        shooterPID.setReference(rpm,
+        // System.out.println(topEncoder.getVelocity());
+        topShooterPID.setReference(rpm,
                 ControlType.kVelocity,
         0);
+
+        bottomShooterPID.setReference(
+            rpm, 
+            ControlType.kVelocity,
+        0);
+    }
+
+    public void runAmp(double rpm){
+        topShooterPID.setReference(
+            rpm, 
+            ControlType.kVelocity,
+            0);
+
+        bottomShooterPID.setReference(
+            rpm/2, 
+            ControlType.kVelocity,
+            0);
     }
 
     public boolean atSpeed(double rpm) {
@@ -41,8 +60,10 @@ public class Shooter extends SubsystemBase {
     }
 
     public void stop() {
-        topMotor.stopMotor();
-        bottomMotor.stopMotor();
+        topMotor.set(0);
+        bottomMotor.set(0);
+        // topMotor.stopMotor();
+        // bottomMotor.stopMotor();
     }
 
     private void configShooter() {
@@ -61,17 +82,24 @@ public class Shooter extends SubsystemBase {
         bottomMotor.setIdleMode(IdleMode.kCoast);
 
         topMotor.setInverted(true);
-        bottomMotor.follow(topMotor, true); // Other Motor will be moving in opposite direction
+        bottomMotor.setInverted(false);
+        // bottomMotor.follow(topMotor, true); // Other Motor will be moving in opposite direction
 
         topMotor.burnFlash();
         bottomMotor.burnFlash();
 
-        shooterPID.setP(Constants.Shooter.shooterKP);
-        shooterPID.setI(Constants.Shooter.shooterKI);
-        shooterPID.setD(Constants.Shooter.shooterKD);
-        shooterPID.setFF(Constants.Shooter.shooterKFF);
+        topShooterPID.setP(Constants.Shooter.shooterKP);
+        topShooterPID.setI(Constants.Shooter.shooterKI);
+        topShooterPID.setD(Constants.Shooter.shooterKD);
+        topShooterPID.setFF(Constants.Shooter.shooterKFF);
+
+        bottomShooterPID.setP(Constants.Shooter.shooterKP);
+        bottomShooterPID.setI(Constants.Shooter.shooterKI);
+        bottomShooterPID.setD(Constants.Shooter.shooterKD);
+        bottomShooterPID.setFF(Constants.Shooter.shooterKFF);
 
         topEncoder.setVelocityConversionFactor(1.0); // Velocity = RPM
+        bottomEncoder.setVelocityConversionFactor(1.0);
 
     }
 

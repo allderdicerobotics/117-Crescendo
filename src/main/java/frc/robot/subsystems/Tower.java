@@ -23,6 +23,7 @@ public class Tower extends SubsystemBase {
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
     private GenericEntry pivotAngleEntry;
+    private double currentSetpoint = 0;
 
     public Tower() {
         pivotMotor = new CANSparkMax(Constants.Tower.motorID, MotorType.kBrushless);
@@ -39,12 +40,9 @@ public class Tower extends SubsystemBase {
         
     }
 
-    public void moveTower(double speed){
-        
-        // if (getPivotAngle() < Constants.Tower.maxAngle){
-        pivotMotor.set(speed);
-        // }
-        
+    public void moveTower(double deltaPosition){
+        this.currentSetpoint += deltaPosition;
+        setPivotAngle(this.currentSetpoint);        
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -92,12 +90,12 @@ public class Tower extends SubsystemBase {
         pivotMotor.setIdleMode(IdleMode.kBrake);
 
         pivotEncoder.setPositionConversionFactor(Constants.Tower.gearReduction);
-        pivotEncoder.setPosition(0);
 
         pivotPIDController.setP(Constants.Tower.pivotKP);
         pivotPIDController.setOutputRange(Constants.Tower.maxNegPower, Constants.Tower.maxPosPower);
-
-        pivotMotor.burnFlash();
         pivotMotor.setInverted(true);
+        
+        pivotMotor.burnFlash();
+        
     }
 }

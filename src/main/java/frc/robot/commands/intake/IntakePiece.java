@@ -17,20 +17,22 @@ public class IntakePiece extends Command {
     @Override
     public void execute() {
         /* Run the Intake and Indexer until the piece is in the indexer */
-        System.out.println(indexer.sensorVal());
-        // while (!indexer.indexerFilled()) {
+        // System.out.println(indexer.sensorVal());
+        
         intake.run();
-        indexer.run(1);
-        // }
+        indexer.run(0.40);
+        
     }
     
     @Override
     public boolean isFinished(){
+        // return false;
         return indexer.indexerFilled();
     }
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("here");
         indexer.stop();
         intake.stop();
     }

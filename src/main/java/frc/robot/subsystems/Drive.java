@@ -30,7 +30,7 @@ public class Drive extends SubsystemBase {
 
 	// Odometry class for tracking robot pose
 	private PoseEstimator swerveOdometry;
-	private Vision limelight;
+	// private Vision limelight;
 	private AprilTagFieldLayout layout;
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
@@ -45,8 +45,9 @@ public class Drive extends SubsystemBase {
 
         // Mirror Field based on which team we are on
 		var alliance = DriverStation.getAlliance();
-		limelight = new Vision(Constants.Vision.cameraName, layout, alliance.get());
-		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
+		// limelight = new Vision(Constants.Vision.cameraName, layout, alliance.get());
+
+		swerveOdometry = new PoseEstimator(this, navx, false);
 
 		AutoBuilder.configureHolonomic(
 				swerveOdometry::getPose,

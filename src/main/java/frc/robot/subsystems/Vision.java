@@ -97,6 +97,7 @@ public class Vision extends SubsystemBase {
         return singleTagStdDevs.times(1 + (avgDist * avgDist / 30));
       
     }
+
     
 }
 

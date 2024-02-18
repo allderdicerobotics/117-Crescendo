@@ -8,6 +8,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -21,15 +22,15 @@ public class PoseEstimator extends SubsystemBase {
     private Field2d field2d = new Field2d();
     private SwerveDrivePoseEstimator poseEstimator;
     private Drive swerve;
-    private Vision limelight;
+    // private Vision limelight;
     private NavX navx;
     private boolean usingVision;
     private GenericEntry navXEntry;
 
-    public PoseEstimator(Drive swerve, Vision limelight, NavX navx, boolean usingVision) {
+    public PoseEstimator(Drive swerve, NavX navx, boolean usingVision) {
 
         this.swerve = swerve;
-        this.limelight = limelight;
+        // this.limelight = limelight;
         this.navx = navx;
         this.usingVision = usingVision;
 
@@ -61,18 +62,18 @@ public class PoseEstimator extends SubsystemBase {
 
     public void updatePose() {
         poseEstimator.update(navx.getAngle(), swerve.getModulePositions());
-        if (usingVision) {
-            var visionEst = limelight.updateVision();
+        // if (usingVision) {
+        //     var visionEst = limelight.updateVision();
 
-            visionEst.ifPresent(
-                    est -> {
-                        var estPose = est.estimatedPose.toPose2d();
+        //     visionEst.ifPresent(
+        //             est -> {
+        //                 var estPose = est.estimatedPose.toPose2d();
 
-                        poseEstimator.addVisionMeasurement(estPose, est.timestampSeconds); // TODO: Figure out
-                                                                                           // if the std devs
-                                                                                           // function is useful
-                    });
-        }
+        //                 poseEstimator.addVisionMeasurement(estPose, est.timestampSeconds); // TODO: Figure out
+        //                                                                                    // if the std devs
+        //                                                                                    // function is useful
+        //             });
+        // }
 
     }
 
@@ -81,10 +82,11 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     public double getDistSpeaker(Pose2d robotPose){
-        Pose2d targetPose = limelight.getAlliance() == Alliance.Blue ? limelight.getTagPose(Constants.Vision.blueSpeakerTagID)  
-        : limelight.getTagPose(Constants.Vision.redSpeakerTagID);
-
-        return PhotonUtils.getDistanceToPose(robotPose, targetPose);
+        // Pose2d targetPose = limelight.getAlliance() == Alliance.Blue ? limelight.getTagPose(Constants.Vision.blueSpeakerTagID)  
+        // : limelight.getTagPose(Constants.Vision.redSpeakerTagID);
+        // var targetPose = Pose2d()
+        return 0;
+        // return PhotonUtils.getDistanceToPose(robotPose, targetPose);
     }
 
     @Override

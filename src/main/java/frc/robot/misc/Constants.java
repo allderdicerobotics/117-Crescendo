@@ -53,13 +53,13 @@ public final class Constants {
         public static final double angleKFF = 0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.001; // 0.00005 on our robot
+        public static final double driveKP = 0.005; // 0.00005 on our robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKFF = 0.0001;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = 0.667;
+        public static final double driveKS = 1.0;
         public static final double driveKV = 2.44;
         public static final double driveKA = 0.27;
 
@@ -93,7 +93,7 @@ public final class Constants {
             public static final int angleMotorID = 8; // 6;
             public static final int thriftyEncoderID = 2;
 
-            public static final double angleOffset = -65.7; //
+            public static final double angleOffset = -150.5; //-65.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -111,7 +111,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int thriftyEncoderID = 1;
-            public static final double angleOffset = 27.4; //
+            public static final double angleOffset = -3.1; //27.4; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -126,10 +126,11 @@ public final class Constants {
 
         /* Back Left Module - Module 2 */
         public static final class Mod2 {
+
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 6;// 8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = -58.7; //
+            public static final double angleOffset = 210; //-152.3; //-58.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -147,7 +148,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2; 
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = -90.4;
+            public static final double angleOffset = 115.4; // -90.4;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -243,8 +244,8 @@ public final class Constants {
     }
 
     public static final class Indexer {
-        public static final int motorID = 11;
-        public static final int invMotorID = 17;
+        public static final int motorID = 17;
+        // public static final int invMotorID = 17;
         public static final int currentLimit = 20;
         public static final int sensorID = 0;
         public static final double threshDist = 115; // cm to mm
@@ -253,7 +254,7 @@ public final class Constants {
 
     public static final class Shooter {
         public static final int topID = 12;
-        public static final int bottomID = 13;
+        public static final int bottomID = 21;
 
         public static final int shooterCurrentLimit = 20;
 
@@ -266,18 +267,18 @@ public final class Constants {
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
         public static final double speakerRPM = 5000;
-        public static final double apmRPM = 800;
+        public static final double apmRPM = 4500;
         public static final double threshRPM = 10;
     }
 
     public static final class Tower {
         public static final int motorID = 14; // TODO: Get the ID
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
-        public static final double pivotKP = 0.0;
+        public static final double pivotKP = 0.01;
         public static final double threshAngle = 0.1; // deg
         public static final int towerCurrentLimit = 20;
-        public static final double maxNegPower = -0.5;
-        public static final double maxPosPower = 1;
+        public static final double maxNegPower = -0.2;
+        public static final double maxPosPower = 0.2;
         public static final int minAngle = 0;
         public static final int maxAngle = 50; //TODO: GET A CORRECT VALUE
 

@@ -5,14 +5,14 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.SerialPort;
 
-public final class NavX {
-    private static AHRS ahrs = new AHRS(SerialPort.Port.kUSB);
+public class NavX {
+    private AHRS ahrs = new AHRS(SerialPort.Port.kUSB);
 
     public NavX() {
 
     }
 
-    public static double getRate() {
+    public double getRate() {
         return ahrs.getRate();
     }
 
