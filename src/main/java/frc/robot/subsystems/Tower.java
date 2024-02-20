@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import frc.robot.misc.Constants;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
@@ -40,9 +41,12 @@ public class Tower extends SubsystemBase {
         
     }
 
-    public void moveTower(double deltaPosition){
-        this.currentSetpoint += deltaPosition;
-        setPivotAngle(this.currentSetpoint);        
+    public void moveTower(double speed){
+        
+        // if (getPivotAngle() < Constants.Tower.maxAngle){
+        pivotMotor.set(speed);
+        // }
+        
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -84,7 +88,36 @@ public class Tower extends SubsystemBase {
         // SmartDashboard.putNumber("tower angle", getPivotAngle());
     }
     private void configTower() {
+
         pivotMotor.restoreFactoryDefaults();
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus1, 
+            500);
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2, 
+            500);
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus3,
+            0
+        );
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus4,
+            0   
+        );
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus5,
+            0
+        );
+
+        pivotMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus6,
+            0
+        );
         pivotMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
         pivotMotor.setSmartCurrentLimit(Constants.Tower.towerCurrentLimit);
         pivotMotor.setIdleMode(IdleMode.kBrake);

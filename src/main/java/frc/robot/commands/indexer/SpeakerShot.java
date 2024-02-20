@@ -11,7 +11,7 @@ public class SpeakerShot extends Command{
     }
 
     @Override
-    public void execute(){
+    public void initialize(){
         indexer.run(1);
     }
 

@@ -47,21 +47,20 @@ public final class Constants {
         public static final int driveContinuousCurrentLimit = 40;
 
         /* Angle Motor PID Values */
-        public static final double angleKP = 5.0; // 1.6 on our robot
+        public static final double angleKP = 8; // 1.6 on our robot
         public static final double angleKI = 0;// 1.8 on our robot
         public static final double angleKD = 0;
-        public static final double angleKFF = 0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.005; // 0.00005 on our robot
+        public static final double driveKP = 0.001; // 0.00005 on our robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKFF = 0.0001;
+        public static final double driveKFF = 0.3;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = 1.0;
-        public static final double driveKV = 2.44;
-        public static final double driveKA = 0.27;
+        // public static final double driveKS = 1.0;
+        // public static final double driveKV = 2.44;
+        // public static final double driveKA = 0.27;
 
         /* Drive Motor Conversion Factors */
         public static final double driveConversionPositionFactor = (wheelDiameter * Math.PI) / driveGearRatio;
@@ -93,7 +92,7 @@ public final class Constants {
             public static final int angleMotorID = 8; // 6;
             public static final int thriftyEncoderID = 2;
 
-            public static final double angleOffset = -150.5; //-65.7; //
+            public static final double angleOffset = -150.45;//-32.3;//-150.5; //-65.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -111,7 +110,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int thriftyEncoderID = 1;
-            public static final double angleOffset = -3.1; //27.4; //
+            public static final double angleOffset = 2.1;//176.1;//-3.1; //27.4; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -130,7 +129,7 @@ public final class Constants {
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 6;// 8;
             public static final int thriftyEncoderID = 3;
-            public static final double angleOffset = 210; //-152.3; //-58.7; //
+            public static final double angleOffset = -151.1;//-27.2;//210; //-152.3; //-58.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -148,7 +147,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2; 
             public static final int thriftyEncoderID = 0;
-            public static final double angleOffset = 115.4; // -90.4;
+            public static final double angleOffset = 115;//-114.3;//115.4; // -90.4;
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
 
@@ -245,7 +244,7 @@ public final class Constants {
 
     public static final class Indexer {
         public static final int motorID = 17;
-        // public static final int invMotorID = 17;
+        public static final int invMotorID = 21;
         public static final int currentLimit = 20;
         public static final int sensorID = 0;
         public static final double threshDist = 115; // cm to mm
@@ -266,8 +265,8 @@ public final class Constants {
 
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
-        public static final double speakerRPM = 5000;
-        public static final double apmRPM = 4500;
+        public static final double speakerRPM = 00;
+        public static final double apmRPM = 40;
         public static final double threshRPM = 10;
     }
 

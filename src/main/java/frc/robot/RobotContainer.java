@@ -42,10 +42,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
     // The robot's subsystems
     private final Drive swerve = new Drive();
-    private final Shooter shooter = new Shooter();
+    // private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
-    private final Tower tower = new Tower();
+    // private final Tower tower = new Tower();
     // private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
     // private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,true);
 
@@ -71,19 +71,19 @@ public class RobotContainer {
         // zeroClimbers.schedule();
         // Configure Button Bindings 
         configureButtonBindings();
-        tower.zero();
+        // tower.zero();
         // Default Command for SwerveDrive is TeleOpSwerve
-        swerve.setDefaultCommand(
-            // The left stick controls translation of the robot.
-            // Turning is controlled by the X axis of the right stick.
-            new TeleopSwerve(
-                swerve,
-                () -> (driverController.getLeftY()),
-                () -> (driverController.getLeftX()),
-                () -> (driverController.getRightX()),
-                () -> false
-            )
-        );
+        // swerve.setDefaultCommand(
+        //     // The left stick controls translation of the robot.
+        //     // Turning is controlled by the X axis of the right stick.
+        //     new TeleopSwerve(
+        //         swerve,
+        //         () -> (driverController.getLeftY()),
+        //         () -> (driverController.getLeftX()),
+        //         () -> (driverController.getRightX()),
+        //         () -> false
+        //     )
+        // );
         Constants.Logging.commandTab.add(autoChooser);
         // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -94,33 +94,33 @@ public class RobotContainer {
          * Add commands for climber
          */
         
-        Constants.Operator.intakeTrigger
-            .whileTrue(new IntakePiece(intake, indexer));
-            // .onFalse(new RunCommand(() -> {intake.stop(); indexer.stop();}));
+        // Constants.Operator.intakeTrigger
+        //     .whileTrue(new IntakePiece(intake, indexer));
+        // //     // .onFalse(new RunCommand(() -> {intake.stop(); indexer.stop();}));
 
-        Constants.Operator.resetGyroTrigger
-            .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
+        // Constants.Operator.resetGyroTrigger
+        //     .whileTrue(new RunCommand(() -> swerve.resetOrientation()));
 
-        Constants.Operator.towerUpTrigger
-            .whileTrue(new MoveTowerUp(tower));
+        // Constants.Operator.towerUpTrigger
+        //     .whileTrue(new MoveTowerUp(tower));
         
-        Constants.Operator.towerDownTrigger
-            .whileTrue(new MoveTowerDown(tower));
+        // Constants.Operator.towerDownTrigger
+        //     .whileTrue(new MoveTowerDown(tower));
         
-        Constants.Operator.towerZeroTrigger
-            .whileTrue(new RunCommand(() -> tower.zero()));//new ZeroTower(tower, null));
+        // Constants.Operator.towerZeroTrigger
+        //     .whileTrue(new RunCommand(() -> tower.zero()));//new ZeroTower(tower, null));
 
-        Constants.Operator.reverseIntakeTrigger
-            .whileTrue(new ReverseIntake(intake));
+        // Constants.Operator.reverseIntakeTrigger
+        //     .whileTrue(new ReverseIntake(intake));
 
-        Constants.Operator.towerShootPositionTrigger
-            .onTrue(new SetTowerAngle(tower, 1054));
+        // Constants.Operator.towerShootPositionTrigger
+        //     .onTrue(new SetTowerAngle(tower, 1054));
 
-        Constants.Operator.towerAmpPositionTrigger
-            .whileTrue(new ShootAmp(shooter, indexer));
+        // Constants.Operator.towerAmpPositionTrigger
+        //     .whileTrue(new ShootAmp(shooter, indexer));
             
-        Constants.Operator.shooterRampTrigger
-            .whileTrue(new ReadyShooter(shooter));
+        // Constants.Operator.shooterRampTrigger
+        //     .whileTrue(new ReadyShooter(shooter));
 
         Constants.Operator.shootSpeakerTrigger
             .whileTrue(new SpeakerShot(indexer));

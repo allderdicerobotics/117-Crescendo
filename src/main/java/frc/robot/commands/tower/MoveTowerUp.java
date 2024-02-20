@@ -11,12 +11,13 @@ public class MoveTowerUp extends Command{
     }
     
     @Override
-    public void execute(){
+    public void initialize(){
         tower.moveTower(0.1);
     }
 
     @Override
     public void end(boolean interrupted){
         tower.stop();
+        tower.setPivotAngle(tower.getPivotAngle());
     }
 }

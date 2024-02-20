@@ -13,7 +13,7 @@ public class SetTowerAngle extends Command {
     }
 
     @Override
-    public void execute(){
+    public void initialize(){
         tower.setPivotAngle(angle);
     }
     @Override

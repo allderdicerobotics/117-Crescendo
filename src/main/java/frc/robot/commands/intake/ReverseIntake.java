@@ -10,7 +10,7 @@ public class ReverseIntake extends Command{
     }
     
     @Override
-    public void execute(){
+    public void initialize(){
         intake.reverse();
     }
 

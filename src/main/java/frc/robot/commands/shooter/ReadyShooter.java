@@ -13,11 +13,15 @@ public class ReadyShooter extends Command {
     }
 
     @Override
+    public void initialize(){
+        shooter.run(Constants.Shooter.speakerRPM);
+    }
+    @Override
     public void execute() {
         /* Run the Shooter Motor and achieve full speed
             -> prepares for shot
          */
-         shooter.run(Constants.Shooter.speakerRPM);
+         
     }
 
     @Override

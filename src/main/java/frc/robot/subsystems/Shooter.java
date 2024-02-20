@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
@@ -72,6 +73,46 @@ public class Shooter extends SubsystemBase {
         topMotor.restoreFactoryDefaults();
         bottomMotor.restoreFactoryDefaults();
 
+        topMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus3,
+            0
+        );
+
+        topMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus4,
+            0   
+        );
+
+        topMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus5,
+            0
+        );
+
+        topMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus6,
+            0
+        );
+
+        bottomMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus3,
+            0
+        );
+
+        bottomMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus4,
+            0   
+        );
+
+        bottomMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus5,
+            0
+        );
+
+        bottomMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus6,
+            0
+        );
+        
         topMotor.setSmartCurrentLimit(Constants.Shooter.shooterCurrentLimit);
         bottomMotor.setSmartCurrentLimit(Constants.Shooter.shooterCurrentLimit);
 

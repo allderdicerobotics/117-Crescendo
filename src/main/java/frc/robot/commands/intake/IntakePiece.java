@@ -15,7 +15,7 @@ public class IntakePiece extends Command {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         /* Run the Intake and Indexer until the piece is in the indexer */
         // System.out.println(indexer.sensorVal());
         
