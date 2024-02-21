@@ -12,7 +12,7 @@ public class SpeakerShot extends Command{
 
     @Override
     public void initialize(){
-        indexer.run(1);
+        indexer.run(0.5);
     }
 
     @Override

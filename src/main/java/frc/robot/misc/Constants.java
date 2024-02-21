@@ -51,6 +51,11 @@ public final class Constants {
         public static final double angleKI = 0;// 1.8 on our robot
         public static final double angleKD = 0;
 
+
+        /* Limelight Aim PID Values */
+        public static final double adjustKP = 0.1;
+        public static final double adjustKI = 0.0;
+        public static final double adjustKD = 0.0;
         /* Drive Motor PID Values */
         public static final double driveKP = 0.001; // 0.00005 on our robot
         public static final double driveKI = 0.0;
@@ -252,22 +257,22 @@ public final class Constants {
     }
 
     public static final class Shooter {
-        public static final int topID = 12;
-        public static final int bottomID = 21;
+        public static final int topID = 16;
+        public static final int bottomID = 12;
 
         public static final int shooterCurrentLimit = 20;
 
-        public static final double shooterKP = 1.0;
+        public static final double shooterKP = 0.35;
         public static final double shooterKI = 0.0;
         public static final double shooterKD = 0.0;
 
-        public static final double shooterKFF = 1.0;
+        public static final double shooterKFF = 1.25;
 
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
-        public static final double speakerRPM = 00;
-        public static final double apmRPM = 40;
-        public static final double threshRPM = 10;
+        public static final double speakerRPM = 5000;
+        public static final double apmRPM = 100;
+        public static final double threshRPM = 5;
     }
 
     public static final class Tower {

@@ -33,7 +33,8 @@ public class Shooter extends SubsystemBase {
     public void run(double rpm) {
 
         // topMotor.set(1);
-        // System.out.println(topEncoder.getVelocity());
+        // topMotor.set(1);
+        // bottomMotor.set(1);
         topShooterPID.setReference(rpm,
                 ControlType.kVelocity,
         0);
@@ -44,20 +45,32 @@ public class Shooter extends SubsystemBase {
         0);
     }
 
+    public double topEncoderVelocity(){
+        return topEncoder.getVelocity();
+    }
+    public double bottomEncoderVelocity(){
+        return bottomEncoder.getVelocity();
+    }
     public void runAmp(double rpm){
-        topShooterPID.setReference(
-            rpm, 
-            ControlType.kVelocity,
-            0);
+        topMotor.set(0.05);
+        bottomMotor.set(0.05);
+        // topShooterPID.setReference(
+        //     rpm, 
+        //     ControlType.kVelocity,
+        //     0);
 
-        bottomShooterPID.setReference(
-            rpm/2, 
-            ControlType.kVelocity,
-            0);
+        // bottomShooterPID.setReference(
+        //     rpm, 
+        //     ControlType.kVelocity,
+        //     0);
     }
 
     public boolean atSpeed(double rpm) {
-        return Math.abs(topEncoder.getVelocity() - rpm) < Constants.Shooter.threshRPM;
+        return Math.abs(topEncoder.getVelocity() - rpm) <= Constants.Shooter.threshRPM && Math.abs(bottomEncoder.getVelocity() - rpm) <= Constants.Shooter.threshRPM;
+    }
+
+    public boolean aboveSpeed(double rpm){
+        return topEncoder.getVelocity() >= rpm || bottomEncoder.getVelocity() >= rpm;
     }
 
     public void stop() {
@@ -68,10 +81,14 @@ public class Shooter extends SubsystemBase {
     }
 
     private void configShooter() {
-
         
         topMotor.restoreFactoryDefaults();
         bottomMotor.restoreFactoryDefaults();
+
+        topMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2,
+            0
+        );
 
         topMotor.setPeriodicFramePeriod(
             PeriodicFrame.kStatus3,
@@ -90,6 +107,11 @@ public class Shooter extends SubsystemBase {
 
         topMotor.setPeriodicFramePeriod(
             PeriodicFrame.kStatus6,
+            0
+        );
+
+        bottomMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2,
             0
         );
 

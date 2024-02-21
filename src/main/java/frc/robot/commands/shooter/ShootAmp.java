@@ -1,5 +1,6 @@
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Indexer;
@@ -17,7 +18,9 @@ public class ShootAmp extends Command {
 
     @Override
     public void initialize(){
+        setIndexer = false;
         shooter.runAmp(Constants.Shooter.apmRPM);
+        
     }
     @Override
     public void execute() {
@@ -26,9 +29,10 @@ public class ShootAmp extends Command {
          */
         // System.out.println(indexer.indexerFilled());
         // System.out.println(C)
-        
-        if (shooter.atSpeed(Constants.Shooter.apmRPM) && !setIndexer) {
-            indexer.run(0.5);
+        System.out.println(shooter.topEncoderVelocity());
+        if ((shooter.atSpeed(Constants.Shooter.apmRPM) || shooter.aboveSpeed(Constants.Shooter.apmRPM)) && !setIndexer) {
+            Timer.delay(0.5);
+            indexer.run(0.10);
             setIndexer = true;
         }
     }

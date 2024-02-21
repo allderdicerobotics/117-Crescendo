@@ -4,10 +4,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Tower;
-import frc.robot.subsystems.Vision;
 
 public class LimelightAimTower extends Command {
-    private Vision limelight;
     private PoseEstimator poseEstimator;
     private Tower tower;
 

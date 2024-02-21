@@ -29,6 +29,16 @@ public class Indexer extends SubsystemBase {
         beamBreakSensor.setRangingMode(RangingMode.Short, 24); // sample time min is 24 ms
 
         indexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus1,
+            500
+        );
+
+        indexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2,
+            0
+        );
+
+        indexMotor.setPeriodicFramePeriod(
             PeriodicFrame.kStatus3,
             0
         );
@@ -48,6 +58,40 @@ public class Indexer extends SubsystemBase {
             0
         );
 
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus0,
+            100
+        );
+        
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus1,
+            500
+        );
+
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2,
+            0
+        );
+
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus3,
+            0
+        );
+
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus4,
+            0
+        );
+
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus5,
+            0
+        );
+
+        invIndexMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus6,
+            0
+        );
         indexMotor.setIdleMode(IdleMode.kBrake); // instantly stopping intake is important to ensure Note won't slide
                                                  // any further
         indexMotor.setInverted(true);

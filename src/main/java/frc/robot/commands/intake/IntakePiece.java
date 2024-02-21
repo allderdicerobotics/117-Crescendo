@@ -20,7 +20,7 @@ public class IntakePiece extends Command {
         // System.out.println(indexer.sensorVal());
         
         intake.run();
-        indexer.run(0.40);
+        indexer.run(0.35);
         
     }
     
@@ -32,7 +32,6 @@ public class IntakePiece extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("here");
         indexer.stop();
         intake.stop();
     }
