@@ -96,16 +96,18 @@ public class Indexer extends SubsystemBase {
                                                  // any further
         indexMotor.setInverted(true);
         invIndexMotor.follow(indexMotor,true);
+
+        Constants.Logging.intakeShooterTowerTab.addBoolean("Piece in Indexer", () -> indexerFilled()).withSize(2, 1);
     }
 
     public void run(double speed) {
         indexMotor.set(speed);
-        invIndexMotor.set(speed);
+        // invIndexMotor.set(speed);
     }
 
     public void stop() {
         indexMotor.set(0);
-        indexMotor.stopMotor();
+        // indexMotor.stopMotor();
     }
 
     public boolean indexerFilled() {

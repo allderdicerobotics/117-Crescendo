@@ -63,6 +63,16 @@ public class Vision extends SubsystemBase {
     public Pose2d getTagPose(int fiducialID){
         return this.layout.getTagPose(fiducialID).get().toPose2d();
     }
+
+    public Optional<Double> getTagDistance(){
+        var latestResult = getLatestResult();
+        if (latestResult.hasTargets()){
+            var bestTarget = latestResult.getBestTarget();
+            var camToTarget = bestTarget.getBestCameraToTarget();
+            return Optional.of(camToTarget.getX());
+        }
+        return Optional.empty();   
+    }
     public Optional<EstimatedRobotPose> updateVision() {
         PhotonPipelineResult pipelineResult = getLatestResult();
         // if (pipelineResult.getTimestampSeconds())

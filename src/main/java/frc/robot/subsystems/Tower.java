@@ -23,7 +23,6 @@ public class Tower extends SubsystemBase {
     private CANSparkMax pivotMotor;
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
-    private GenericEntry pivotAngleEntry;
     private double currentSetpoint = 0;
 
     public Tower() {
@@ -36,17 +35,12 @@ public class Tower extends SubsystemBase {
         towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of Tower
         populateTowerAngleTable();
 
-        pivotAngleEntry = Constants.Logging.intakeShooterTowerTab
-            .add("Tower Angle", getPivotAngle()).getEntry();
+        Constants.Logging.intakeShooterTowerTab.addDouble("Tower Angle", this::getPivotAngle).withSize(2,1);
         
     }
 
     public void moveTower(double speed){
-        
-        // if (getPivotAngle() < Constants.Tower.maxAngle){
-        pivotMotor.set(speed);
-        // }
-        
+        pivotMotor.set(speed);        
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -69,7 +63,9 @@ public class Tower extends SubsystemBase {
     }
 
     public void zero(){
+        this.currentSetpoint = 0;
         pivotEncoder.setPosition(0);
+
     }
 
     public boolean nearAngle(double angle) {
@@ -80,13 +76,6 @@ public class Tower extends SubsystemBase {
         pivotMotor.stopMotor();
     }
 
-    @Override
-    public void periodic(){  
-        pivotAngleEntry.setDouble(getPivotAngle());
-        // test.update();
-
-        // SmartDashboard.putNumber("tower angle", getPivotAngle());
-    }
     private void configTower() {
 
         pivotMotor.restoreFactoryDefaults();

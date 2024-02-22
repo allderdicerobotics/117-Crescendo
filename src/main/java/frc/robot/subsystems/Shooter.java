@@ -26,6 +26,9 @@ public class Shooter extends SubsystemBase {
         topShooterPID = topMotor.getPIDController(); // Only one pid controller needed because of leader-follower
         bottomShooterPID = bottomMotor.getPIDController();
 
+        Constants.Logging.intakeShooterTowerTab.addDouble("Top Shooter Speed", this::topEncoderVelocity).withSize(2, 1);
+        Constants.Logging.intakeShooterTowerTab.addDouble("Bottom Shooter Speed", this::bottomEncoderVelocity).withSize(2, 1);
+
         configShooter();
 
     }
@@ -52,8 +55,8 @@ public class Shooter extends SubsystemBase {
         return bottomEncoder.getVelocity();
     }
     public void runAmp(double rpm){
-        topMotor.set(0.05);
-        bottomMotor.set(0.05);
+        topMotor.set(0.55);
+        bottomMotor.set(0.2);
         // topShooterPID.setReference(
         //     rpm, 
         //     ControlType.kVelocity,
@@ -166,4 +169,9 @@ public class Shooter extends SubsystemBase {
 
     }
 
+
+    @Override
+    public void periodic(){
+
+    }
 }

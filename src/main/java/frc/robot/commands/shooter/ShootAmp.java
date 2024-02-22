@@ -27,12 +27,9 @@ public class ShootAmp extends Command {
         /* Run the Shooter Motor and achieve full speed
          * -> spit the piece out of the indexer at full speed into shooter wheels
          */
-        // System.out.println(indexer.indexerFilled());
-        // System.out.println(C)
-        System.out.println(shooter.topEncoderVelocity());
         if ((shooter.atSpeed(Constants.Shooter.apmRPM) || shooter.aboveSpeed(Constants.Shooter.apmRPM)) && !setIndexer) {
             Timer.delay(0.5);
-            indexer.run(0.10);
+            indexer.run(0.35);
             setIndexer = true;
         }
     }

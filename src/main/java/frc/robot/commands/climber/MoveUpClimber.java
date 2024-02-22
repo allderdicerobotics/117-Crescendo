@@ -13,7 +13,7 @@ public class MoveUpClimber extends Command{
     }
 
     @Override
-    public void execute(){
+    public void initialize(){
         climber.moveUp();
     }
 

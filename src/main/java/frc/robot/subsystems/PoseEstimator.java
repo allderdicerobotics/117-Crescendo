@@ -25,7 +25,6 @@ public class PoseEstimator extends SubsystemBase {
     // private Vision limelight;
     private NavX navx;
     private boolean usingVision;
-    private GenericEntry navXEntry;
 
     public PoseEstimator(Drive swerve, NavX navx, boolean usingVision) {
 
@@ -41,10 +40,10 @@ public class PoseEstimator extends SubsystemBase {
                 new Pose2d());
 
         Constants.Logging.poseEstimationTab
-            .add(field2d);
+            .add(field2d).withSize(2,1);
 
-        navXEntry = Constants.Logging.poseEstimationTab
-            .add("NavX Angle", 0).getEntry();
+        Constants.Logging.poseEstimationTab
+            .addDouble("NavX Angle", navx::getDegrees).withSize(2, 1);
     }
 
     public void zeroAngle() {
@@ -94,7 +93,5 @@ public class PoseEstimator extends SubsystemBase {
         DriverStation.refreshData();
         field2d.setRobotPose(getPose());
 
-        navXEntry.setDouble(navx.getDegrees());
-        // SmartDashboard.putNumber("NavX angle", navx.getAngle().getDegrees());
     }
 }

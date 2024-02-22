@@ -1,6 +1,8 @@
 package frc.robot.commands.tower;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Tower;
 
 public class MoveTowerUp extends Command{
@@ -18,6 +20,7 @@ public class MoveTowerUp extends Command{
     @Override
     public void end(boolean interrupted){
         tower.stop();
+        Timer.delay(0.5);
         tower.setPivotAngle(tower.getPivotAngle());
     }
 }

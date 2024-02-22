@@ -4,14 +4,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Tower;
+import frc.robot.subsystems.Vision;
 
 public class LimelightAimTower extends Command {
-    private PoseEstimator poseEstimator;
+    private Vision limelight;
     private Tower tower;
 
-    public LimelightAimTower(Tower tower, PoseEstimator poseEstimator) {
+    public LimelightAimTower(Tower tower, Vision limelight) {
         this.tower = tower;
-        this.poseEstimator = poseEstimator;
+        this.limelight = limelight;
+        // this.poseEstimator = poseEstimator;
         addRequirements(tower);
     }
 
@@ -21,12 +23,16 @@ public class LimelightAimTower extends Command {
          * -> interpolate an angle from existing data using this distance
          * -> if the angle isn't to extreme, make it the setpoint
          */
-
-        double dist = poseEstimator.getDistSpeaker(poseEstimator.getPose());
-        var angle = tower.interpolateAngle(dist);
-        if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
+        
+        var dist = limelight.getTagDistance();
+        if (dist.isPresent()){
+            // double dist = poseEstimator.getDistSpeaker(poseEstimator.getPose());
+            double angle = tower.interpolateAngle(dist.get());
+            if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
             tower.setPivotAngle(angle);
         }
+        }
+        
     }
 
     @Override

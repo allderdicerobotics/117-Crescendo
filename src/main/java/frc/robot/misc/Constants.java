@@ -47,7 +47,7 @@ public final class Constants {
         public static final int driveContinuousCurrentLimit = 40;
 
         /* Angle Motor PID Values */
-        public static final double angleKP = 8; // 1.6 on our robot
+        public static final double angleKP = 5; // 1.6 on our robot
         public static final double angleKI = 0;// 1.8 on our robot
         public static final double angleKD = 0;
 
@@ -271,7 +271,7 @@ public final class Constants {
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
         public static final double speakerRPM = 5000;
-        public static final double apmRPM = 100;
+        public static final double apmRPM = 750;
         public static final double threshRPM = 5;
     }
 
@@ -289,8 +289,8 @@ public final class Constants {
     }
 
     public static final class Climber {
-        public static final int leftMotorID = 15; // TODO: Get the ID
-        public static final int rightMotorID = 16; // TODO: Get the ID
+        public static final int leftMotorID = 11; // TODO: Get the ID
+        public static final int rightMotorID = 13; // TODO: Get the ID
         public static final int currentLimit = 20;
         public static final int homeCurrent = 10;
         public static final double legalMax = (175.0 / 12.0);

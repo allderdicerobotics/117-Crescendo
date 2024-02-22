@@ -52,13 +52,13 @@ public class SwerveModule {
         configTurnMotor(turnInvert);
 
         driveSpeed = Constants.Logging.driveTab
-            .add("Drive " + name, 0).getEntry();
+            .add("Drive " + name, 0).withSize(2,1).getEntry();
         turnAngle = Constants.Logging.driveTab
-            .add("Turn " + name, 0).getEntry();
+            .add("Turn " + name, 0).withSize(2,1).getEntry();
         desiredSpeed = Constants.Logging.driveTab
-            .add("Speed " + name, 0).getEntry();
+            .add("Speed " + name, 0).withSize(2,1).getEntry();
         desiredAngle = Constants.Logging.driveTab
-            .add("State " + name, 0).getEntry();
+            .add("State " + name, 0).withSize(2,1).getEntry();
 
     }
 
@@ -196,11 +196,6 @@ public class SwerveModule {
         turnAngle.setDouble(turnAbsoluteEncoder.get().getDegrees());
         desiredSpeed.setDouble(desiredState.speedMetersPerSecond);
         desiredAngle.setDouble(desiredState.angle.getDegrees());
-
-        // SmartDashboard.putNumber("Drive " + name, driveEncoder.getVelocity());
-        // SmartDashboard.putNumber("Turn " + name, turnAbsoluteEncoder.get().getDegrees());
-        // SmartDashboard.putNumber("State " + name, desiredState.angle.getDegrees());
-        // SmartDashboard.putNumber("Speed " + name, desiredState.speedMetersPerSecond);
 
     }
 
