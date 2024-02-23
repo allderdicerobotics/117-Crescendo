@@ -32,9 +32,16 @@ public class TeleopSwerve extends Command {
         /* Apply Deadband to controller inputs
          * -> feed joystick inputs into field-relative drive
          */
-        double translationVal = -MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
-        double rotationVal = -MathUtil.applyDeadband(rotSup.getAsDouble(), Constants.Swerve.stickDeadband);
+
+        double translationVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(translationSup.getAsDouble(),2), translationSup.getAsDouble())
+            , Constants.Swerve.stickDeadband);
+        double strafeVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(strafeSup.getAsDouble(),2), strafeSup.getAsDouble())
+            , Constants.Swerve.stickDeadband);
+        double rotationVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(rotSup.getAsDouble(),2), rotSup.getAsDouble())
+            , Constants.Swerve.stickDeadband);;
        
         swerve.drive(
                 new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),

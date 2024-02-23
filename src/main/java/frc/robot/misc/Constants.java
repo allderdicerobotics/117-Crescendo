@@ -191,11 +191,9 @@ public final class Constants {
         private static final int resetGyroButton = 4;
         public static Trigger resetGyroTrigger = new JoystickButton(driverController, resetGyroButton);
 
-        private static final int shooterRampButton = 6;
-        public static Trigger shooterRampTrigger = new JoystickButton(driverController, shooterRampButton);
 
-        private static final int shootAmpButton = 5;
-        public static Trigger shootAmpTrigger = new JoystickButton(driverController, shootAmpButton);
+        // private static final int shootAmpButton = 5;
+        // public static Trigger shootAmpTrigger = new JoystickButton(driverController, shootAmpButton);
 
         private static final int shootSpeakerButton = 8;
         public static Trigger shootSpeakerTrigger = new JoystickButton(driverController, shootSpeakerButton);
@@ -231,6 +229,12 @@ public final class Constants {
 
         private static final int rightClimberUpButton = 8;
         public static Trigger rightClimberUpTrigger = new JoystickButton(operatorController, rightClimberUpButton);
+
+        private static final int shootAmpButton = 9;
+        public static Trigger shootAmpTrigger = new JoystickButton(operatorController, shootAmpButton);
+
+        private static final int shooterRampButton = 10;
+        public static Trigger shooterRampTrigger = new JoystickButton(operatorController, shooterRampButton);
 
         private static final int leftClimberDownButton = 11;
         public static Trigger leftClimberDownTrigger = new JoystickButton(operatorController, leftClimberDownButton);
@@ -327,7 +331,7 @@ public final class Constants {
 
     }
     public static final class Auto {
-        public static final double towerAngleInitial = 20.0;
+        public static final double towerAngleInitial = 350.0;
         
     }
 }

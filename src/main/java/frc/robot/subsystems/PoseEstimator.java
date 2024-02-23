@@ -43,7 +43,7 @@ public class PoseEstimator extends SubsystemBase {
             .add(field2d).withSize(2,1);
 
         Constants.Logging.poseEstimationTab
-            .addDouble("NavX Angle", navx::getDegrees).withSize(2, 1);
+            .addDouble("NavX Angle", navx::getDegrees);
     }
 
     public void zeroAngle() {

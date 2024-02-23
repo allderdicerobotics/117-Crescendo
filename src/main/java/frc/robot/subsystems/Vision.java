@@ -49,6 +49,9 @@ public class Vision extends SubsystemBase {
             Constants.Vision.robotToCam
         );
         visionEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+        Constants.Logging.poseEstimationTab.addDouble(
+            "Limelight Distance", this::getTagDistance
+        );
        
     }
 
@@ -64,14 +67,14 @@ public class Vision extends SubsystemBase {
         return this.layout.getTagPose(fiducialID).get().toPose2d();
     }
 
-    public Optional<Double> getTagDistance(){
+    public double getTagDistance(){
         var latestResult = getLatestResult();
         if (latestResult.hasTargets()){
             var bestTarget = latestResult.getBestTarget();
             var camToTarget = bestTarget.getBestCameraToTarget();
-            return Optional.of(camToTarget.getX());
+            return camToTarget.getX();
         }
-        return Optional.empty();   
+        return -1;   
     }
     public Optional<EstimatedRobotPose> updateVision() {
         PhotonPipelineResult pipelineResult = getLatestResult();

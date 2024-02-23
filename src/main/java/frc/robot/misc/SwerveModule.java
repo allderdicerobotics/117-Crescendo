@@ -52,13 +52,13 @@ public class SwerveModule {
         configTurnMotor(turnInvert);
 
         driveSpeed = Constants.Logging.driveTab
-            .add("Drive " + name, 0).withSize(2,1).getEntry();
+            .add("Drive " + name, 0).getEntry();
         turnAngle = Constants.Logging.driveTab
-            .add("Turn " + name, 0).withSize(2,1).getEntry();
+            .add("Turn " + name, 0).getEntry();
         desiredSpeed = Constants.Logging.driveTab
-            .add("Speed " + name, 0).withSize(2,1).getEntry();
+            .add("Speed " + name, 0).getEntry();
         desiredAngle = Constants.Logging.driveTab
-            .add("State " + name, 0).withSize(2,1).getEntry();
+            .add("State " + name, 0).getEntry();
 
     }
 

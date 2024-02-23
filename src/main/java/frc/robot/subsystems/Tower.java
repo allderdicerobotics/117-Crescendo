@@ -32,15 +32,16 @@ public class Tower extends SubsystemBase {
 
         configTower();
 
-        towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of Tower
+        towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of
+                                                            // Tower
         populateTowerAngleTable();
 
-        Constants.Logging.intakeShooterTowerTab.addDouble("Tower Angle", this::getPivotAngle).withSize(2,1);
-        
+        Constants.Logging.intakeShooterTowerTab.addDouble("Tower Angle", this::getPivotAngle).withSize(2, 1);
+
     }
 
-    public void moveTower(double speed){
-        pivotMotor.set(speed);        
+    public void moveTower(double speed) {
+        pivotMotor.set(speed);
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -62,7 +63,7 @@ public class Tower extends SubsystemBase {
         towerAngleTable.put(0.0, 0.0);
     }
 
-    public void zero(){
+    public void zero() {
         this.currentSetpoint = 0;
         pivotEncoder.setPosition(0);
 
@@ -72,8 +73,12 @@ public class Tower extends SubsystemBase {
         return Math.abs(getPivotAngle() - angle) <= Constants.Tower.threshAngle;
     }
 
-    public void stop(){
+    public void stop() {
         pivotMotor.stopMotor();
+    }
+
+    public double getOutputCurrent() {
+        return pivotMotor.getOutputCurrent();
     }
 
     private void configTower() {
@@ -81,32 +86,28 @@ public class Tower extends SubsystemBase {
         pivotMotor.restoreFactoryDefaults();
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus1, 
-            500);
+                PeriodicFrame.kStatus1,
+                500);
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus2, 
-            500);
+                PeriodicFrame.kStatus2,
+                500);
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus3,
-            0
-        );
+                PeriodicFrame.kStatus3,
+                0);
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus4,
-            0   
-        );
+                PeriodicFrame.kStatus4,
+                0);
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus5,
-            0
-        );
+                PeriodicFrame.kStatus5,
+                0);
 
         pivotMotor.setPeriodicFramePeriod(
-            PeriodicFrame.kStatus6,
-            0
-        );
+                PeriodicFrame.kStatus6,
+                0);
         pivotMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
         pivotMotor.setSmartCurrentLimit(Constants.Tower.towerCurrentLimit);
         pivotMotor.setIdleMode(IdleMode.kBrake);
@@ -116,8 +117,8 @@ public class Tower extends SubsystemBase {
         pivotPIDController.setP(Constants.Tower.pivotKP);
         pivotPIDController.setOutputRange(Constants.Tower.maxNegPower, Constants.Tower.maxPosPower);
         pivotMotor.setInverted(true);
-        
+
         pivotMotor.burnFlash();
-        
+
     }
 }

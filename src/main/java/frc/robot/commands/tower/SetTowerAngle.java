@@ -14,6 +14,7 @@ public class SetTowerAngle extends Command {
 
     @Override
     public void initialize(){
+        System.out.println("run tower auto");
         tower.setPivotAngle(angle);
     }
     @Override

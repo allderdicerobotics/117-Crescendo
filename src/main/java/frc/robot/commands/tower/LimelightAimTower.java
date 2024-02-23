@@ -2,7 +2,6 @@ package frc.robot.commands.tower;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
-import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Tower;
 import frc.robot.subsystems.Vision;
 
@@ -25,12 +24,13 @@ public class LimelightAimTower extends Command {
          */
         
         var dist = limelight.getTagDistance();
-        if (dist.isPresent()){
-            // double dist = poseEstimator.getDistSpeaker(poseEstimator.getPose());
-            double angle = tower.interpolateAngle(dist.get());
-            if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
-            tower.setPivotAngle(angle);
-        }
+
+            
+        // double dist = poseEstimator.getDistSpeaker(poseEstimator.getPose());
+        double angle = tower.interpolateAngle(dist);
+        if (Math.abs(tower.getPivotAngle() - angle) < Constants.Tower.threshAngle) {
+        tower.setPivotAngle(angle);
+        
         }
         
     }

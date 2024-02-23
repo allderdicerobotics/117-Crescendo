@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "DriveBackAuto"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "aimTowerInitial"
@@ -53,12 +59,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DriveBackAuto"
           }
         }
       ]

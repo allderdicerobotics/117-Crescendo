@@ -22,6 +22,7 @@ import frc.robot.commands.shooter.ShootAmp;
 import frc.robot.commands.tower.MoveTowerDown;
 import frc.robot.commands.tower.MoveTowerUp;
 import frc.robot.commands.tower.SetTowerAngle;
+import frc.robot.commands.tower.ZeroTower;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -42,7 +43,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
     // The robot's subsystems
+    
     private final Drive swerve = new Drive();
+    private final SendableChooser<Command> autoChooser;
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
@@ -50,7 +53,7 @@ public class RobotContainer {
     private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
     private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,false);
 
-    private final SendableChooser<Command> autoChooser;
+    
     
 
     PS4Controller driverController = Constants.Operator.driverController;
@@ -61,11 +64,12 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Make the AutoChooser (default to Driving Backwards with no commands)
-        autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
         NamedCommands.registerCommand("aimTowerInitial", new SetTowerAngle(tower, Constants.Auto.towerAngleInitial));
         NamedCommands.registerCommand("rampWheels", new ReadyShooter(shooter));
         NamedCommands.registerCommand("speakerShoot", new SpeakerShot(indexer));
         NamedCommands.registerCommand("intakePiece", new IntakePiece(intake, indexer));
+        
+        autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
 
 
         // Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
@@ -97,7 +101,7 @@ public class RobotContainer {
          */
         
         Constants.Operator.intakeTrigger
-            .whileTrue(new IntakePiece(intake, indexer));
+            .toggleOnTrue(new IntakePiece(intake, indexer));
         //     // .onFalse(new RunCommand(() -> {intake.stop(); indexer.stop();}));
 
         Constants.Operator.resetGyroTrigger
@@ -110,7 +114,7 @@ public class RobotContainer {
             .whileTrue(new MoveTowerDown(tower));
         
         Constants.Operator.towerZeroTrigger
-            .whileTrue(new RunCommand(() -> tower.zero()));//new ZeroTower(tower, null));
+            .onTrue(new ZeroTower(tower));
 
         Constants.Operator.reverseIntakeTrigger
             .whileTrue(new ReverseIntake(intake));
@@ -122,7 +126,7 @@ public class RobotContainer {
         //     .whileTrue(new ShootAmp(shooter, indexer));
             
         Constants.Operator.shooterRampTrigger
-            .whileTrue(new ReadyShooter(shooter));
+            .toggleOnTrue(new ReadyShooter(shooter));
 
         Constants.Operator.shootSpeakerTrigger
             .whileTrue(new SpeakerShot(indexer));
@@ -141,6 +145,9 @@ public class RobotContainer {
 
         Constants.Operator.rightClimberDownTrigger
             .whileTrue(new MoveDownClimber(rightClimber));
+
+        Constants.Operator.towerShootPositionTrigger
+            .onTrue(new SetTowerAngle(tower, 345));
 
     }
 
