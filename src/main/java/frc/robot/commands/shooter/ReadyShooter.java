@@ -15,6 +15,7 @@ public class ReadyShooter extends Command {
 
     @Override
     public void initialize(){
+        System.out.println("Shooter Auto");
         shooter.run(Constants.Shooter.speakerRPM);
     }
     @Override

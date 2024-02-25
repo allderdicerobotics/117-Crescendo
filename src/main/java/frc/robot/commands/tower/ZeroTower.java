@@ -23,12 +23,11 @@ public class ZeroTower extends Command {
 
     @Override
     public boolean isFinished() {
-        return tower.getOutputCurrent() > 15;
+        return tower.atZero();
     }
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("here");
         tower.stop();
         tower.zero();
     }

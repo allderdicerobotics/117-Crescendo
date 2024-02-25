@@ -12,9 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "DriveBackAuto"
+            "name": "outOfStowed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroTower"
           }
         },
         {
@@ -24,41 +30,21 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "rampWheels"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "shootPiece"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "speakerShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "zeroTower"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DriveBackAuto"
           }
         }
       ]

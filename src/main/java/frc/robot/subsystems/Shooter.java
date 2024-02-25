@@ -141,8 +141,8 @@ public class Shooter extends SubsystemBase {
         topMotor.setSmartCurrentLimit(Constants.Shooter.shooterCurrentLimit);
         bottomMotor.setSmartCurrentLimit(Constants.Shooter.shooterCurrentLimit);
 
-        topMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
-        bottomMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
+        // topMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
+        // bottomMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
 
         topMotor.setIdleMode(IdleMode.kCoast);
         bottomMotor.setIdleMode(IdleMode.kCoast);

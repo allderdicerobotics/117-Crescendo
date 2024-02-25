@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.sensors.ThriftyEncoder;
 
 public final class Constants {
-    public static final double globalVoltageCompensation = 12;
+    public static final double globalVoltageCompensation = 10;
 
     public static final class Swerve {
-        public static final double stickDeadband = 0.3;
+        public static final double stickDeadband = 0.2;
 
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -191,9 +191,8 @@ public final class Constants {
         private static final int resetGyroButton = 4;
         public static Trigger resetGyroTrigger = new JoystickButton(driverController, resetGyroButton);
 
-
-        // private static final int shootAmpButton = 5;
-        // public static Trigger shootAmpTrigger = new JoystickButton(driverController, shootAmpButton);
+        private static final int shootAmpButton = 5;
+        public static Trigger shootAmpTrigger = new JoystickButton(driverController, shootAmpButton);
 
         private static final int shootSpeakerButton = 8;
         public static Trigger shootSpeakerTrigger = new JoystickButton(driverController, shootSpeakerButton);
@@ -201,7 +200,6 @@ public final class Constants {
         private static final int toggleAimButton = 14;
         public static Trigger toggleAimTrigger = new JoystickButton(driverController, toggleAimButton);
         
-
         
 
         // Operator Button Bindings
@@ -215,32 +213,36 @@ public final class Constants {
         private static final int towerDownButton = 3;
         public static Trigger towerDownTrigger = new JoystickButton(operatorController, towerDownButton);
 
-        private static final int reverseIntakeButton = 4;
-        public static Trigger reverseIntakeTrigger = new JoystickButton(operatorController, reverseIntakeButton);
+        private static final int farShotButton = 4;
+        public static Trigger farShotTrigger = new JoystickButton(operatorController, farShotButton);
         
-        private static final int towerAmpPositionButton = 5; 
-        public static Trigger towerAmpPositionTrigger = new JoystickButton(operatorController, towerAmpPositionButton);
-
-        private static final int towerShootPositionButton = 6;
-        public static Trigger towerShootPositionTrigger = new JoystickButton(operatorController, towerShootPositionButton);
-
-        private static final int leftClimberUpButton = 7;
+        private static final int leftClimberUpButton = 5;
         public static Trigger leftClimberUpTrigger = new JoystickButton(operatorController, leftClimberUpButton);
 
-        private static final int rightClimberUpButton = 8;
+        private static final int rightClimberUpButton = 6;
         public static Trigger rightClimberUpTrigger = new JoystickButton(operatorController, rightClimberUpButton);
 
-        private static final int shootAmpButton = 9;
-        public static Trigger shootAmpTrigger = new JoystickButton(operatorController, shootAmpButton);
-
-        private static final int shooterRampButton = 10;
+        private static final int shooterRampButton = 7;
         public static Trigger shooterRampTrigger = new JoystickButton(operatorController, shooterRampButton);
 
-        private static final int leftClimberDownButton = 11;
+        // private static final int towerAmpPositionButton = 5; 
+        // public static Trigger towerAmpPositionTrigger = new JoystickButton(operatorController, towerAmpPositionButton);
+
+        private static final int midShotButton = 8;
+        public static Trigger midShotTrigger = new JoystickButton(operatorController, midShotButton);
+
+        private static final int leftClimberDownButton = 9;
         public static Trigger leftClimberDownTrigger = new JoystickButton(operatorController, leftClimberDownButton);
 
-        private static final int rightClimberDownButton = 12;
+        private static final int rightClimberDownButton = 10;
         public static Trigger rightClimberDownTrigger = new JoystickButton(operatorController, rightClimberDownButton);
+
+        private static final int ampTowerButton = 11;
+        public static Trigger ampTowerTrigger = new JoystickButton(operatorController, ampTowerButton);
+
+        private static final int speakerTowerButton = 12;
+        public static Trigger speakerTowerTrigger = new JoystickButton(operatorController, speakerTowerButton);
+
 
         
 
@@ -274,15 +276,16 @@ public final class Constants {
 
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
-        public static final double speakerRPM = 5000;
+        public static final double speakerRPM = 4000;
         public static final double apmRPM = 750;
         public static final double threshRPM = 5;
     }
 
     public static final class Tower {
         public static final int motorID = 14; // TODO: Get the ID
+        public static final int hallEffectChannel = 7;
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
-        public static final double pivotKP = 0.01;
+        public static final double pivotKP = 0.025;
         public static final double threshAngle = 0.1; // deg
         public static final int towerCurrentLimit = 20;
         public static final double maxNegPower = -0.2;
@@ -331,7 +334,7 @@ public final class Constants {
 
     }
     public static final class Auto {
-        public static final double towerAngleInitial = 350.0;
+        public static final double towerAngleInitial = 255.0;
         
     }
 }

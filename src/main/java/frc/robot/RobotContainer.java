@@ -7,13 +7,17 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.climber.MoveDownClimber;
 import frc.robot.commands.climber.MoveUpClimber;
 import frc.robot.commands.climber.ZeroClimbers;
+import frc.robot.commands.drive.LimelightDrive;
 import frc.robot.commands.drive.TeleopSwerve;
+import frc.robot.commands.groups.LimelightAimDrive;
 import frc.robot.commands.indexer.SpeakerShot;
 import frc.robot.commands.intake.IntakePiece;
 import frc.robot.commands.intake.ReverseIntake;
@@ -30,6 +34,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Tower;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -50,6 +55,7 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final Indexer indexer = new Indexer();
     private final Tower tower = new Tower();
+    private final Vision limelight;
     private final Climber leftClimber = new Climber(Constants.Climber.leftMotorID,false);
     private final Climber rightClimber = new Climber(Constants.Climber.rightMotorID,false);
 
@@ -63,13 +69,17 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        var alliance = DriverStation.getAlliance();
+        var layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+		limelight = new Vision(Constants.Vision.cameraName, layout, alliance.get());
         // Make the AutoChooser (default to Driving Backwards with no commands)
-        NamedCommands.registerCommand("aimTowerInitial", new SetTowerAngle(tower, Constants.Auto.towerAngleInitial));
-        NamedCommands.registerCommand("rampWheels", new ReadyShooter(shooter));
-        NamedCommands.registerCommand("speakerShoot", new SpeakerShot(indexer));
+        NamedCommands.registerCommand("outOfStowed", new MoveTowerUp(tower).withTimeout(1));
+        NamedCommands.registerCommand("aimTowerInitial", new SetTowerAngle(tower, Constants.Auto.towerAngleInitial).withTimeout(1.5));
+        NamedCommands.registerCommand("shootPiece", new ReadyShooter(shooter).withTimeout(2).andThen(new SpeakerShot(indexer).withTimeout(1)));
+        NamedCommands.registerCommand("zeroTower", new ZeroTower(tower));
         NamedCommands.registerCommand("intakePiece", new IntakePiece(intake, indexer));
         
-        autoChooser = AutoBuilder.buildAutoChooser("DriveBackAuto");
+        autoChooser = AutoBuilder.buildAutoChooser("Curvedpath");
 
 
         // Command zeroClimbers = new ZeroClimbers(leftClimber, rightClimber);
@@ -79,6 +89,9 @@ public class RobotContainer {
         
         tower.zero();
         // Default Command for SwerveDrive is TeleOpSwerve
+        // tower.setDefaultCommand(
+        //     new ZeroTower(tower)
+        // );
         swerve.setDefaultCommand(
             // The left stick controls translation of the robot.
             // Turning is controlled by the X axis of the right stick.
@@ -90,7 +103,7 @@ public class RobotContainer {
                 () -> true
             )
         );
-        Constants.Logging.commandTab.add(autoChooser).withSize(2,1);
+        Constants.Logging.commandTab.add("Auto Chooser", autoChooser).withSize(2,1);
         // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
@@ -101,7 +114,7 @@ public class RobotContainer {
          */
         
         Constants.Operator.intakeTrigger
-            .toggleOnTrue(new IntakePiece(intake, indexer));
+            .whileTrue(new IntakePiece(intake, indexer));
         //     // .onFalse(new RunCommand(() -> {intake.stop(); indexer.stop();}));
 
         Constants.Operator.resetGyroTrigger
@@ -116,14 +129,11 @@ public class RobotContainer {
         Constants.Operator.towerZeroTrigger
             .onTrue(new ZeroTower(tower));
 
-        Constants.Operator.reverseIntakeTrigger
-            .whileTrue(new ReverseIntake(intake));
+        Constants.Operator.farShotTrigger
+            .onTrue(new SetTowerAngle(tower, 576));
 
-        Constants.Operator.towerShootPositionTrigger
-            .onTrue(new SetTowerAngle(tower, 1054));
-
-        // Constants.Operator.towerAmpPositionTrigger
-        //     .whileTrue(new ShootAmp(shooter, indexer));
+        Constants.Operator.ampTowerTrigger
+            .toggleOnTrue(new SetTowerAngle(tower, 1310));
             
         Constants.Operator.shooterRampTrigger
             .toggleOnTrue(new ReadyShooter(shooter));
@@ -134,20 +144,25 @@ public class RobotContainer {
         Constants.Operator.shootAmpTrigger
             .whileTrue(new ShootAmp(shooter,indexer));
 
-        Constants.Operator.leftClimberUpTrigger
-            .whileTrue(new MoveUpClimber(leftClimber));
+        // Constants.Operator.leftClimberUpTrigger
+        //     .whileTrue(new MoveUpClimber(leftClimber));
 
-        Constants.Operator.leftClimberDownTrigger
-            .whileTrue(new MoveDownClimber(leftClimber));
+        // Constants.Operator.leftClimberDownTrigger
+        //     .whileTrue(new MoveDownClimber(leftClimber));
         
-        Constants.Operator.rightClimberUpTrigger
-            .whileTrue(new MoveUpClimber(rightClimber));
+        // Constants.Operator.rightClimberUpTrigger
+        //     .whileTrue(new MoveUpClimber(rightClimber));
 
-        Constants.Operator.rightClimberDownTrigger
-            .whileTrue(new MoveDownClimber(rightClimber));
+        // Constants.Operator.rightClimberDownTrigger
+        //     .whileTrue(new MoveDownClimber(rightClimber));
 
-        Constants.Operator.towerShootPositionTrigger
-            .onTrue(new SetTowerAngle(tower, 345));
+        Constants.Operator.midShotTrigger
+            .onTrue(new SetTowerAngle(tower, 460));
+        Constants.Operator.speakerTowerTrigger
+            .onTrue(new SetTowerAngle(tower, 255));
+
+        Constants.Operator.toggleAimTrigger
+            .toggleOnFalse(new LimelightDrive(swerve, limelight, driverController));
 
     }
 

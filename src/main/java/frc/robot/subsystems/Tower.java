@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import frc.robot.misc.Constants;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
@@ -23,12 +24,14 @@ public class Tower extends SubsystemBase {
     private CANSparkMax pivotMotor;
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
+    private DigitalInput hallEffect;
     private double currentSetpoint = 0;
 
     public Tower() {
         pivotMotor = new CANSparkMax(Constants.Tower.motorID, MotorType.kBrushless);
         pivotEncoder = pivotMotor.getEncoder();
         pivotPIDController = pivotMotor.getPIDController();
+        hallEffect = new DigitalInput(Constants.Tower.hallEffectChannel);
 
         configTower();
 
@@ -67,6 +70,9 @@ public class Tower extends SubsystemBase {
         this.currentSetpoint = 0;
         pivotEncoder.setPosition(0);
 
+    }
+    public boolean atZero(){
+        return !hallEffect.get();
     }
 
     public boolean nearAngle(double angle) {

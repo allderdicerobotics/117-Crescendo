@@ -32,7 +32,7 @@ public class SwerveModule {
             Constants.Swerve.angleKD);
     
 
-    private GenericEntry driveSpeed, turnAngle, desiredSpeed, desiredAngle;
+    private GenericEntry driveSpeed, turnAngle, desiredSpeed, desiredAngle, appliedOutput, outputCurrent;
 
     
     public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name,
@@ -59,6 +59,12 @@ public class SwerveModule {
             .add("Speed " + name, 0).getEntry();
         desiredAngle = Constants.Logging.driveTab
             .add("State " + name, 0).getEntry();
+
+        // outputCurrent = Constants.Logging.driveTab
+        //     .add(name + " Output Current", 0).getEntry();
+        
+        // appliedOutput = Constants.Logging.driveTab
+        //     .add(name + " Applied Output", 0).getEntry();
 
     }
 
@@ -196,6 +202,8 @@ public class SwerveModule {
         turnAngle.setDouble(turnAbsoluteEncoder.get().getDegrees());
         desiredSpeed.setDouble(desiredState.speedMetersPerSecond);
         desiredAngle.setDouble(desiredState.angle.getDegrees());
+        // outputCurrent.setDouble(turnMotor.getOutputCurrent());
+        // appliedOutput.setDouble(turnMotor.getAppliedOutput());
 
     }
 

@@ -12,6 +12,7 @@ public class SpeakerShot extends Command{
 
     @Override
     public void initialize(){
+        System.out.println("Shoot Piece from Indexer Auto");
         indexer.run(0.5);
     }
 
