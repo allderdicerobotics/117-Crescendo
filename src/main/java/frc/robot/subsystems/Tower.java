@@ -6,9 +6,11 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import frc.robot.misc.Constants;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Tower extends SubsystemBase {
@@ -17,29 +19,26 @@ public class Tower extends SubsystemBase {
     private CANSparkMax pivotMotor;
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
+    private DigitalInput hallEffect;
 
     public Tower() {
         pivotMotor = new CANSparkMax(Constants.Tower.motorID, MotorType.kBrushless);
         pivotEncoder = pivotMotor.getEncoder();
         pivotPIDController = pivotMotor.getPIDController();
+        hallEffect = new DigitalInput(Constants.Tower.hallEffectChannel);
 
         configTower();
 
-        towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of Tower
+        towerAngleTable = new InterpolatingDoubleTreeMap(); // Use Linear Interpolation to Estimate Correct Angle of
+                                                            // Tower
         populateTowerAngleTable();
+
+        Constants.Logging.intakeShooterTowerTab.addDouble("Tower Angle", this::getPivotAngle).withSize(2, 1);
+
     }
 
-    public void moveTowerUp(){
-        if (withinLegalBounds()){
-            pivotMotor.set(0.5);
-        }
-        
-    }
-
-    public void moveTowerDown(){
-        if (withinLegalBounds()){
-            pivotMotor.set(-0.5);
-        }
+    public void moveTower(double speed) {
+        pivotMotor.set(speed);
     }
 
     public void setPivotAngle(double pivotAngle) {
@@ -61,30 +60,64 @@ public class Tower extends SubsystemBase {
         towerAngleTable.put(0.0, 0.0);
     }
 
+    public void zero() {
+        pivotEncoder.setPosition(0);
+
+    }
+    public boolean atZero(){
+        return !hallEffect.get();
+    }
+
     public boolean nearAngle(double angle) {
         return Math.abs(getPivotAngle() - angle) <= Constants.Tower.threshAngle;
     }
 
-    public void stop(){
+    public void stop() {
         pivotMotor.stopMotor();
     }
-    private boolean withinLegalBounds(){
-        var pivotAngle = getPivotAngle();
-        return (Constants.Tower.minAngle < pivotAngle && pivotAngle < Constants.Tower.maxAngle);
+
+    public double getOutputCurrent() {
+        return pivotMotor.getOutputCurrent();
     }
+
     private void configTower() {
+
         pivotMotor.restoreFactoryDefaults();
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus1,
+                500);
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus2,
+                500);
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus3,
+                0);
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus4,
+                0);
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus5,
+                0);
+
+        pivotMotor.setPeriodicFramePeriod(
+                PeriodicFrame.kStatus6,
+                0);
         pivotMotor.enableVoltageCompensation(Constants.globalVoltageCompensation);
         pivotMotor.setSmartCurrentLimit(Constants.Tower.towerCurrentLimit);
         pivotMotor.setIdleMode(IdleMode.kBrake);
 
         pivotEncoder.setPositionConversionFactor(Constants.Tower.gearReduction);
-        pivotEncoder.setPosition(0);
 
         pivotPIDController.setP(Constants.Tower.pivotKP);
         pivotPIDController.setOutputRange(Constants.Tower.maxNegPower, Constants.Tower.maxPosPower);
+        pivotMotor.setInverted(true);
 
         pivotMotor.burnFlash();
-        pivotMotor.setInverted(true);
+
     }
 }

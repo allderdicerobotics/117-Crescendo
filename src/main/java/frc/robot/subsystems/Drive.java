@@ -1,11 +1,17 @@
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.gos.lib.swerve.SwerveDrivePublisher;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -25,17 +31,25 @@ public class Drive extends SubsystemBase {
 	// Odometry class for tracking robot pose
 	private PoseEstimator swerveOdometry;
 	private Vision limelight;
-
+	private AprilTagFieldLayout layout;
 	private NavX navx = new NavX();
 	private SwerveDrivePublisher publisher;
+	private boolean fieldRelative = true;
+	private boolean openLoop = false;
 
 	/** Creates a new DriveSubsystem. */
 	public Drive() {
+		
 		resetEncoders();
 		publisher = new SwerveDrivePublisher();
 
 		Timer.delay(1);
-		limelight = new Vision();
+		layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+        // Mirror Field based on which team we are on
+		var alliance = DriverStation.getAlliance();
+		limelight = new Vision(Constants.Vision.cameraName, layout, alliance.get());
+
 		swerveOdometry = new PoseEstimator(this, limelight, navx, true);
 
 		AutoBuilder.configureHolonomic(
@@ -45,7 +59,7 @@ public class Drive extends SubsystemBase {
 				this::driveRobotRelative,
 				new HolonomicPathFollowerConfig(
 						new PIDConstants(5.0),
-						new PIDConstants(5.0),
+						new PIDConstants(4.0),
 						Constants.Swerve.maxSpeed,
 						Units.inchesToMeters(Constants.Swerve.wheelBase),
 						new ReplanningConfig()),
@@ -55,13 +69,14 @@ public class Drive extends SubsystemBase {
 					// This will flip the path being followed to the red side of the field.
 					// THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-					var alliance = DriverStation.getAlliance();
 					if (alliance.isPresent()) {
 						return alliance.get() == DriverStation.Alliance.Red;
 					}
 					return false;
 				},
 				this);
+		resetOrientation();
+		PathPlannerLogging.setLogActivePathCallback(this::setTraj);
 	}
 
 	@Override
@@ -82,7 +97,7 @@ public class Drive extends SubsystemBase {
 	 * @param fieldRelative Whether the provided x and y speeds are relative to the
 	 *                      field.
 	 */
-	public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean openLoop) {
+	public void drive(Translation2d translation, double rotation) {
 		var swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
 				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
 						translation.getX(),
@@ -102,7 +117,23 @@ public class Drive extends SubsystemBase {
 		Mod3.module.setDesiredState(swerveModuleStates[3], openLoop);
 
 	}
+	public void switchFieldRelative(){
+		if (getFieldRelative()){
+			System.out.println("Switching to Robot Centric");
+		} else{
+			System.out.println("Switching to Field Relative");
+		}
+		
+		setFieldRelative(!getFieldRelative());
+	}
 
+	public void setFieldRelative(boolean focEnabled){
+		this.fieldRelative = focEnabled;
+	}
+
+	public boolean getFieldRelative(){
+		return this.fieldRelative;
+	}
 	/**
 	 * Sets the swerve ModuleStates.
 	 *
@@ -158,7 +189,12 @@ public class Drive extends SubsystemBase {
 
 	public void driveRobotRelative(ChassisSpeeds speeds) {
 		Translation2d translate = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
-		drive(translate, speeds.omegaRadiansPerSecond, false, false);
+		setFieldRelative(false);
+		drive(translate, speeds.omegaRadiansPerSecond);
+		setFieldRelative(true);
 	}
-
+	public void setTraj(List<Pose2d> trajs){
+		swerveOdometry.field2d.getObject("Traj").setPoses(trajs);
+		
+	}
 }

@@ -9,10 +9,12 @@ public class SetTowerAngle extends Command {
     public SetTowerAngle(Tower tower, double angle) {
         this.tower = tower;
         this.angle = angle;
+        addRequirements(tower);
     }
 
     @Override
-    public void execute(){
+    public void initialize(){
+        System.out.println("run tower auto");
         tower.setPivotAngle(angle);
     }
     @Override

@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.misc.Constants;
@@ -28,14 +29,14 @@ public class Climber extends SubsystemBase {
     }
 
     public void moveUp() {
-        if (withinLegalBounds()){
-            climberMotor.set(0.5);
-        }
+        // if (withinLegalBounds()){
+        climberMotor.set(1);
+        // }
     }
     public void moveDown(){
-        if (withinLegalBounds()){
-            climberMotor.set(-0.5);
-        }
+        // if (withinLegalBounds()){
+        climberMotor.set(-1);
+        // }
     }
 
     
@@ -58,11 +59,6 @@ public class Climber extends SubsystemBase {
 
     public boolean isClimberZeroed() {
         return (climberMotor.getOutputCurrent() < Constants.Climber.homeCurrent);
-    }
-
-    private boolean withinLegalBounds(){
-        var currentPosition = getPosition();
-        return (0 <  currentPosition && currentPosition < Constants.Climber.legalMax);
     }
     private void configClimber(boolean inverted) {
         climberMotor.restoreFactoryDefaults();
@@ -87,6 +83,36 @@ public class Climber extends SubsystemBase {
         climberPIDController.setD(Constants.Climber.climberKD);
 
         climberPIDController.setOutputRange(-0.5, 0.5);
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus1,
+            500
+        );
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus2,
+            0
+        );
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus3,
+            0
+        );
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus4,
+            0
+        );
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus5,
+            0
+        );
+
+        climberMotor.setPeriodicFramePeriod(
+            PeriodicFrame.kStatus6,
+            0
+        );
 
         climberMotor.burnFlash();
     }

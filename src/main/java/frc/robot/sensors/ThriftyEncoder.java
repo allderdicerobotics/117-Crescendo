@@ -32,6 +32,9 @@ public class ThriftyEncoder implements Supplier<Rotation2d> {
         return getRawPosition().plus(offset);
     }
 
+    public double getDegrees(){
+        return getRawPosition().getDegrees();
+    }
     // Update the offset (radians)
     public ThriftyEncoder shiftRads(double radians) {
         offset = offset.plus(new Rotation2d(radians));
