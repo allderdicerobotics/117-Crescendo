@@ -28,7 +28,7 @@ public class ShootAmp extends Command {
          * -> spit the piece out of the indexer at full speed into shooter wheels
          */
         if ((shooter.atSpeed(Constants.Shooter.apmRPM) || shooter.aboveSpeed(Constants.Shooter.apmRPM)) && !setIndexer) {
-            Timer.delay(0.5);
+            Timer.delay(0.5); // let wheels maintain desirable speed
             indexer.run(0.35);
             setIndexer = true;
         }

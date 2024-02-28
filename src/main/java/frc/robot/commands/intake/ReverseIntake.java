@@ -15,7 +15,7 @@ public class ReverseIntake extends Command{
     @Override
     public void initialize(){
         intake.reverse();
-        indexer.run(-0.5);
+        indexer.run(-0.5); // reverse indexer at 50% speed
     }
 
     @Override

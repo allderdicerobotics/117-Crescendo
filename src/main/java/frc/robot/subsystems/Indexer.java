@@ -111,6 +111,8 @@ public class Indexer extends SubsystemBase {
     }
 
     public boolean indexerFilled() {
+        // System.out.println(beamBreakSensor.getRange());
+        // System.out.println(beamBreakSensor.getStatus());
         if (beamBreakSensor.getStatus() == Status.Valid) {
             return beamBreakSensor.getRange() <= Constants.Indexer.threshDist;
         }

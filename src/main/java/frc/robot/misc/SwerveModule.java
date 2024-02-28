@@ -1,6 +1,5 @@
 package frc.robot.misc;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.ThriftyEncoder;
 
 import com.revrobotics.CANSparkMax;
@@ -32,7 +31,7 @@ public class SwerveModule {
             Constants.Swerve.angleKD);
     
 
-    private GenericEntry driveSpeed, turnAngle, desiredSpeed, desiredAngle, appliedOutput, outputCurrent;
+    private GenericEntry driveSpeed, turnAngle, desiredSpeed, desiredAngle;
 
     
     public SwerveModule(int driveMotorID, int turningMotorID, ThriftyEncoder thriftyEncoder, String name,

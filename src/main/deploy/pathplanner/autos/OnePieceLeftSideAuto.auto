@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 7.0
+      "x": 1.0,
+      "y": 6.0
     },
     "rotation": 0
   },
@@ -44,7 +44,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "DriveBackAuto"
+            "pathName": "LeftSideAuto"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakePiece"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "IntakePieceLeftAuto"
+                }
+              }
+            ]
           }
         }
       ]

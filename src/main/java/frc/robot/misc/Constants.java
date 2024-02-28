@@ -53,19 +53,19 @@ public final class Constants {
 
 
         /* Limelight Aim PID Values */
-        public static final double adjustKP = 0.1;
-        public static final double adjustKI = 0.0;
+        public static final double adjustKP = 0.01;
+        public static final double adjustKI = 0.00;
         public static final double adjustKD = 0.0;
         /* Drive Motor PID Values */
         public static final double driveKP = 0.001; // 0.00005 on our robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKFF = 0.3;
+        public static final double driveKFF = 0.25;
 
         /* Drive Motor Characterization Values */
-        // public static final double driveKS = 1.0;
-        // public static final double driveKV = 2.44;
-        // public static final double driveKA = 0.27;
+        public static final double driveKS = 1.0;
+        public static final double driveKV = 2.44;
+        public static final double driveKA = 0.27;
 
         /* Drive Motor Conversion Factors */
         public static final double driveConversionPositionFactor = (wheelDiameter * Math.PI) / driveGearRatio;
@@ -81,7 +81,7 @@ public final class Constants {
         public static final double turnPIDMaxInput = 2.0 * Math.PI;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.5 / 2.0; // meters per second
+        public static final double maxSpeed = 4.5 * 0.75; // meters per second
         public static final double maxAccel = 250.0;
         public static final double maxAngularVelocity = 4.0 * Math.PI;// 11.5; // Math.PI on our robot
         public static final double maxAngularAccel = Math.PI * 4.0;
@@ -95,7 +95,7 @@ public final class Constants {
         public static final class Mod0 {
             public static final int driveMotorID = 7;
             public static final int angleMotorID = 8; // 6;
-            public static final int thriftyEncoderID = 2;
+            public static final int thriftyEncoderID = 3;
 
             public static final double angleOffset = -150.45;//-32.3;//-150.5; //-65.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
@@ -133,7 +133,7 @@ public final class Constants {
 
             public static final int driveMotorID = 9;
             public static final int angleMotorID = 6;// 8;
-            public static final int thriftyEncoderID = 3;
+            public static final int thriftyEncoderID = 2;
             public static final double angleOffset = -151.1;//-27.2;//210; //-152.3; //-58.7; //
             public static final ThriftyEncoder thriftyEncoder = new ThriftyEncoder(new AnalogInput(thriftyEncoderID))
                     .shiftDegs(angleOffset);
@@ -185,6 +185,9 @@ public final class Constants {
 
         // Driver Button Bindings
 
+        private static final int sourceIntakeButton = 1;
+        public static final Trigger sourceIntakeTrigger = new JoystickButton(driverController, sourceIntakeButton);
+
         private static final int intakeButton = 7;
         public static Trigger intakeTrigger = new JoystickButton(driverController, intakeButton);
 
@@ -200,6 +203,8 @@ public final class Constants {
         private static final int toggleAimButton = 14;
         public static Trigger toggleAimTrigger = new JoystickButton(driverController, toggleAimButton);
         
+        private static final int reverseIntakeButton = 6;
+        public static Trigger reverseIntakeTrigger = new JoystickButton(driverController, reverseIntakeButton);
         
 
         // Operator Button Bindings
@@ -272,12 +277,12 @@ public final class Constants {
         public static final double shooterKI = 0.0;
         public static final double shooterKD = 0.0;
 
-        public static final double shooterKFF = 1.25;
+        public static final double shooterKFF = 0.75;
 
         public static final double maxNegPower = -0.5;
         public static final double maxPosPower = 1.0;
-        public static final double speakerRPM = 4000;
-        public static final double apmRPM = 750;
+        public static final double speakerRPM = 5000;
+        public static final double apmRPM = 400;
         public static final double threshRPM = 5;
     }
 
@@ -285,8 +290,8 @@ public final class Constants {
         public static final int motorID = 14; // TODO: Get the ID
         public static final int hallEffectChannel = 7;
         public static final double gearReduction = ((64.0 / 22.0) * 25.0) / 1.0;
-        public static final double pivotKP = 0.025;
-        public static final double threshAngle = 0.1; // deg
+        public static final double pivotKP = 0.04;
+        public static final double threshAngle = 0.05; // deg
         public static final int towerCurrentLimit = 20;
         public static final double maxNegPower = -0.2;
         public static final double maxPosPower = 0.2;
@@ -319,10 +324,14 @@ public final class Constants {
 
         public static final Transform3d robotToCam = new Transform3d(
                 new Translation3d(
-                        Units.inchesToMeters(2),
-                        Units.inchesToMeters(3),
-                        Units.inchesToMeters(10)),
-                new Rotation3d());
+                        Units.inchesToMeters(-11),
+                        Units.inchesToMeters(0),
+                        Units.inchesToMeters(0)),
+                new Rotation3d(
+                    Units.degreesToRadians(0),
+                    Units.degreesToRadians(-16),
+                    Units.degreesToRadians(180)
+                ));
     }
 
     public static final class Logging {

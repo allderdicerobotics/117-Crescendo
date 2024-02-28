@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5,
-      "y": 4.5
+      "x": 1.0,
+      "y": 5.5
     },
     "rotation": 0
   },
@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "aimTowerInitial"
+            "name": "outOfStowed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroTower"
           }
         },
         {
@@ -24,45 +30,45 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "rampWheels"
+                  "name": "aimTowerInitial"
                 }
               },
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 1.5
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "rampWheels"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "shootWheels"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "speakerShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "zeroTower"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2PieceLeftSide"
+            "pathName": "MidSideAuto"
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -72,50 +78,37 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 0.5
+                  "pathName": "IntakePieceMidAuto"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "rampWheels"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.5
+                  "name": "farShot"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "speakerShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "rampWheels"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootWheels"
           }
         }
       ]

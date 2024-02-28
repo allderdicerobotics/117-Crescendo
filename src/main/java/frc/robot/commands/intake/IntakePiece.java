@@ -20,13 +20,12 @@ public class IntakePiece extends Command {
         // System.out.println(indexer.sensorVal());
         
         intake.run();
-        indexer.run(0.35);
+        indexer.run(0.35); // run at 35%
         
     }
     
     @Override
     public boolean isFinished(){
-        // return false;
         return indexer.indexerFilled();
     }
 

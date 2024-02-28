@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
-import frc.robot.misc.SquaredSlewRate;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Vision;
 
@@ -16,7 +15,6 @@ public class LimelightDrive extends Command {
     private Drive swerve;
     private Vision limelight;
     private PS4Controller driverController;
-    private SquaredSlewRate slewRate;
     private PIDController turnPIDController = new PIDController(
         Constants.Swerve.adjustKP,
         Constants.Swerve.adjustKI,
@@ -27,7 +25,7 @@ public class LimelightDrive extends Command {
         this.swerve = swerve;
         this.limelight = limelight;
         this.driverController = driverController;
-        slewRate = new SquaredSlewRate(0.3, Constants.Swerve.stickDeadband);
+        turnPIDController.setTolerance(0.5);
         addRequirements(swerve);
     }
 
@@ -39,15 +37,15 @@ public class LimelightDrive extends Command {
         double strafeSpeed = driverController.getLeftX();
         double rotSpeed = driverController.getRightX();
 
-        double translationVal = slewRate.calculate(fwdSpeed);
-        double strafeVal = slewRate.calculate(strafeSpeed);
-        double rotVal = slewRate.calculate(rotSpeed);
-        // double translationVal = -MathUtil.applyDeadband(
-        //     Math.copySign(Math.pow(fwdSpeed,2), fwdSpeed)
-        //     , Constants.Swerve.stickDeadband);
-        // double strafeVal = -MathUtil.applyDeadband(
-        //     Math.copySign(Math.pow(strafeSpeed,2), strafeSpeed)
-        //     , Constants.Swerve.stickDeadband);
+        double translationVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(fwdSpeed,2), fwdSpeed)
+            , Constants.Swerve.stickDeadband);
+        double strafeVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(strafeSpeed,2), strafeSpeed)
+            , Constants.Swerve.stickDeadband);
+        double rotVal = -MathUtil.applyDeadband(
+            Math.copySign(Math.pow(rotSpeed,2), rotSpeed)
+            , Constants.Swerve.stickDeadband);;
 
         var result = limelight.getLatestResult();
         PhotonTrackedTarget speakerTarget = null;
@@ -62,7 +60,8 @@ public class LimelightDrive extends Command {
             }
             if (hasDesiredTarget && speakerTarget != null){
                 System.out.println(speakerTarget.getYaw());
-                rotVal = turnPIDController.calculate(speakerTarget.getYaw(),5);
+                // System.out.println(speakerTarget.getBestCameraToTarget().getX());
+                rotVal = turnPIDController.calculate(speakerTarget.getYaw(),0);
             }
             
             
@@ -71,9 +70,15 @@ public class LimelightDrive extends Command {
         
         swerve.drive(
             new Translation2d(translationVal,strafeVal).times(Constants.Swerve.maxSpeed),
-            rotVal * Constants.Swerve.maxAngularVelocity,
-            true,
-            false
+            rotVal * Constants.Swerve.maxAngularVelocity
         );
+    }
+    // @Override
+    // public boolean isFinished(){
+    //     return turnPIDController.atSetpoint();
+    // }
+    @Override
+    public void end(boolean interrupted){
+        
     }
 }

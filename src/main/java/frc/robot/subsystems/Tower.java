@@ -10,12 +10,7 @@ import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import frc.robot.misc.Constants;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Tower extends SubsystemBase {
@@ -25,7 +20,6 @@ public class Tower extends SubsystemBase {
     private RelativeEncoder pivotEncoder;
     private SparkPIDController pivotPIDController;
     private DigitalInput hallEffect;
-    private double currentSetpoint = 0;
 
     public Tower() {
         pivotMotor = new CANSparkMax(Constants.Tower.motorID, MotorType.kBrushless);
@@ -67,7 +61,6 @@ public class Tower extends SubsystemBase {
     }
 
     public void zero() {
-        this.currentSetpoint = 0;
         pivotEncoder.setPosition(0);
 
     }

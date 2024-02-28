@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
@@ -35,17 +34,8 @@ public class Shooter extends SubsystemBase {
 
     public void run(double rpm) {
 
-        // topMotor.set(1);
-        // topMotor.set(1);
-        // bottomMotor.set(1);
-        topShooterPID.setReference(rpm,
-                ControlType.kVelocity,
-        0);
-
-        bottomShooterPID.setReference(
-            rpm, 
-            ControlType.kVelocity,
-        0);
+        topMotor.set(rpm/Constants.Shooter.speakerRPM);
+        bottomMotor.set(rpm/Constants.Shooter.speakerRPM);
     }
 
     public double topEncoderVelocity(){
@@ -53,6 +43,11 @@ public class Shooter extends SubsystemBase {
     }
     public double bottomEncoderVelocity(){
         return bottomEncoder.getVelocity();
+    }
+
+    public void runSource(){
+        topMotor.set(-0.5);
+        bottomMotor.set(-0.5);
     }
     public void runAmp(double rpm){
         topMotor.set(0.55);

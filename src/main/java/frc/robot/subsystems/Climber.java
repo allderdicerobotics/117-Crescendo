@@ -30,12 +30,12 @@ public class Climber extends SubsystemBase {
 
     public void moveUp() {
         // if (withinLegalBounds()){
-        climberMotor.set(0.75);
+        climberMotor.set(1);
         // }
     }
     public void moveDown(){
         // if (withinLegalBounds()){
-        climberMotor.set(-0.75);
+        climberMotor.set(-1);
         // }
     }
 
