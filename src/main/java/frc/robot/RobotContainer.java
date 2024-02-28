@@ -21,6 +21,7 @@ import frc.robot.commands.indexer.SourceIntake;
 import frc.robot.commands.indexer.SpeakerShot;
 import frc.robot.commands.intake.IntakePiece;
 import frc.robot.commands.intake.ReverseIntake;
+import frc.robot.commands.shooter.RampAmp;
 import frc.robot.commands.shooter.ReadyShooter;
 import frc.robot.commands.shooter.ShootAmp;
 import frc.robot.commands.tower.MoveTowerDown;
@@ -141,7 +142,7 @@ public class RobotContainer {
             .onTrue(new SetTowerAngle(tower, 618));
 
         Constants.Operator.ampTowerTrigger
-            .onTrue(new SetTowerAngle(tower, 1310).beforeStarting(new ZeroTower(tower)));
+            .onTrue(new SetTowerAngle(tower, 1310).alongWith(new RampAmp(shooter)).beforeStarting(new ZeroTower(tower)));
             
         Constants.Operator.shooterRampTrigger
             .toggleOnTrue(new ReadyShooter(shooter));
@@ -150,7 +151,7 @@ public class RobotContainer {
             .whileTrue(new SpeakerShot(indexer));
 
         Constants.Operator.shootAmpTrigger
-            .whileTrue(new ShootAmp(shooter,indexer));
+            .whileTrue(new ShootAmp(indexer));
 
         Constants.Operator.leftClimberUpTrigger
             .whileTrue(new MoveUpClimber(leftClimber));

@@ -1,7 +1,5 @@
 package frc.robot.commands.shooter;
 
-import com.fasterxml.jackson.databind.introspect.ConcreteBeanPropertyBase;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.misc.Constants;
 import frc.robot.subsystems.Shooter;

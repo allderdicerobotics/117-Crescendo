@@ -46,8 +46,8 @@ public class Shooter extends SubsystemBase {
     }
 
     public void runSource(){
-        topMotor.set(-0.5);
-        bottomMotor.set(-0.5);
+        topMotor.set(-0.75);
+        bottomMotor.set(-0.75);
     }
     public void runAmp(double rpm){
         topMotor.set(0.55);
